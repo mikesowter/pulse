@@ -23,6 +23,7 @@ void ISRwatchDog () {
   watchDog++;
 	if (watchDog == 60) {
     errMessage("watchDog 60s alert");
+    setRed();
   }
   if (watchDog >= 90) {
     errMessage("watchDog fired");

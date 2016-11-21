@@ -22,6 +22,7 @@ volatile int watchDog = 0;
 
 char fileName[] = "/XXyymmdd.csv";
 char errMess[5][60];
+unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();
 

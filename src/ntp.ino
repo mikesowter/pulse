@@ -1,6 +1,13 @@
 #include <Arduino.h>
 
-/*-------- NTP code ----------*/
+unsigned long getTime() {
+
+  while (udp.parsePacket()!= NTP_PACKET_SIZE) {
+    sendNTPrequest(timeServerIP);
+    delay(1000);
+  }
+  return getNTPreply();
+}
 
 // send an NTP request to the time server at the given address
 unsigned long sendNTPrequest(IPAddress& address)
@@ -22,13 +29,6 @@ unsigned long sendNTPrequest(IPAddress& address)
 }
 
 unsigned long getNTPreply(){
-    
-  while (udp.parsePacket()!= NTP_PACKET_SIZE) {
-    
-    Serial.println(udp.parsePacket());
-    delay(1000);
-  }
-  
   udp.read(Buffer, NTP_PACKET_SIZE); // read the packet into the buffer
   unsigned long highWord = word(Buffer[40], Buffer[41]);
   unsigned long lowWord = word(Buffer[42], Buffer[43]);
@@ -39,4 +39,3 @@ unsigned long getNTPreply(){
   //add timezone offset and return
   return GMT + timeZone*3600;
 }
-

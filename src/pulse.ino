@@ -18,7 +18,7 @@ void setup() {
   flashLEDs();
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.0  2016-11-16");
+  Serial.println("\nPulse Reader Version 2.0  2016-11-21");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -30,7 +30,7 @@ void setup() {
     Serial.print(".");
   }
   Serial.println("");
-
+  setBlue();    // indicate wifi access
   Serial.println("local IP address: ");
   Serial.print(WiFi.localIP());
   long rssi = WiFi.RSSI();
@@ -42,8 +42,7 @@ void setup() {
 
   // Set epoch and timers
   WiFi.hostByName(ntpServerName, timeServerIP);
-  sendNTPrequest(timeServerIP);
-  startSeconds=getNTPreply();
+  startSeconds=getTime();
   setTime(startSeconds);
   //setTime(23,59,45,1,11,2016);
   startMillis = millis();
@@ -53,11 +52,13 @@ void setup() {
   oldMonth = month();
   oldYear = year();
   clockDisplay();
+  setGreen();   // indicate NTP access
 
   //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
   if(!SPIFFS.begin())
   {
     Serial.println("SPIFFS failed");
+    setRed();   // indicate SPIFFS issue
   }
   SPIFFS.info(fs_info);
   Serial.print(fs_info.totalBytes);
@@ -81,7 +82,7 @@ void setup() {
 	server.begin();
 	Serial.println ( "HTTP server started" );
   server.handleClient();
-  digitalWrite(BLU,1);      //turn off Blue
+  allOff();   //indicate all's well
 }
 
 void loop() {
@@ -97,26 +98,4 @@ void loop() {
   handleQueue();
   delay(10);
   watchDog=0;
-}
-
-void flashLEDs() {
-  pinMode(BLU, OUTPUT);
-  pinMode(GRN, OUTPUT);
-  pinMode(RED, OUTPUT);
-  pinMode(LDR, INPUT);
-  digitalWrite(BLU,0);      //turn on Blue
-  digitalWrite(GRN,1);      //turn off Green
-  digitalWrite(RED,1);      //turn off Red
-  delay(300);
-  digitalWrite(BLU,1);      //turn off Blue
-  digitalWrite(GRN,0);      //turn on Green
-  digitalWrite(RED,1);      //turn off Red
-  delay(300);
-  digitalWrite(BLU,1);      //turn off Blue
-  digitalWrite(GRN,1);      //turn off Green
-  digitalWrite(RED,0);      //turn on Red
-  delay(300);
-  digitalWrite(BLU,0);      //turn on Blue
-  digitalWrite(GRN,1);      //turn off Green
-  digitalWrite(RED,1);      //turn off Red
 }
