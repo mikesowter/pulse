@@ -3,7 +3,7 @@
 
 
 /*
-  Pulse:  reads 1kW pulses from the energy meter, determines an average power from rise and fall times
+  Pulse:  reads 1Wh pulses from the energy meter, determines an average power from rise and fall times
   and counts pulses to give remote metering of imported electrical energy
   A web service provides a 3 hour window of activity which can be scrolled back over the previous 24 hours
   Hourly power activity is stored by the day in flash, and then FTP'd at midnight
@@ -16,9 +16,10 @@
 
 void setup() {
   flashLEDs();
+  secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.0  2016-11-21");
+  Serial.println("\nPulse Reader Version 2.0  2016-11-24");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -39,9 +40,10 @@ void setup() {
   Serial.println(" dBm");
 
   udp.begin(localPort);
-
-  // Set epoch and timers
+  // Resolve servers
   WiFi.hostByName(ntpServerName, timeServerIP);
+  WiFi.hostByName(ftpServerName, fileServerIP);
+  // Set epoch and timers
   startSeconds=getTime();
   setTime(startSeconds);
   //setTime(23,59,45,1,11,2016);
@@ -68,7 +70,6 @@ void setup() {
   readFiles();
 
   t0 = millis();
-  secondTick.attach(1,ISRwatchDog);
   attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
 
   if ( MDNS.begin ( "pulse" ) ) {

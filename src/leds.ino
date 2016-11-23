@@ -35,3 +35,9 @@ void setRed() {
   digitalWrite(GRN,1);      //turn off Green
   digitalWrite(RED,0);      //turn on Red
 }
+
+void setWhite() {
+  digitalWrite(BLU,0);      //turn on Blue
+  digitalWrite(GRN,0);      //turn on Green
+  digitalWrite(RED,0);      //turn on Red
+}

@@ -27,7 +27,7 @@ void ISRwatchDog () {
   }
   if (watchDog >= 90) {
     errMessage("watchDog fired");
-    ESP.reset();
+    ESP.restart();
   }
   interrupts();
 }

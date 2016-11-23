@@ -9,7 +9,7 @@ byte uploadDay() {
   strcat(fileName,p2d(oldDay));
   strcat(fileName,".csv");
   uploadFile();
-  delay(1);
+  delay(5);
 }
 
 byte uploadMonth() {
@@ -19,13 +19,21 @@ byte uploadMonth() {
   strcat(fileName,p2d(oldMonth));
   strcat(fileName,".csv");
   uploadFile();
-  delay(1);
+  delay(5);
+}
+
+byte checkFileSent() {
+  allOff();
+  uploadFile();
+  delay(5);
+  setGreen();
 }
 
 byte uploadFile() {
-  WiFi.hostByName(ftpServerName, fileServerIP);
+  watchDog=0;
   if (openFTPsession(fileServerIP)==0) {
     errMessage("FTP open session failed");
+    setWhite();
     return 0;
   }
   /*  read the SPIFFS directory
