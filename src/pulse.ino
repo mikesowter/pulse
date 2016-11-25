@@ -56,10 +56,10 @@ void setup() {
   clockDisplay();
   setGreen();   // indicate NTP access
 
-  //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
-  if(!SPIFFS.begin())
+  if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
+  //if(!SPIFFS.begin())
   {
-    Serial.println("SPIFFS failed");
+    Serial.println("SPIFFS.begin failed");
     setRed();   // indicate SPIFFS issue
   }
   SPIFFS.info(fs_info);
@@ -89,7 +89,9 @@ void setup() {
 void loop() {
   while (intPtr == 0) {
     if ( minute()!=oldMin ) {
+      setWhite();
       minProc();
+      allOff();
     }
     server.handleClient();
     delay(10);

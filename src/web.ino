@@ -77,7 +77,15 @@ void handleAvg() {
 }
 
 void handleNotFound() {
-	String message = "File Not Found\n\n";
+
+  server.uri().toCharArray(userText, 14);
+  Serial.println(userText);
+  if (strncmp(userText,"/reset",5)==0) {
+    Serial.println("User requested restart");
+    ESP.restart();
+  }
+  
+	/* String message = "File Not Found\n\n";
 	message += "URI: ";
 	message += server.uri();
 	message += "\nMethod: ";
@@ -85,9 +93,10 @@ void handleNotFound() {
 	message += "\nArguments: ";
 	message += server.args();
 	message += "\n";
+  Serial.println(message);
 
 	for ( uint8_t i = 0; i < server.args(); i++ ) {
 		message += " " + server.argName ( i ) + ": " + server.arg ( i ) + "\n";
-	}
+  }  */
 
 }

@@ -64,7 +64,7 @@ byte readFiles() {
   fh.close();
   // error messages
   errMessage("log this restart");
-  strcpy(fileName,"errmess.txt");
+  strcpy(fileName,"/errmess.txt");
   if ( !openFile("r") ) return 0;
   readErrs();
   fh.close();

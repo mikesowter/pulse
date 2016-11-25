@@ -49,8 +49,8 @@ void minProc() {
       //delay(10000);   // don't overload NTP & FTP servers on hour
       uploadDay();
       uploadMonth();
-      startSeconds=getTime();
-      setTime(startSeconds);
+      //startSeconds=getTime();
+      //setTime(startSeconds);
       if ( month() != oldMonth ) {
         strcpy(fileName,"EN");
         strcat(fileName,p2d(year()/100));
