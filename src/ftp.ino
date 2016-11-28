@@ -81,11 +81,13 @@ byte openFTPsession(IPAddress& address) {
   }
 
   Serial.println("Sending USERNAME");
-  client.println("USER pulse@sowter.com");
+  //client.println("USER pulse@sowter.com");
+  client.println("USER dev@sowter.com");
   if (!ftpRcv()) return 0;
   delay(1);
   Serial.println("Sending PASSWORD");
-  client.println("PASS LovelyRita");
+  //client.println("PASS LovelyRita");
+  client.println("PASS develop");
   if (!ftpRcv()) return 0;
   delay(1);
   Serial.println("Sending UTF8 ON");

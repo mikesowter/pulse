@@ -56,8 +56,8 @@ void setup() {
   clockDisplay();
   setGreen();   // indicate NTP access
 
-  if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
-  //if(!SPIFFS.begin())
+  //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
+  if(!SPIFFS.begin())
   {
     Serial.println("SPIFFS.begin failed");
     setRed();   // indicate SPIFFS issue

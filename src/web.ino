@@ -64,7 +64,7 @@ void handleDay() {
   addErrMess();
   addCstring( htmlStr4 );
   server.send ( 200, "text/html", htmlStr );
-  Serial.println(htmlStr);
+  //Serial.println(htmlStr);
 }
 
 void handleAvg() {
@@ -84,7 +84,22 @@ void handleNotFound() {
     Serial.println("User requested restart");
     ESP.restart();
   }
-  
+  if (SPIFFS.exists(userText)) {
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Sending File: \"");
+    strcat(outBuf,userText);
+    strcat(outBuf,"\"<HR></body></html>");
+    server.send ( 200, "text/html", outBuf );
+    strcpy(fileName,userText);
+    uploadFile();
+    delay(5);
+  }
+  else {
+    strcpy(outBuf,userText);
+    strcat(outBuf," does not exist");
+    errMessage(outBuf);
+  }
+  handleRoot();
+
 	/* String message = "File Not Found\n\n";
 	message += "URI: ";
 	message += server.uri();
