@@ -64,7 +64,8 @@ struct minStruct {
 byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;
 byte ledState;
-float power,minPower,maxPower,avgPower,minEnergy,totalEnergy;
+bool T33time;
+float power,minPower,maxPower,avgPower,minEnergy,T31Energy,T33Energy;
 
 volatile unsigned long intBuff[32];
 volatile byte intPtr = 0;

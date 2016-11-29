@@ -21,7 +21,7 @@ void add24PowerData() {
       av += minData[outPtr].av;
       if ( lo > minData[outPtr].hi ) lo = minData[outPtr].lo;
       if (++outPtr>1439) break;
-    }
+      }
     addCstring(p8d(hi));
     addCstring(",");
     addCstring(p8d(av/sampSize));
@@ -29,6 +29,12 @@ void add24PowerData() {
     addCstring(p8d(lo));
     addCstring("],");
     }
+    // add zero in last column to hide flyback
+    addCstring("[[");
+    addCstring("23");
+    addCstring(",");
+    addCstring("59");
+    addCstring(",00],0.0,0.0,0.0],");
     // add indicator for current time
     addCstring("[[");
     addCstring(p2d(hour()));
@@ -49,7 +55,7 @@ void add24TitleData() {
   addCstring(":");
   addCstring(p2d(second()));
   addCstring(" / Energy:");
-  addCstring(p8d(totalEnergy));
+  addCstring(p8d(T31Energy));
   addCstring(" / Signal:");
   addCstring(p8d(-WiFi.RSSI()));
   addCstring(" / Memory:");

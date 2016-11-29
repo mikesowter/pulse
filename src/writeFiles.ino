@@ -21,7 +21,9 @@ byte storeData() {
   fh.print(",");
   fh.print(p2d(oldHour));
   fh.print(",");
-  fh.println(p8d(totalEnergy));
+  fh.print(p8d(T31Energy));
+  fh.print(",");
+  fh.println(p8d(T33Energy));
   fh.close();
   return 1;
 }

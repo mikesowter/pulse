@@ -4,7 +4,7 @@
 
 void minProc() {
   minPtr = 60*(int)oldHour+(int)oldMin;
-  if ( minEnergy == totalEnergy ) {
+  if ( minEnergy == T31Energy ) { // energy hasn't changed since start of this minute
     Serial.print(p2d(oldHour));
     Serial.print(":");
     Serial.println(p2d(oldMin));
@@ -23,7 +23,7 @@ void minProc() {
     Serial.print(":");
     Serial.print(p2d(oldMin));
     Serial.print("  Avg = ");
-    avgPower=(totalEnergy-minEnergy)*60;
+    avgPower=(T31Energy-minEnergy)*60;
     Serial.print(avgPower);
     Serial.print("  Max = ");
     Serial.print(maxPower);
@@ -34,11 +34,14 @@ void minProc() {
     minData[minPtr].av = reason(avgPower);
     minData[minPtr].hi = reason(maxPower);
   }
+  if (minPtr<420||minPtr>1320) T33time = true; // 10pm to 7am}
+  else T33time = false;
+
   // reset for new minute
   minPower = 99.9;
   maxPower = 0.0;
   power=0.0;
-  minEnergy = totalEnergy;
+  minEnergy = T31Energy;
   minMillis = millis();
   if ( hour()!=oldHour ) {
     storeData();
@@ -62,7 +65,9 @@ void minProc() {
         fh.print(",");
         fh.print(p2d(oldHour));
         fh.print(",");
-        fh.println(p8d(totalEnergy));
+        fh.println(p8d(T31Energy));
+        fh.print(",");
+        fh.println(p8d(T33Energy));
         fh.close();
         if ( year() != oldYear ) {
           errMessage("Happy New Year!!!!!");

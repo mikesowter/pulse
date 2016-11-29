@@ -86,26 +86,17 @@ byte readPower() {
 
 byte readEnergy() {
   byte dd,hh;
-  float eSum,eMax,eNew = 0.0;
+  float eNew = 0.0;
   Serial.println();
   while (fh.available()) {
     dd = fh.parseInt();
     hh = fh.parseInt();
     eNew = fh.parseFloat();
-    if (eNew > eMax) eMax = eNew;   // expect monotonic increase
-    /*
-    else {
-      eSum += eMax;
-      eMax = eNew;      // step back, add old sum to new
-      Serial.print(p2d(hh));
-      Serial.print(":");
-      Serial.print(p2d(mm));
-      Serial.println(" lost energy");
-    }
-    */
+    if (eNew > T31Energy) T31Energy = eNew;   // expect monotonic increase
+    eNew = fh.parseFloat();
+    if (eNew > T33Energy) T33Energy = eNew;   // expect monotonic increase
   }
-  totalEnergy = eMax;
-  minEnergy = eMax;
+  minEnergy = T31Energy; // energy at start of next minute to compare to T31 at end of minute
   return 1;
 }
 

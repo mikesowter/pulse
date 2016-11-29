@@ -31,7 +31,7 @@ void add3TitleData() {
   addCstring(":");
   addCstring(p2d(second()));
   addCstring(" / Energy:");
-  addCstring(p8d(totalEnergy));
+  addCstring(p8d(T31Energy));
   addCstring(" / Power:");
   addCstring(p8d(power));
   addCstring(" / Signal:");

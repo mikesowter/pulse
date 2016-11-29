@@ -77,17 +77,23 @@ void handleAvg() {
 }
 
 void handleNotFound() {
-
   server.uri().toCharArray(userText, 14);
   Serial.println(userText);
-  if (strncmp(userText,"/reset",5)==0) {
-    Serial.println("User requested restart");
+  if (strncmp(userText,"/reset",6)==0) {
+    errMessage("User requested restart");
     ESP.restart();
   }
-  if (SPIFFS.exists(userText)) {
+  else if (strncmp(userText,"/shutdown",9)==0) {
+    errMessage("User requested shutdown");
+    uploadDay();
+    uploadMonth();
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Safe to Shutdown<HR></head></html>");
+    server.send ( 200, "text/html", outBuf );
+  }
+  else if (SPIFFS.exists(userText)) {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Sending File: \"");
     strcat(outBuf,userText);
-    strcat(outBuf,"\"<HR></body></html>");
+    strcat(outBuf,"\"<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
     strcpy(fileName,userText);
     uploadFile();
@@ -97,21 +103,6 @@ void handleNotFound() {
     strcpy(outBuf,userText);
     strcat(outBuf," does not exist");
     errMessage(outBuf);
+    handleRoot();
   }
-  handleRoot();
-
-	/* String message = "File Not Found\n\n";
-	message += "URI: ";
-	message += server.uri();
-	message += "\nMethod: ";
-	message += ( server.method() == HTTP_GET ) ? "GET" : "POST";
-	message += "\nArguments: ";
-	message += server.args();
-	message += "\n";
-  Serial.println(message);
-
-	for ( uint8_t i = 0; i < server.args(); i++ ) {
-		message += " " + server.argName ( i ) + ": " + server.arg ( i ) + "\n";
-  }  */
-
 }
