@@ -9,9 +9,9 @@ void listFiles() {
   Dir dir = SPIFFS.openDir("/");
   while (dir.next()) {
     dir.fileName().toCharArray(fileName, 14);
-    addCstring("\n\r");
+    addCstring("<P>");
     addCstring(fileName);
-    addCstring("\t");
+    addCstring("&emsp;");
     dir.fileSize();
     itoa(dir.fileSize(),fileSize,7);
     addCstring(fileSize);
