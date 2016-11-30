@@ -79,15 +79,23 @@ byte openFTPsession(IPAddress& address) {
     errMessage("FTP connection failed");
     return 0;
   }
+  if (localIP[3]==150) {    // send target hardware data to pulse FTP account
+    Serial.println("Sending USERNAME");
+    client.println("USER pulse@sowter.com");
+    if (!ftpRcv()) return 0;
+    delay(1);
+    Serial.println("Sending PASSWORD");
+    client.println("PASS LovelyRita");
+  }
+  else {                    // otherwise send to dev account
+    Serial.println("Sending USERNAME");
+    client.println("USER dev@sowter.com");
+    if (!ftpRcv()) return 0;
+    delay(1);
+    Serial.println("Sending PASSWORD");
+    client.println("PASS develop");
+  }
 
-  Serial.println("Sending USERNAME");
-  //client.println("USER pulse@sowter.com");
-  client.println("USER dev@sowter.com");
-  if (!ftpRcv()) return 0;
-  delay(1);
-  Serial.println("Sending PASSWORD");
-  //client.println("PASS LovelyRita");
-  client.println("PASS develop");
   if (!ftpRcv()) return 0;
   delay(1);
   Serial.println("Sending UTF8 ON");

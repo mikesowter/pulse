@@ -38,7 +38,7 @@ unsigned long t0, t1, minMillis, startMillis, startSeconds, midNight;
 unsigned long importWh = 0;
 unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
 
-IPAddress timeServerIP,fileServerIP;
+IPAddress localIP,timeServerIP,fileServerIP;
 const char* ntpServerName = "time.nist.gov";
 const char* ftpServerName = "ftp.sowter.com";
 char titleData[60];
@@ -47,7 +47,7 @@ char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
 const int BUFFER_SIZE = 128;
 byte Buffer[BUFFER_SIZE];
-char outBuf[128];               // for ftpRcv
+char outBuf[128];               // for ftpRcv and errMessage
 const int timeZone = 10;
 const int LDR = 14;
 const int BLU = 12;

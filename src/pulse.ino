@@ -33,7 +33,8 @@ void setup() {
   Serial.println("");
   setBlue();    // indicate wifi access
   Serial.println("local IP address: ");
-  Serial.print(WiFi.localIP());
+  localIP=WiFi.localIP();
+  Serial.print(localIP);
   long rssi = WiFi.RSSI();
   Serial.print("    signal strength ");
   Serial.print(rssi);

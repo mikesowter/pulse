@@ -99,6 +99,11 @@ void handleNotFound() {
     uploadFile();
     delay(5);
   }
+  else if (strncmp(userText,"/favicon.ico",12)==0) {
+    }
+  else if (strncmp(userText,"/dir",4)==0) {
+    listFiles();
+    }
   else {
     strcpy(outBuf,userText);
     strcat(outBuf," does not exist");
