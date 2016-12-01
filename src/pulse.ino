@@ -47,7 +47,7 @@ void setup() {
   // Set epoch and timers
   startSeconds=getTime();
   setTime(startSeconds);
-  //setTime(23,59,45,1,11,2016);
+  //setTime(23,59,30,30,11,2016);
   startMillis = millis();
   oldMin = minute();
   oldHour = hour();

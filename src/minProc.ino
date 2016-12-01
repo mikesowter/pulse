@@ -60,6 +60,9 @@ void minProc() {
         strcat(fileName,p2d(year()%100));
         strcat(fileName,p2d(month()));
         strcat(fileName,".csv");
+        Serial.print("Creating new month file: ");
+        Serial.println(fileName);
+        // write last values from previous month into new ENyyyymm.csv file
         openFile("a");
         fh.print(p2d(oldDay));
         fh.print(",");

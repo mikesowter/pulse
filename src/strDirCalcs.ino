@@ -12,7 +12,6 @@ void listFiles() {
     addCstring("<P>");
     addCstring(fileName);
     addCstring("&emsp;");
-    dir.fileSize();
     itoa(dir.fileSize(),fileSize,7);
     addCstring(fileSize);
   }

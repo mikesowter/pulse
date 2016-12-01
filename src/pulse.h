@@ -39,7 +39,7 @@ unsigned long importWh = 0;
 unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
 
 IPAddress localIP,timeServerIP,fileServerIP;
-const char* ntpServerName = "time.nist.gov";
+const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
 char titleData[60];
 const int HTML_SIZE = 6500;     // allows 140 char headroom at 181 cols

@@ -9,7 +9,6 @@ byte uploadDay() {
   strcat(fileName,p2d(oldDay));
   strcat(fileName,".csv");
   uploadFile();
-  delay(5);
 }
 
 byte uploadMonth() {
@@ -19,7 +18,6 @@ byte uploadMonth() {
   strcat(fileName,p2d(oldMonth));
   strcat(fileName,".csv");
   uploadFile();
-  delay(5);
 }
 
 byte checkFileSent() {
@@ -31,6 +29,7 @@ byte checkFileSent() {
 
 byte uploadFile() {
   watchDog=0;
+  delay(5);
   if (openFTPsession(fileServerIP)==0) {
     errMessage("FTP open session failed");
     setWhite();
@@ -61,6 +60,7 @@ byte uploadFile() {
     strcat(outBuf," sent");
     errMessage(outBuf);
   }
+  delay(5);
   fh.close();
 
   //  close FTP session
