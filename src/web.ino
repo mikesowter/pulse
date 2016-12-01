@@ -108,8 +108,8 @@ void handleNotFound() {
   }
   else {
     strcpy(outBuf,userText);
-    strcat(outBuf," does not exist");
+    strcat(outBuf," is not a valid option");
     errMessage(outBuf);
-    handleRoot();
+    helpPage();
   }
 }

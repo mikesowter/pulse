@@ -19,3 +19,25 @@ void listFiles() {
   server.send ( 200, "text/html", htmlStr );
   //Serial.println(htmlStr);
 }
+
+void helpPage() {
+  htmlStr[0]='\0';
+  addCstring("<!DOCTYPE html><html><body><HR>");
+  addCstring("Valid options include:");
+  addCstring("<P>");
+  addCstring("day");
+  addCstring("<P>");
+  addCstring("avg");
+  addCstring("<P>");
+  addCstring("8.3 filename");
+  addCstring("<P>");
+  addCstring("shutdown");
+  addCstring("<P>");
+  addCstring("reset");
+  addCstring("<P>");
+  addCstring("dir");
+  addCstring("<HR>");
+  addCstring( "<HR></body></html>" );
+  server.send ( 200, "text/html", htmlStr );
+  //Serial.println(htmlStr);
+}
