@@ -19,7 +19,9 @@ byte readFiles() {
 //    checkFileSent();
     if (strcmp(fileName,weekName)<0 && outBuf[1]=='P') {
       if (SPIFFS.remove(fileName)) {
-        Serial.println("deleted");
+        strcpy(outBuf,fileName);
+        strcat(outBuf," deleted");
+        errMessage(outBuf);
       }
     }
     else {
