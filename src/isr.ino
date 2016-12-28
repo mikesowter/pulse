@@ -8,10 +8,10 @@ void intServer() {
   ledState=digitalRead(LDR);
   digitalWrite(GRN,1-ledState); // indicate activity ON=ON
   intBuff[intPtr] = millis();
-  if (intPtr > 30) {
+  if (intPtr > 62) {
     errMessage("ISR overflow");
     overFlow = 1;
-    intPtr = 31;
+    intPtr = 63;
     return;
   }
   intBuff[++intPtr] = 0;
@@ -21,11 +21,11 @@ void intServer() {
 void ISRwatchDog () {
   noInterrupts();
   watchDog++;
-	if (watchDog == 60) {
+	if (watchDog == 30) {
     errMessage("watchDog 60s alert");
     setRed();
   }
-  if (watchDog >= 90) {
+  if (watchDog >= 60) {
     errMessage("watchDog fired");
     ESP.restart();
   }

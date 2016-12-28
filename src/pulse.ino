@@ -7,7 +7,7 @@
   and counts pulses to give remote metering of imported electrical energy
   A web service provides a 3 hour window of activity which can be scrolled back over the previous 24 hours
   Hourly power activity is stored by the day in flash, and then FTP'd at midnight
-  Hourly energy data is transferred monthly.
+  Hourly energy data is accumulated monthly.
 
   Mike Sowter  March 2016
 
@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.0  2016-11-24");
+  Serial.println("\nPulse Reader Version 2.1  2016-12-29");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);

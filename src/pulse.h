@@ -67,6 +67,6 @@ byte ledState;
 bool T33time;
 float power,minPower,maxPower,avgPower,minEnergy,T31Energy,T33Energy;
 
-volatile unsigned long intBuff[32];
+volatile unsigned long intBuff[64];
 volatile byte intPtr = 0;
 volatile bool overFlow = 0;

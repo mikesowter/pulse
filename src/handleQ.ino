@@ -2,7 +2,7 @@
 
 void handleQueue() {
   noInterrupts();
-  for (int in=0;in<32;in++) {
+  for (int in=0;in<64;in++) {
     t1=intBuff[in]-t0;
     t0=intBuff[in];
     if (t1<90) {
@@ -30,7 +30,7 @@ void handleQueue() {
       T33Energy += 0.0005*(3.5/power); // unit is kWh
     }
     else T31Energy += 0.0005;
-    
+
     if (power>maxPower) maxPower=power;
     if (power<minPower) minPower=power;
     //Serial.println(power);
