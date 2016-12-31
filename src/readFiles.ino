@@ -4,12 +4,13 @@
 
 byte readFiles() {
 
-  // delete all files more than 1 week old
-  strcpy(weekName,"/PR");
-  strcat(weekName,p2d(year(now()-SECS_PER_WEEK)%100));
-  strcat(weekName,p2d(month(now()-SECS_PER_WEEK)));
-  strcat(weekName,p2d(day(now()-SECS_PER_WEEK)));
-  strcat(weekName,".csv");
+  // delete all files more than 1 month old
+  long SECS_PER_MONTH = 30*24*60*60;
+  strcpy(monthBack,"/PR");
+  strcat(monthBack,p2d(year(now()-SECS_PER_MONTH)%100));
+  strcat(monthBack,p2d(month(now()-SECS_PER_MONTH)));
+  strcat(monthBack,p2d(day(now()-SECS_PER_MONTH)));
+  strcat(monthBack,".csv");
 
   Dir dir = SPIFFS.openDir("/");
   while (dir.next()) {
@@ -17,7 +18,8 @@ byte readFiles() {
     Serial.print(fileName);
     Serial.print("\t");
 //    checkFileSent();
-    if (strcmp(fileName,weekName)<0 && outBuf[1]=='P') {
+    if (strcmp(fileName,monthBack)<0 && fileName[1]=='P') {
+      Serial.print("Month check:  ");
       if (SPIFFS.remove(fileName)) {
         strcpy(outBuf,fileName);
         strcat(outBuf," deleted");

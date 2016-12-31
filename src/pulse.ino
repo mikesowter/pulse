@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.1  2016-12-29");
+  Serial.println("\nPulse Reader Version 2.1  2016-12-31");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);

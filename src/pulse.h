@@ -21,7 +21,7 @@ Ticker secondTick;
 volatile int watchDog = 0;
 
 char fileName[] = "/XXyymmdd.csv";
-char weekName[] = "/XXyymmdd.csv";
+char monthBack[] = "/XXyymmdd.csv";
 char userText[] = "/XXyymmdd.csv";
 char errMess[5][60];
 unsigned long getTime();

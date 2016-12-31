@@ -11,20 +11,7 @@ void handleQueue() {
     }
 
     power = 1800.0/(float)t1;
-/*    if (power<0.0) {
-      Serial.print("power < 0  t1=");
-      Serial.print(t1);
-      Serial.print(" index=");
-      Serial.print(in);
-      Serial.print(" intBuff = ");
-      for (int nn=0;nn<16;nn++) {
-        Serial.print(nn);
-        Serial.print("=");
-        Serial.print(intBuff[nn]);
-        Serial.print("  ");
-      }
-      break;
-    }  */
+
     if (T33time && power > 3.5) {
       T31Energy += 0.0005*(1-3.5/power);
       T33Energy += 0.0005*(3.5/power); // unit is kWh
