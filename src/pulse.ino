@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.1  2016-12-31");
+  Serial.println("\nPulse Reader Version 2.2  2017-02-04");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -39,6 +39,8 @@ void setup() {
   Serial.print("    signal strength ");
   Serial.print(rssi);
   Serial.println(" dBm");
+  watchDog=0;
+  init_OTA();
 
   udp.begin(localPort);
   // Resolve servers
@@ -102,4 +104,6 @@ void loop() {
   handleQueue();
   delay(10);
   watchDog=0;
+  // check for OTA
+  ArduinoOTA.handle();
 }

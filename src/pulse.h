@@ -7,6 +7,7 @@
 #include <FS.h>
 #include <ESP8266mDNS.h>
 #include <Ticker.h>
+#include <ArduinoOTA.h>
 extern "C" {
 #include "user_interface.h"
 }
@@ -28,8 +29,8 @@ unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();
 
-char ssid[] = "ZombiesAteMyBrains";  //  your network SSID (name)
-//char ssid[] = "DownWithPlants";
+//char ssid[] = "ZombiesAteMyBrains";  //  your network SSID (name)
+char ssid[] = "DownWithPlants";
 char pass[] = "iron1951";        //  your network password
 char d2Str[] = "12";
 char d8Str[] = "12345.78";

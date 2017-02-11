@@ -22,11 +22,11 @@ void ISRwatchDog () {
   noInterrupts();
   watchDog++;
 	if (watchDog == 30) {
-    errMessage("watchDog 60s alert");
+    errMessage("watchDog 30s alert");
     setRed();
   }
   if (watchDog >= 60) {
-    errMessage("watchDog fired");
+    errMessage("watchDog barked");
     ESP.restart();
   }
   interrupts();

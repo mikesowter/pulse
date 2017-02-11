@@ -20,11 +20,13 @@ void errMessage(char* mess) {
   strcat(errMess[0]," ");
   strcat(errMess[0],mess);
   Serial.println(errMess[0]);
+  strcpy(userText,fileName);
   strcpy(fileName,"/errmess.txt");
   if (openFile("a")) {
     fh.println(errMess[0]);
     fh.close();
   }
+  strcpy(fileName,userText);
 }
 
 void clockDisplay() {
