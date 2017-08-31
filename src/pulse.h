@@ -47,6 +47,7 @@ const int HTML_SIZE = 6500;     // allows 140 char headroom at 181 cols
 char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
 const int BUFFER_SIZE = 128;
+const int ISR_CAP = 128;
 byte Buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMessage
 const int timeZone = 10;
@@ -68,6 +69,6 @@ byte ledState;
 bool T33time;
 float power,minPower,maxPower,avgPower,minEnergy,T31Energy,T33Energy;
 
-volatile unsigned long intBuff[64];
+volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;
 volatile bool overFlow = 0;

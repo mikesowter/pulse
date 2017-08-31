@@ -8,10 +8,10 @@ void intServer() {
   ledState=digitalRead(LDR);
   digitalWrite(GRN,1-ledState); // indicate activity ON=ON
   intBuff[intPtr] = millis();
-  if (intPtr > 62) {
+  if (intPtr >= ISR_CAP-1) {
     errMessage("ISR overflow");
     overFlow = 1;
-    intPtr = 63;
+    intPtr = ISR_CAP-1;
     return;
   }
   intBuff[++intPtr] = 0;

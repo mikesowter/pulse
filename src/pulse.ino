@@ -5,7 +5,7 @@
 /*
   Pulse:  reads 1Wh pulses from the energy meter, determines an average power from rise and fall times
   and counts pulses to give remote metering of imported electrical energy
-  A web service provides a 3 hour window of activity which can be scrolled back over the previous 24 hours
+  A web service provides a 3 hour window of activity or a rolling 24 hours at 192.168.1.150/day
   Hourly power activity is stored by the day in flash, and then FTP'd at midnight
   Hourly energy data is accumulated monthly.
 
@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.2  2017-02-04");
+  Serial.println("\nPulse Reader Version 2.3  2017-08-31");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);

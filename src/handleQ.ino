@@ -2,7 +2,7 @@
 
 void handleQueue() {
   noInterrupts();
-  for (int in=0;in<64;in++) {
+  for (int in=0;in<ISR_CAP;in++) {
     t1=intBuff[in]-t0;
     t0=intBuff[in];
     if (t1<90) {
