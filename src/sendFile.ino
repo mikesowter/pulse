@@ -5,7 +5,7 @@
 byte sendFile() {
   Serial.println("Sending PASV");
   client.println("PASV");
-  delay(1);
+  yield();
 
   if (!ftpRcv()) return 0;
   char *tStr = strtok(outBuf, "(,");
@@ -39,7 +39,7 @@ byte sendFile() {
   Serial.println("Sending STOR ");
   client.print("STOR ");
   client.println(fileName);
-  delay(1);
+  yield();
 
   if (!ftpRcv()) {
     Serial.println("dclient stopped");

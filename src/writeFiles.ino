@@ -53,7 +53,7 @@ void WriteFile() {
     fh.print(minData[outPtr].av);
     fh.print(",");
     fh.println(minData[outPtr++].lo);
-    delay(1);
+    yield();
   }
   Serial.print("hour:");
   Serial.print(p2d(oldHour));

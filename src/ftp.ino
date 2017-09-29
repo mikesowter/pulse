@@ -83,7 +83,7 @@ byte openFTPsession(IPAddress& address) {
     Serial.println("Sending USERNAME");
     client.println("USER pulse@sowter.com");
     if (!ftpRcv()) return 0;
-    delay(1);
+    yield();
     Serial.println("Sending PASSWORD");
     client.println("PASS LovelyRita");
   }
@@ -91,21 +91,21 @@ byte openFTPsession(IPAddress& address) {
     Serial.println("Sending USERNAME");
     client.println("USER dev@sowter.com");
     if (!ftpRcv()) return 0;
-    delay(1);
+    yield();
     Serial.println("Sending PASSWORD");
     client.println("PASS develop");
   }
 
   if (!ftpRcv()) return 0;
-  delay(1);
+  yield();
   Serial.println("Sending UTF8 ON");
   client.println("OPTS UTF8 ON");
   if (!ftpRcv()) return 0;
-  delay(1);
+  yield();
   Serial.println("Sending Type I");
   client.println("Type I");
   if (!ftpRcv()) return 0;
-  delay(1);
+  yield();
  }
 
 byte closeFTPsession() {
@@ -155,7 +155,7 @@ void efail() {
 
   client.println("QUIT");
 
-  while (!client.available()) delay(1);
+  while (!client.available()) yield();
 
   while (client.available()) {
     thisByte = client.read();
