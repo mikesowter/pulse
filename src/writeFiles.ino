@@ -1,13 +1,8 @@
-#include <Arduino.h>
+// store power and energy logs
 
 byte storeData() {
   // power data
-  strcpy(fileName,"/PR");
-  strcat(fileName,p2d(oldYear%100));
-  strcat(fileName,p2d(oldMonth));
-  strcat(fileName,p2d(oldDay));
-  strcat(fileName,".csv");
-  fl = SPIFFS.open(fileName, "a");
+  fl = SPIFFS.open(todayName, "a");
   WriteFile();
   fl.close();
   // energy data

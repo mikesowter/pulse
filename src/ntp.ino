@@ -2,11 +2,19 @@
 
 unsigned long getTime() {
 
-  while (udp.parsePacket()!= NTP_PACKET_SIZE) {
-    sendNTPrequest(timeServerIP);
-    delay(1000);
+  unsigned long year2030 = 1893456000UL;
+  unsigned long year2017 = 1483207200UL;
+
+  while(1) {
+    while (udp.parsePacket()!= NTP_PACKET_SIZE) {
+      sendNTPrequest(timeServerIP);
+      delay(1000);
+    }
+    startSeconds = getNTPreply();
+    yield();
+    if (startSeconds > year2017 && startSeconds < year2030) break;
   }
-  return getNTPreply();
+  return startSeconds;
 }
 
 // send an NTP request to the time server at the given address

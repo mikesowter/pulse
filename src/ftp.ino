@@ -1,15 +1,5 @@
-#include <Arduino.h>
 
 /*-------- FTP session control ----------*/
-
-byte uploadDay() {
-  strcpy(fileName,"/PR");
-  strcat(fileName,p2d(oldYear%100));
-  strcat(fileName,p2d(oldMonth));
-  strcat(fileName,p2d(oldDay));
-  strcat(fileName,".csv");
-  uploadFile();
-}
 
 byte uploadMonth() {
   strcpy(fileName,"/EN");
@@ -20,21 +10,22 @@ byte uploadMonth() {
   uploadFile();
 }
 
-byte checkFileSent() {
-  allOff();
+byte uploadDay() {
+  strcpy(fileName,todayName);
   uploadFile();
-  delay(5);
-  setGreen();
 }
 
 byte uploadFile() {
+  if (FTP_busy) return 0;
+  FTP_busy = true;
   watchDog=0;
-  delay(5);
-  if (openFTPsession(fileServerIP)==0) {
-    errMessage("FTP open session failed");
-    setWhite();
-    return 0;
-  }
+  yield();
+  for (int trial=0;trial<3;trial++) {
+    if (openFTPsession(fileServerIP)!=0) break;
+      errMessage("FTP open session failed");
+      if (trial==2) return 0;
+      delay(5000);
+    }
   /*  read the SPIFFS directory
   Serial.println("reading directory of flash:");
   Dir dir = SPIFFS.openDir("/");
@@ -42,26 +33,30 @@ byte uploadFile() {
     fileName = dir.fileName();  */
 
   fl = SPIFFS.open(fileName, "r");
-  if (!fl) {
-    errMessage("FTP file open failed");
+  if (!fd) {
+    fd.println("FTP file open failed");
+    fd.close();
+    FTP_busy = false;
     return 0;
   }
-  Serial.println(fileName);
-  Serial.print(" opened");
+  fd.print(fileName);
+  fd.println(" open");
   if (!fl.seek((uint32_t)0, SeekSet)) {
-    errMessage("FTP Rewind failed");
+    fd.println("FTP Rewind failed");
     fl.close();
+    fd.close();
+    FTP_busy = false;
     return 0;
   }
 
 //  advise if sent successfully
   if (sendFile()==1) {
-    strcpy(outBuf,fileName);
-    strcat(outBuf," sent");
-    errMessage(outBuf);
+    fd.print(fileName);
+    fd.println(" sent");
   }
-  delay(5);
+  yield();
   fl.close();
+  FTP_busy = false;
 
   //  close FTP session
   if (closeFTPsession()==0) {
@@ -73,48 +68,39 @@ byte uploadFile() {
 
 byte openFTPsession(IPAddress& address) {
   if (client.connect(address, 21)) {
-    Serial.println("FTP server connected");
+    fd.println("FTP server connected");
   } else {
     fl.close();
     errMessage("FTP connection failed");
     return 0;
   }
-  if (localIP[3]==150) {    // send target hardware data to pulse FTP account
-    Serial.println("Sending USERNAME");
-    client.println("USER pulse@sowter.com");
-    if (!ftpRcv()) return 0;
-    yield();
-    Serial.println("Sending PASSWORD");
-    client.println("PASS LovelyRita");
-  }
-  else {                    // otherwise send to dev account
-    Serial.println("Sending USERNAME");
-    client.println("USER dev@sowter.com");
-    if (!ftpRcv()) return 0;
-    yield();
-    Serial.println("Sending PASSWORD");
-    client.println("PASS develop");
-  }
+  fd.println(" Sending USERNAME");
+  client.println("USER pulse@sowter.com");
+  if (!ftpRcv()) return 0;
+  yield();
+  fd.println(" Sending PASSWORD");
+  client.println("PASS LovelyRita");
 
   if (!ftpRcv()) return 0;
   yield();
-  Serial.println("Sending UTF8 ON");
+  fd.println(" Sending UTF8 ON");
   client.println("OPTS UTF8 ON");
   if (!ftpRcv()) return 0;
   yield();
-  Serial.println("Sending Type I");
+  fd.println(" Sending Type I");
   client.println("Type I");
   if (!ftpRcv()) return 0;
+  watchDog = 0;
   yield();
  }
 
 byte closeFTPsession() {
-  Serial.println("FTP completed");
   client.println("QUIT");
+  fd.println(" FTP completed");
 
   if (!ftpRcv()) return 0;
   client.stop();
-  Serial.println("Command disconnected");
+  fd.println(" Command disconnected");
 
   return 1;
 }
@@ -126,27 +112,28 @@ byte ftpRcv() {
   byte thisByte;
 
   while (!client.available()) {
-    Serial.write('-');
-    delay(500);
+    fd.print('w');
+    delay(100);
   }
 
   respCode = client.peek();
-  Serial.print(" Response Code = ");
-  Serial.println(respCode);
+  fd.print(" Response Code = ");
+  fd.println(respCode);
 
   int outCount = 0;
 
   while (client.available()) {
     thisByte = client.read();
-    Serial.write(thisByte);
-
+    fd.write(thisByte);
+/*
     if (outCount < 127) {
       outBuf[outCount] = thisByte;
       outCount++;
       outBuf[outCount] = 0;
-    }
+    }   */
   }
- return 1;
+fd.println();
+return 1;
 }
 
 //------------------------ FTP fail
@@ -159,11 +146,11 @@ void efail() {
 
   while (client.available()) {
     thisByte = client.read();
-    Serial.write(thisByte);
+    fd.write(thisByte);
   }
 
   client.stop();
-  Serial.println("Command disconnected");
+  fd.println("\nCommand disconnected");
   fl.close();
   Serial.println("file closed");
 }  // efail

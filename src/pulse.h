@@ -22,6 +22,7 @@ Ticker secondTick;
 volatile int watchDog = 0;
 
 char fileName[] = "/XXyymmdd.csv";
+char todayName[] = "/XXyymmdd.csv";
 char date15Back[] = "/XXyymmdd.csv";
 char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
@@ -74,3 +75,4 @@ float power,minPower,maxPower,avgPower,minEnergy,T31Energy,T33Energy;
 volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;
 volatile bool overFlow = 0;
+bool FTP_busy = false;

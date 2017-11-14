@@ -75,11 +75,7 @@ byte readErrMess() {
   int i,j,k;
   uint32_t ptrs[6];
   Serial.println();
-  if (!fl.seek((uint32_t)0, SeekSet)) {
-    errMessage("readErrs rewind failed");
-    fl.close();
-    return 0;
-  }
+
   i=0;
   while (fl.available()) {
     i = (i+1)%6;

@@ -1,11 +1,9 @@
-#include <Arduino.h>
-
 //  open new data connection for each file in folder
 
 byte sendFile() {
-  Serial.println("Sending PASV");
-  client.println("PASV");
   yield();
+  fd.println(" Sending PASV");
+  client.println("PASV");
 
   if (!ftpRcv()) return 0;
   char *tStr = strtok(outBuf, "(,");
@@ -14,35 +12,35 @@ byte sendFile() {
     tStr = strtok(NULL, "(,");
     array_pasv[i] = atoi(tStr);
     if (tStr == NULL) {
-      Serial.println("Bad PASV Answer");
+      fd.println("Bad PASV Answer");
     }
   }
 
-  unsigned int hiPort, loPort;
-  hiPort = array_pasv[4] << 8;
-  loPort = array_pasv[5] & 255;
+  uint16_t port = array_pasv[4] << 8;
+  port |= array_pasv[5] & 255;
+  char portStr[5];
 
-  Serial.print("Data port: ");
-  hiPort = hiPort | loPort;
-  Serial.println(hiPort);
+  strcpy(outBuf,"Data port: ");
+  itoa(port,portStr,16);
+  strcat(outBuf,portStr);
+  fd.println(outBuf);
 
-  if (dclient.connect(fileServerIP, hiPort)) {
-    Serial.println("Data connected");
+  if (dclient.connect(fileServerIP, port)) {
+    fd.println("Data connected");
   }
   else {
-    Serial.println("Data connection failed");
+    fd.println("Data connection failed");
     dclient.stop();
-    fl.close();
     return 0;
   }
 
-  Serial.println("Sending STOR ");
+  fd.println("Sending STOR ");
   client.print("STOR ");
   client.println(fileName);
   yield();
 
   if (!ftpRcv()) {
-    Serial.println("dclient stopped");
+    fd.println("dclient stopped");
     dclient.stop();
     return 0;
   }
@@ -51,12 +49,12 @@ byte sendFile() {
   uint8_t clientBuf[bufSizeFTP];
 
   short clientCount = 0;
-  Serial.print("buffering ");
+  fd.print("buffering ");
   while (fl.available()) {
     clientBuf[clientCount] = fl.read();
     clientCount++;
     if (clientCount > (bufSizeFTP - 1)) {
-      Serial.print("B ");
+      fd.print("B ");
       dclient.write((const uint8_t *) &clientBuf[0], bufSizeFTP);
       clientCount = 0;
       delay(10);
@@ -65,7 +63,7 @@ byte sendFile() {
   if (clientCount > 0) dclient.write((const uint8_t *) &clientBuf[0], clientCount);
 
   dclient.stop();
-  Serial.println("Data disconnected");
+  fd.println();
 
   if (!ftpRcv()) return 0;
   return 1;

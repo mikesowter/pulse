@@ -26,7 +26,9 @@ void ISRwatchDog () {
     setRed();
   }
   if (watchDog >= 60) {
-    errMessage("watchDog barked");
+    errMessage("watchDog 60s timeout");
+    fd.close();
+    fe.close();
     ESP.restart();
   }
   interrupts();

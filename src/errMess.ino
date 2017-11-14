@@ -16,16 +16,16 @@ void errMessage(char* mess) {
   strcat(errMess[0],p2d(second()));
   strcat(errMess[0]," ");
   strcat(errMess[0],mess);
-  Serial.println(timeStamp());
+  Serial.print(timeStamp());
   Serial.println(errMess[0]);
-  fe.println(timeStamp());
+  fe.print(timeStamp());
   fe.println(errMess[0]);
 }
 
 void diagMess(char* mess) {
-  Serial.println(timeStamp());
+  Serial.print(timeStamp());
   Serial.println(mess);
-  fd.println(timeStamp());
+  fd.print(timeStamp());
   fd.println(mess);
 }
 

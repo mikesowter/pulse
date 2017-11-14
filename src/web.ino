@@ -78,13 +78,26 @@ void handleAvg() {
 
 void handleNotFound() {
   server.uri().toCharArray(userText, 14);
+  Serial.print(timeStamp());
   Serial.println(userText);
   if (strncmp(userText,"/reset",6)==0) {
     errMessage("User requested restart");
+    fd.close();
+    fe.close();
     ESP.restart();
   }
-  else if (strncmp(userText,"/shutdown",9)==0) {
-    errMessage("User requested shutdown");
+  else if (strncmp(userText,"/diags",6)==0) {
+    listDiags();
+  }
+  else if (strncmp(userText,"/remdiags",9)==0) {
+    SPIFFS.remove("/diags.txt");
+    fd = SPIFFS.open("/diags.txt", "a");
+    fd.println(dateStamp());
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Diags deleted<HR></head></html>");
+    server.send ( 200, "text/html", outBuf );
+  }
+  else if (strncmp(userText,"/filesave",9)==0) {
+    diagMess("User requested file save");
     uploadDay();
     uploadMonth();
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Safe to Shutdown<HR></head></html>");
@@ -109,7 +122,23 @@ void handleNotFound() {
   else {
     strcpy(outBuf,userText);
     strcat(outBuf," is not a valid option");
-    errMessage(outBuf);
+    diagMess(outBuf);
     helpPage();
   }
+}
+
+uint8_t listDiags() {
+  char line[66];
+  htmlStr[0]='\0';
+  addCstring("<!DOCTYPE html><html><body><HR>");
+  fd.seek(0,SeekSet);
+  while (fd.available()) {
+    int k=fd.readBytesUntil('\r',line,64);
+    line[k]='\0';
+    addCstring(line);
+    addCstring("<P>");
+  }
+  addCstring( "<HR></body></html>" );
+  server.send ( 200, "text/html", htmlStr );
+  return 1;
 }
