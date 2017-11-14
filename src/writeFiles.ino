@@ -7,52 +7,39 @@ byte storeData() {
   strcat(fileName,p2d(oldMonth));
   strcat(fileName,p2d(oldDay));
   strcat(fileName,".csv");
-  if ( !openFile("a") ) return 0;
+  fl = SPIFFS.open(fileName, "a");
   WriteFile();
-  fh.close();
+  fl.close();
   // energy data
   strcpy(fileName,"/EN");
   strcat(fileName,p2d(oldYear/100));
   strcat(fileName,p2d(oldYear%100));
   strcat(fileName,p2d(oldMonth));
   strcat(fileName,".csv");
-  if ( !openFile("a") ) return 0;
-  fh.print(p2d(oldDay));
-  fh.print(",");
-  fh.print(p2d(oldHour));
-  fh.print(",");
-  fh.print(p8d(T31Energy));
-  fh.print(",");
-  fh.println(p8d(T33Energy));
-  fh.close();
-  return 1;
-}
-
-//----------------- open file for reading or appending
-
-byte openFile(char* s) {
-  fh = SPIFFS.open(fileName, s);
-  if (!fh) {
-    strcpy(outBuf,fileName);
-    strcat(outBuf," failed to open");
-    errMessage(outBuf);
-    return 0;
-  }
+  fl = SPIFFS.open(fileName, "a");
+  fl.print(p2d(oldDay));
+  fl.print(",");
+  fl.print(p2d(oldHour));
+  fl.print(",");
+  fl.print(p8d(T31Energy));
+  fl.print(",");
+  fl.println(p8d(T33Energy));
+  fl.close();
   return 1;
 }
 
 void WriteFile() {
   int outPtr = 60*oldHour;
   for (int m=0;m<60;m++) {
-    fh.print(p2d(oldHour));
-    fh.print(":");
-    fh.print(p2d(m));
-    fh.print(",");
-    fh.print(minData[outPtr].hi);
-    fh.print(",");
-    fh.print(minData[outPtr].av);
-    fh.print(",");
-    fh.println(minData[outPtr++].lo);
+    fl.print(p2d(oldHour));
+    fl.print(":");
+    fl.print(p2d(m));
+    fl.print(",");
+    fl.print(minData[outPtr].hi);
+    fl.print(",");
+    fl.print(minData[outPtr].av);
+    fl.print(",");
+    fl.println(minData[outPtr++].lo);
     yield();
   }
   Serial.print("hour:");

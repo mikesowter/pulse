@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 2.3  2017-08-31");
+  Serial.println("\nPulse Reader Version 2.4  2017-11-02");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -56,7 +56,9 @@ void setup() {
   oldDay = day();
   oldMonth = month();
   oldYear = year();
-  clockDisplay();
+  Serial.print(dateStamp());
+  Serial.print(" ");
+  Serial.println(timeStamp());
   setGreen();   // indicate NTP access
 
   //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
@@ -70,8 +72,10 @@ void setup() {
   Serial.println(" bytes available");
   Serial.print(fs_info.usedBytes);
   Serial.println(" bytes used:");
-  readFiles();
-
+  delOldFiles();
+  fd=openFile("/diags.txt","a+");
+  fe=openFile("/errmess.txt","a+");
+  readLogs();
   t0 = millis();
   attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
 
@@ -97,12 +101,12 @@ void loop() {
       allOff();
     }
     server.handleClient();
-    delay(10);
+    yield();
     watchDog=0;
   }
   // new events in queue
   handleQueue();
-  delay(10);
+  yield();
   watchDog=0;
   // check for OTA
   ArduinoOTA.handle();

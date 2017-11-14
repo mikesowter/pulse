@@ -60,18 +60,19 @@ void minProc() {
         strcat(fileName,p2d(year()%100));
         strcat(fileName,p2d(month()));
         strcat(fileName,".csv");
-        Serial.print("Creating new month file: ");
-        Serial.println(fileName);
+        fd.print("Creating new month file: ");
+        fd.println(fileName);
+        fl=SPIFFS.open(fileName,"a+");
         // write last values from previous month into new ENyyyymm.csv file
-        openFile("a");
-        fh.print(p2d(oldDay));
-        fh.print(",");
-        fh.print(p2d(oldHour));
-        fh.print(",");
-        fh.println(p8d(T31Energy));
-        fh.print(",");
-        fh.println(p8d(T33Energy));
-        fh.close();
+        fl.print(p2d(day()));
+        fl.print(",");
+        fl.print(p2d(hour()));
+        fl.print(",");
+        fl.println(p8d(T31Energy));
+        fl.print(",");
+        fl.println(p8d(T33Energy));
+        fl.close();
+
         if ( year() != oldYear ) {
           errMessage("Happy New Year!!!!!");
           oldYear = year();
@@ -83,4 +84,7 @@ void minProc() {
     oldHour = hour();
   } ;
   oldMin = minute();
+  // flush fault files once per minute
+  fd.flush();
+  fe.flush();
 }

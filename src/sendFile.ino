@@ -32,7 +32,7 @@ byte sendFile() {
   else {
     Serial.println("Data connection failed");
     dclient.stop();
-    fh.close();
+    fl.close();
     return 0;
   }
 
@@ -52,8 +52,8 @@ byte sendFile() {
 
   short clientCount = 0;
   Serial.print("buffering ");
-  while (fh.available()) {
-    clientBuf[clientCount] = fh.read();
+  while (fl.available()) {
+    clientBuf[clientCount] = fl.read();
     clientCount++;
     if (clientCount > (bufSizeFTP - 1)) {
       Serial.print("B ");

@@ -4,7 +4,7 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <WiFiUdp.h>
-#include <FS.h>
+#include <fs.h>
 #include <ESP8266mDNS.h>
 #include <Ticker.h>
 #include <ArduinoOTA.h>
@@ -17,13 +17,15 @@ WiFiUDP udp;
 WiFiClient client,dclient;
 time_t getNtpTime();
 FSInfo fs_info;
-File fh;
+File fl,fd,fe;          // logs, diagnostics and errors
 Ticker secondTick;
 volatile int watchDog = 0;
 
 char fileName[] = "/XXyymmdd.csv";
-char monthBack[] = "/XXyymmdd.csv";
+char date15Back[] = "/XXyymmdd.csv";
 char userText[] = "/XXyymmdd.csv";
+char dateStr[] = "yymmdd";
+char timeStr[] = "hh:mm:ss";
 char errMess[5][60];
 unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);

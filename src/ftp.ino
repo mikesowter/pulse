@@ -41,16 +41,16 @@ byte uploadFile() {
   while (dir.next()) {
     fileName = dir.fileName();  */
 
-  fh = SPIFFS.open(fileName, "r");
-  if (!fh) {
+  fl = SPIFFS.open(fileName, "r");
+  if (!fl) {
     errMessage("FTP file open failed");
     return 0;
   }
   Serial.println(fileName);
   Serial.print(" opened");
-  if (!fh.seek((uint32_t)0, SeekSet)) {
+  if (!fl.seek((uint32_t)0, SeekSet)) {
     errMessage("FTP Rewind failed");
-    fh.close();
+    fl.close();
     return 0;
   }
 
@@ -61,7 +61,7 @@ byte uploadFile() {
     errMessage(outBuf);
   }
   delay(5);
-  fh.close();
+  fl.close();
 
   //  close FTP session
   if (closeFTPsession()==0) {
@@ -75,7 +75,7 @@ byte openFTPsession(IPAddress& address) {
   if (client.connect(address, 21)) {
     Serial.println("FTP server connected");
   } else {
-    fh.close();
+    fl.close();
     errMessage("FTP connection failed");
     return 0;
   }
@@ -164,6 +164,6 @@ void efail() {
 
   client.stop();
   Serial.println("Command disconnected");
-  fh.close();
+  fl.close();
   Serial.println("file closed");
 }  // efail

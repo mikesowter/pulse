@@ -1,6 +1,3 @@
-#include <Arduino.h>
-
-
 /*-------- display code ----------*/
 
 void errMessage(char* mess) {
@@ -19,31 +16,36 @@ void errMessage(char* mess) {
   strcat(errMess[0],p2d(second()));
   strcat(errMess[0]," ");
   strcat(errMess[0],mess);
+  Serial.println(timeStamp());
   Serial.println(errMess[0]);
-  strcpy(userText,fileName);
-  strcpy(fileName,"/errmess.txt");
-  if (openFile("a")) {
-    fh.println(errMess[0]);
-    fh.close();
-  }
-  strcpy(fileName,userText);
+  fe.println(timeStamp());
+  fe.println(errMess[0]);
 }
 
-void clockDisplay() {
+void diagMess(char* mess) {
+  Serial.println(timeStamp());
+  Serial.println(mess);
+  fd.println(timeStamp());
+  fd.println(mess);
+}
+
+char* dateStamp() {
   // digital display of the time
-  Serial.println();
-  Serial.print(year());
-  Serial.print("/");
-  Serial.print(p2d(month()));
-  Serial.print("/");
-  Serial.print(p2d(day()));
-  Serial.print(" - ");
-  Serial.print(p2d(hour()));
-  Serial.print(":");
-  Serial.print(p2d(minute()));
-  Serial.print(":");
-  Serial.print(p2d(second()));
-  Serial.println();
+  strcpy(dateStr,p2d(year()/100));
+  strcat(dateStr,p2d(month()));
+  strcat(dateStr,p2d(day()));
+  return dateStr;
+}
+
+char* timeStamp() {
+  // digital display of the time
+  strcpy(timeStr,p2d(hour()));
+  strcat(timeStr,":");
+  strcat(timeStr,p2d(minute()));
+  strcat(timeStr,":");
+  strcat(timeStr,p2d(second()));
+  strcat(timeStr," ");
+  return timeStr;
 }
 
 // convert integer into a 2 char string dd
