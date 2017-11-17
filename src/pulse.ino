@@ -78,6 +78,7 @@ void setup() {
   server.on ( "/", handleRoot );
   server.on ( "/day", handleDay );
   server.on ( "/avg", handleAvg );
+  server.on ( "/metrics", handleMetric );
   server.onNotFound ( handleNotFound );
 	server.begin();
 	Serial.println ( "HTTP server started" );

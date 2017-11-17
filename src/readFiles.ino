@@ -62,11 +62,11 @@ byte readEnergy() {
     dd = fl.parseInt();
     hh = fl.parseInt();
     eNew = fl.parseFloat();
-    if (eNew > T31Energy) T31Energy = eNew;   // expect monotonic increase
+    if (eNew > T11Energy) T11Energy = eNew;   // expect monotonic increase
     eNew = fl.parseFloat();
     if (eNew > T33Energy) T33Energy = eNew;   // expect monotonic increase
   }
-  minEnergy = T31Energy; // energy at start of next minute to compare to T31 at end of minute
+  minEnergy = T11Energy; // energy at start of next minute to compare to T31 at end of minute
   return 1;
 }
 
@@ -75,22 +75,27 @@ byte readErrMess() {
   int i,j,k;
   uint32_t ptrs[6];
   Serial.println();
-
+  if (!fe.seek((uint32_t)0, SeekSet)) {
+    errMessage("readErrs rewind failed");
+    fe.close();
+    fe=openFile("/errmess.txt","a+");
+    return 0;
+  }
   i=0;
-  while (fl.available()) {
+  while (fe.available()) {
     i = (i+1)%6;
-    while(fl.read()!='\n');
-    ptrs[i]=fl.position();
+    while(fe.read()!='\n');
+    ptrs[i]=fe.position();
   //  Serial.println(ptrs[i]);
     yield();
   }
   for (j=0;j<5;j++) {
     if (--i<0) i=5;
 //    Serial.println(ptrs[i]);
-    fl.seek(ptrs[i], SeekSet);
+    fe.seek(ptrs[i], SeekSet);
     strcpy(errMess[j],"");
     for (k=0;k<64;k++) {
-      c[0] = fl.read();
+      c[0] = fe.read();
       strcat(errMess[j],c);
       if ( c[0]=='\r') {
         while ( k++<64 ) {
@@ -99,6 +104,5 @@ byte readErrMess() {
       }
     }
   }
-  fl.close();
   return 1;
 }

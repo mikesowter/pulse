@@ -31,7 +31,7 @@ void diagMess(char* mess) {
 
 char* dateStamp() {
   // digital display of the time
-  strcpy(dateStr,p2d(year()/100));
+  strcpy(dateStr,p2d(year()%100));
   strcat(dateStr,p2d(month()));
   strcat(dateStr,p2d(day()));
   return dateStr;

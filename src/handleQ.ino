@@ -13,10 +13,10 @@ void handleQueue() {
     power = 1800.0/(float)t1;
 
     if (T33time && power > 3.5) {
-      T31Energy += 0.0005*(1-3.5/power);
+      T11Energy += 0.0005*(1-3.5/power);
       T33Energy += 0.0005*(3.5/power); // unit is kWh
     }
-    else T31Energy += 0.0005;
+    else T11Energy += 0.0005;
 
     if (power>maxPower) maxPower=power;
     if (power<minPower) minPower=power;

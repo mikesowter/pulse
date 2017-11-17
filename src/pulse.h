@@ -32,9 +32,10 @@ unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();
 
-char ssid[] = "ZombiesAteMyBrains";  //  your network SSID (name)
-//char ssid[] = "DownWithPlants";
-char pass[] = "iron1951";        //  your network password
+//char ssid[] = "TelstraCF6EC7";
+//char pass[] = "meauff8qqwn9";
+char ssid[] = "ZombiesAteMyBrains";
+char pass[] = "iron1951";        
 char d2Str[] = "12";
 char d8Str[] = "12345.78";
 
@@ -70,7 +71,7 @@ byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;
 byte ledState;
 bool T33time;
-float power,minPower,maxPower,avgPower,minEnergy,T31Energy,T33Energy;
+float power,minPower,maxPower,avgPower,minEnergy,T11Energy,T33Energy;
 
 volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;

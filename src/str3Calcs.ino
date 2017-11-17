@@ -31,7 +31,7 @@ void add3TitleData() {
   addCstring(":");
   addCstring(p2d(second()));
   addCstring(" / Energy:");
-  addCstring(p8d(T31Energy));
+  addCstring(p8d(T11Energy));
   addCstring(" / Power:");
   addCstring(p8d(power));
   addCstring(" / Signal:");
@@ -58,8 +58,10 @@ void addCstring(char* s) {
   int p;
   for (p=0;p<HTML_SIZE;p++) {
     if ( p>HTML_SIZE-32) {
-      Serial.print("String that broke it: :");
-      Serial.println(String(s));
+      fd.print(timeStamp());
+      fd.print(p);
+      fd.print("- HTML overflow: ");
+      fd.println(s);
       break;
     }
     if (htmlStr[p]=='\0') {

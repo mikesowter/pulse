@@ -26,33 +26,25 @@ byte uploadFile() {
       if (trial==2) return 0;
       delay(5000);
     }
-  /*  read the SPIFFS directory
-  Serial.println("reading directory of flash:");
-  Dir dir = SPIFFS.openDir("/");
-  while (dir.next()) {
-    fileName = dir.fileName();  */
 
   fl = SPIFFS.open(fileName, "r");
-  if (!fd) {
-    fd.println("FTP file open failed");
-    fd.close();
+  if (!fl) {
+    diagMess("FTP file open failed");
     FTP_busy = false;
     return 0;
   }
   fd.print(fileName);
   fd.println(" open");
   if (!fl.seek((uint32_t)0, SeekSet)) {
-    fd.println("FTP Rewind failed");
+    diagMess("FTP Rewind failed");
     fl.close();
-    fd.close();
     FTP_busy = false;
     return 0;
   }
 
 //  advise if sent successfully
   if (sendFile()==1) {
-    fd.print(fileName);
-    fd.println(" sent");
+    diagMess(" sent");
   }
   yield();
   fl.close();
@@ -68,26 +60,26 @@ byte uploadFile() {
 
 byte openFTPsession(IPAddress& address) {
   if (client.connect(address, 21)) {
-    fd.println("FTP server connected");
+    diagMess("FTP server connected");
   } else {
     fl.close();
     errMessage("FTP connection failed");
     return 0;
   }
-  fd.println(" Sending USERNAME");
+  diagMess(" Sending USERNAME");
   client.println("USER pulse@sowter.com");
   if (!ftpRcv()) return 0;
   yield();
-  fd.println(" Sending PASSWORD");
+  diagMess(" Sending PASSWORD");
   client.println("PASS LovelyRita");
 
   if (!ftpRcv()) return 0;
   yield();
-  fd.println(" Sending UTF8 ON");
+  diagMess(" Sending UTF8 ON");
   client.println("OPTS UTF8 ON");
   if (!ftpRcv()) return 0;
   yield();
-  fd.println(" Sending Type I");
+  diagMess(" Sending Type I");
   client.println("Type I");
   if (!ftpRcv()) return 0;
   watchDog = 0;
@@ -96,11 +88,11 @@ byte openFTPsession(IPAddress& address) {
 
 byte closeFTPsession() {
   client.println("QUIT");
-  fd.println(" FTP completed");
+  diagMess(" FTP completed");
 
   if (!ftpRcv()) return 0;
   client.stop();
-  fd.println(" Command disconnected");
+  diagMess(" Command disconnected");
 
   return 1;
 }
@@ -117,23 +109,16 @@ byte ftpRcv() {
   }
 
   respCode = client.peek();
-  fd.print(" Response Code = ");
+  fd.print("Response Code = ");
   fd.println(respCode);
 
-  int outCount = 0;
-
+  fd.print(timeStamp());
   while (client.available()) {
     thisByte = client.read();
     fd.write(thisByte);
-/*
-    if (outCount < 127) {
-      outBuf[outCount] = thisByte;
-      outCount++;
-      outBuf[outCount] = 0;
-    }   */
   }
-fd.println();
-return 1;
+  fd.println();
+  return 1;
 }
 
 //------------------------ FTP fail
@@ -150,7 +135,8 @@ void efail() {
   }
 
   client.stop();
-  fd.println("\nCommand disconnected");
+  fd.println();
+  diagMess(" Command disconnected");
   fl.close();
   Serial.println("file closed");
 }  // efail

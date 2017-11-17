@@ -69,10 +69,37 @@ void handleDay() {
 
 void handleAvg() {
   htmlStr[0]='\0';
-  addCstring("<!DOCTYPE html><html><body><HR>");
+  addCstring("<!DOCTYPE html><html><body><P>");
   addAvgData();
   addCstring( htmlStr4 );
   server.send ( 200, "text/html", htmlStr );
+  //Serial.println(htmlStr);
+}
+
+void handleMetric() {
+  htmlStr[0]='\0';
+//  addCstring("<!DOCTYPE html><html><body>");
+//  addCstring(timeStamp());
+  addCstring("# TYPE curPower guage" );
+  addCstring("\ncurPower ");
+  addCstring(p8d(power));
+  addCstring("\n# TYPE minPower guage" );
+  addCstring("\nminPower ");
+  addCstring(p8d(minData[minPtr].lo));
+  addCstring("\n# TYPE avgPower guage" );
+  addCstring("\navgPower ");
+  addCstring(p8d(minData[minPtr].av));
+  addCstring("\n# TYPE maxPower guage" );
+  addCstring("\nmaxPower ");
+  addCstring(p8d(minData[minPtr].hi));
+  addCstring("\n# TYPE T11Energy guage" );
+  addCstring("\nT11Energy ");
+  addCstring(p8d(T11Energy));
+  addCstring("\n# TYPE T33Energy guage" );
+  addCstring("\nT33Energy ");
+  addCstring(p8d(T33Energy));
+  addCstring( "\n" );
+  server.send ( 200, "text/plain", htmlStr );
   //Serial.println(htmlStr);
 }
 
@@ -84,6 +111,8 @@ void handleNotFound() {
     errMessage("User requested restart");
     fd.close();
     fe.close();
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
+    server.send ( 200, "text/html", outBuf );
     ESP.restart();
   }
   else if (strncmp(userText,"/diags",6)==0) {
@@ -91,7 +120,7 @@ void handleNotFound() {
   }
   else if (strncmp(userText,"/remdiags",9)==0) {
     SPIFFS.remove("/diags.txt");
-    fd = SPIFFS.open("/diags.txt", "a");
+    fd = SPIFFS.open("/diags.txt", "a+");
     fd.println(dateStamp());
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Diags deleted<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
@@ -128,17 +157,20 @@ void handleNotFound() {
 }
 
 uint8_t listDiags() {
-  char line[66];
+  char line[81];
   htmlStr[0]='\0';
-  addCstring("<!DOCTYPE html><html><body><HR>");
-  fd.seek(0,SeekSet);
+  fd.close();
+  fd=openFile("/diags.txt","r");
   while (fd.available()) {
-    int k=fd.readBytesUntil('\r',line,64);
+    int k=fd.readBytesUntil('\r',line,80);
     line[k]='\0';
     addCstring(line);
-    addCstring("<P>");
+    addCstring("\n");
   }
-  addCstring( "<HR></body></html>" );
-  server.send ( 200, "text/html", htmlStr );
+  fd.close();
+  fd=openFile("/diags.txt","a+");
+  fd.print("length of diag list:");
+  fd.println(htmlLen);
+  server.send ( 200, "text/plain", htmlStr );
   return 1;
 }

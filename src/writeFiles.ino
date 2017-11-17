@@ -16,7 +16,7 @@ byte storeData() {
   fl.print(",");
   fl.print(p2d(oldHour));
   fl.print(",");
-  fl.print(p8d(T31Energy));
+  fl.print(p8d(T11Energy));
   fl.print(",");
   fl.println(p8d(T33Energy));
   fl.close();

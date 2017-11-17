@@ -55,7 +55,7 @@ void add24TitleData() {
   addCstring(":");
   addCstring(p2d(second()));
   addCstring(" / Energy:");
-  addCstring(p8d(T31Energy));
+  addCstring(p8d(T11Energy));
   addCstring(" / Signal:");
   addCstring(p8d(-WiFi.RSSI()));
   addCstring(" / Memory:");

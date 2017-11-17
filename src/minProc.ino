@@ -4,7 +4,7 @@
 
 void minProc() {
   minPtr = 60*(int)oldHour+(int)oldMin;
-  if ( minEnergy == T31Energy ) { // energy hasn't changed since start of this minute
+  if ( minEnergy == T11Energy ) { // energy hasn't changed since start of this minute
     Serial.print(p2d(oldHour));
     Serial.print(":");
     Serial.println(p2d(oldMin));
@@ -23,7 +23,7 @@ void minProc() {
     Serial.print(":");
     Serial.print(p2d(oldMin));
     Serial.print("  Avg = ");
-    avgPower=(T31Energy-minEnergy)*60;
+    avgPower=(T11Energy-minEnergy)*60;
     Serial.print(avgPower);
     Serial.print("  Max = ");
     Serial.print(maxPower);
@@ -41,7 +41,7 @@ void minProc() {
   minPower = 99.9;
   maxPower = 0.0;
   power=0.0;
-  minEnergy = T31Energy;
+  minEnergy = T11Energy;
   minMillis = millis();
   if ( hour()!=oldHour ) {
     storeData();
@@ -68,7 +68,7 @@ void minProc() {
         fl.print(",");
         fl.print(p2d(hour()));
         fl.print(",");
-        fl.println(p8d(T31Energy));
+        fl.println(p8d(T11Energy));
         fl.print(",");
         fl.println(p8d(T33Energy));
         fl.close();

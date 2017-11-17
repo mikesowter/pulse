@@ -2,7 +2,7 @@
 
 byte sendFile() {
   yield();
-  fd.println(" Sending PASV");
+  diagMess(" Sending PASV");
   client.println("PASV");
 
   if (!ftpRcv()) return 0;
@@ -12,8 +12,9 @@ byte sendFile() {
     tStr = strtok(NULL, "(,");
     array_pasv[i] = atoi(tStr);
     if (tStr == NULL) {
-      fd.println("Bad PASV Answer");
+      diagMess("Bad PASV Answer: ");
     }
+    diagMess(tStr);
   }
 
   uint16_t port = array_pasv[4] << 8;
@@ -23,24 +24,25 @@ byte sendFile() {
   strcpy(outBuf,"Data port: ");
   itoa(port,portStr,16);
   strcat(outBuf,portStr);
-  fd.println(outBuf);
+  diagMess(outBuf);
 
   if (dclient.connect(fileServerIP, port)) {
-    fd.println("Data connected");
+    diagMess("Data connected");
   }
   else {
-    fd.println("Data connection failed");
+    diagMess("Data connection failed");
     dclient.stop();
+    fl.close();
     return 0;
   }
 
-  fd.println("Sending STOR ");
+  diagMess("Sending STOR ");
   client.print("STOR ");
   client.println(fileName);
   yield();
 
   if (!ftpRcv()) {
-    fd.println("dclient stopped");
+    diagMess("dclient stopped");
     dclient.stop();
     return 0;
   }
@@ -49,7 +51,7 @@ byte sendFile() {
   uint8_t clientBuf[bufSizeFTP];
 
   short clientCount = 0;
-  fd.print("buffering ");
+  diagMess("buffering ");
   while (fl.available()) {
     clientBuf[clientCount] = fl.read();
     clientCount++;
