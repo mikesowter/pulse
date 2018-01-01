@@ -132,16 +132,21 @@ void handleNotFound() {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Safe to Shutdown<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
   }
-  else if (SPIFFS.exists(userText)) {
+  if (SPIFFS.exists(userText)) {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Sending File: \"");
     strcat(outBuf,userText);
     strcat(outBuf,"\"<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
-    strcpy(fileName,userText);
-    uploadFile();
-    delay(5);
+    fh = SPIFFS.open(userText, "r");
+    Serial.println(":");
+    while (fh.available()) {
+      Serial.println(fh.readStringUntil('\n'));
+      yield();
+    }
+    fh.close();
   }
-  else if (strncmp(userText,"/favicon.ico",12)==0) {
+
+    else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
   else if (strncmp(userText,"/apple",6)==0) {
   }
@@ -159,16 +164,13 @@ void handleNotFound() {
 uint8_t listDiags() {
   char line[81];
   htmlStr[0]='\0';
-  fd.close();
-  fd=openFile("/diags.txt","r");
+  fd.seek(0UL,SeekSet);
   while (fd.available()) {
     int k=fd.readBytesUntil('\r',line,80);
     line[k]='\0';
     addCstring(line);
     addCstring("\n");
   }
-  fd.close();
-  fd=openFile("/diags.txt","a+");
   fd.print("length of diag list:");
   fd.println(htmlLen);
   server.send ( 200, "text/plain", htmlStr );

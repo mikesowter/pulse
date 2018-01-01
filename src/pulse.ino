@@ -19,7 +19,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.0  2017-11-14");
+  Serial.println("\nPulse Reader Version 3.0  2017-11-23");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -48,7 +48,11 @@ void setup() {
   WiFi.hostByName(ftpServerName, fileServerIP);
   // Set epoch and timers
   setupTime();
-  setGreen();   // indicate NTP access
+  oldMonth = month();
+  oldYear = year();
+  oldDay = day();
+  // indicate NTP access
+  setGreen();
 
   //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
   if(!SPIFFS.begin())

@@ -6,14 +6,10 @@ void setupTime() {
   t0 = millis();
   oldMin = minute();
   oldHour = hour();
-  oldDay = day();
-  oldMonth = month();
-  oldYear = year();
-  strcpy(outBuf,dateStamp());
+/*  strcpy(outBuf,dateStamp());
   strcat(outBuf," ");
   strcat(outBuf,timeStamp());
-  strcat(outBuf," restart **************");
-  Serial.println(outBuf);
+  Serial.println(outBuf);      */
   strcpy(todayName,"/PR");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");

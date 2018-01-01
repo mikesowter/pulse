@@ -44,16 +44,10 @@ void minProc() {
   minEnergy = T11Energy;
   minMillis = millis();
   if ( hour()!=oldHour ) {
-    storeData();
+    storeData();      // stores power by minute and energy by hour
     if ( day() != oldDay ) {
-      Serial.print(" millis since last midnight = ");
-      Serial.println(midNight-minMillis);
-      midNight = minMillis;
-      //delay(10000);   // don't overload NTP & FTP servers on hour
-      uploadDay();
-      uploadMonth();
-      //startSeconds=getTime();
-      //setTime(startSeconds);
+      delay(30000);   // don't overload NTP & FTP servers on hour
+      setupTime();
       if ( month() != oldMonth ) {
         strcpy(fileName,"EN");
         strcat(fileName,p2d(year()/100));

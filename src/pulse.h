@@ -17,7 +17,7 @@ WiFiUDP udp;
 WiFiClient client,dclient;
 time_t getNtpTime();
 FSInfo fs_info;
-File fl,fd,fe;          // logs, diagnostics and errors
+File fl,fd,fe,fh;          // logs, diagnostics and errors
 Ticker secondTick;
 volatile int watchDog = 0;
 
@@ -35,7 +35,7 @@ unsigned long getNTPreply();
 //char ssid[] = "TelstraCF6EC7";
 //char pass[] = "meauff8qqwn9";
 char ssid[] = "ZombiesAteMyBrains";
-char pass[] = "iron1951";        
+char pass[] = "iron1951";
 char d2Str[] = "12";
 char d8Str[] = "12345.78";
 
@@ -52,7 +52,7 @@ char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
 const int BUFFER_SIZE = 128;
 const int ISR_CAP = 128;
-byte Buffer[BUFFER_SIZE];
+byte buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMessage
 const int timeZone = 10;
 const int LDR = 14;
