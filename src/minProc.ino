@@ -46,8 +46,9 @@ void minProc() {
   if ( hour()!=oldHour ) {
     storeData();      // stores power by minute and energy by hour
     if ( day() != oldDay ) {
-      delay(30000);   // don't overload NTP & FTP servers on hour
+      delay(10000);   // don't overload NTP & FTP servers on hour
       setupTime();
+      delOldFiles();
       if ( month() != oldMonth ) {
         strcpy(fileName,"EN");
         strcat(fileName,p2d(year()/100));

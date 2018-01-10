@@ -98,6 +98,9 @@ void handleMetric() {
   addCstring("\n# TYPE T33Energy guage" );
   addCstring("\nT33Energy ");
   addCstring(p8d(T33Energy));
+  addCstring("\n# TYPE WifiSignal guage" );
+  addCstring("\nWifiSignal ");
+  addCstring(p8d(-WiFi.RSSI()));
   addCstring( "\n" );
   server.send ( 200, "text/plain", htmlStr );
   //Serial.println(htmlStr);

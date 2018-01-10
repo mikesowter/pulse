@@ -23,7 +23,7 @@ volatile int watchDog = 0;
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
-char date15Back[] = "/XXyymmdd.csv";
+char date5Back[] = "/XXyymmdd.csv";
 char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";

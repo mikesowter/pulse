@@ -66,7 +66,7 @@ byte readEnergy() {
     eNew = fl.parseFloat();
     if (eNew > T33Energy) T33Energy = eNew;   // expect monotonic increase
   }
-  minEnergy = T11Energy; // energy at start of next minute to compare to T31 at end of minute
+  minEnergy = T11Energy; // energy at start of next minute to compare to T11 at end of minute
   return 1;
 }
 
