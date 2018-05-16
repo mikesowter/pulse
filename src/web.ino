@@ -135,7 +135,7 @@ void handleNotFound() {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Safe to Shutdown<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
   }
-  if (SPIFFS.exists(userText)) {
+  else if (SPIFFS.exists(userText)) {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Sending File: \"");
     strcat(outBuf,userText);
     strcat(outBuf,"\"<HR></head></html>");
@@ -149,7 +149,7 @@ void handleNotFound() {
     fh.close();
   }
 
-    else if (strncmp(userText,"/favicon.ico",12)==0) {
+  else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
   else if (strncmp(userText,"/apple",6)==0) {
   }
@@ -173,8 +173,9 @@ uint8_t listDiags() {
     line[k]='\0';
     addCstring(line);
     addCstring("\n");
+    yield();
   }
-  fd.print("length of diag list:");
+  fd.print("length of diags.txt:");
   fd.println(htmlLen);
   server.send ( 200, "text/plain", htmlStr );
   return 1;

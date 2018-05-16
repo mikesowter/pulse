@@ -43,7 +43,8 @@ unsigned long t0, t1, minMillis, startMillis, startSeconds, midNight;
 unsigned long importWh = 0;
 unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
 
-IPAddress localIP,timeServerIP,fileServerIP;
+IPAddress localIP,timeServerIP;
+IPAddress fileServerIP;
 const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
 char titleData[60];
