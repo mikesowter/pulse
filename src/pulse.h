@@ -28,6 +28,7 @@ char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char errMess[5][60];
+char line[81];
 unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();

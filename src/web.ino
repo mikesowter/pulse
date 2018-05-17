@@ -136,17 +136,24 @@ void handleNotFound() {
     server.send ( 200, "text/html", outBuf );
   }
   else if (SPIFFS.exists(userText)) {
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Sending File: \"");
-    strcat(outBuf,userText);
-    strcat(outBuf,"\"<HR></head></html>");
-    server.send ( 200, "text/html", outBuf );
-    fh = SPIFFS.open(userText, "r");
-    Serial.println(":");
+    strcpy(htmlStr,"Sending File: ");
+    addCstring(userText);
+    addCstring("\r\r");
+    fh = openFile(userText, "r");
+
     while (fh.available()) {
-      Serial.println(fh.readStringUntil('\n'));
+      int k=fh.readBytesUntil('\r',line,80);
+      line[k]='\0';
+      addCstring(line);
       yield();
     }
     fh.close();
+    addCstring("\r\r");
+    addCstring("length of file: ");
+    addCstring(p8d((float)htmlLen));
+    server.send ( 200, "text/plain", htmlStr );
+
+
   }
 
   else if (strncmp(userText,"/favicon.ico",12)==0) {
@@ -165,14 +172,12 @@ void handleNotFound() {
 }
 
 uint8_t listDiags() {
-  char line[81];
   htmlStr[0]='\0';
   fd.seek(0UL,SeekSet);
   while (fd.available()) {
     int k=fd.readBytesUntil('\r',line,80);
     line[k]='\0';
     addCstring(line);
-    addCstring("\n");
     yield();
   }
   fd.print("length of diags.txt:");

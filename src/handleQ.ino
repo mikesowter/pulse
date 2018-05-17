@@ -22,6 +22,7 @@ void handleQueue() {
     if (power<minPower) minPower=power;
     //Serial.println(power);
     if (in>=intPtr-1) break;
+    yield();
   }
   intPtr = 0;
   overFlow = 0;
