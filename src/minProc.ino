@@ -1,35 +1,24 @@
 #include <Arduino.h>
 
-// end of minute processing
+// five minute processing
 
 void minProc() {
-  minPtr = 60*(int)oldHour+(int)oldMin;
-  if ( minEnergy == T11Energy ) { // energy hasn't changed since start of this minute
+  if ( oldMin%5!=0 ) {
+    oldMin = minute();
+    return;
+  }
+  minPtr = 12*(int)oldHour+(int)(oldMin/5);
+  if ( minEnergy == T11Energy ) { // energy hasn't changed since start of  period
     Serial.print(p2d(oldHour));
     Serial.print(":");
     Serial.println(p2d(oldMin));
     minData[minPtr].lo = 0.0;
     minData[minPtr].av = 0.0;
     minData[minPtr].hi = 0.0;
-  /*
-    Serial.println(p2d(oldHour)+":"+p2d(oldMin));
-    float dummy = (float)random(400,600)/100.0;
-    minData[minPtr].lo = 0.9*dummy;
-    minData[minPtr].av = dummy;
-    minData[minPtr].hi = 1.1*dummy; */
   }
   else {
-    Serial.print(p2d(oldHour));
-    Serial.print(":");
-    Serial.print(p2d(oldMin));
-    Serial.print("  Avg = ");
     avgPower=(T11Energy-minEnergy)*60;
-    Serial.print(avgPower);
-    Serial.print("  Max = ");
-    Serial.print(maxPower);
-    Serial.print("  Min = ");
     if ( minPower > avgPower) minPower = avgPower;
-    Serial.println(minPower);
     minData[minPtr].lo = reason(minPower);
     minData[minPtr].av = reason(avgPower);
     minData[minPtr].hi = reason(maxPower);
@@ -43,10 +32,10 @@ void minProc() {
   power=0.0;
   minEnergy = T11Energy;
   minMillis = millis();
+  storeData();      // stores data every five minutes
   if ( hour()!=oldHour ) {
-    storeData();      // stores power by minute and energy by hour
     if ( day() != oldDay ) {
-      delay(10000);   // don't overload NTP & FTP servers on hour
+      delay(10000);   // don't overload NTP & FTP servers at midnight
       setupTime();
       delOldFiles();
       if ( month() != oldMonth ) {
@@ -79,7 +68,7 @@ void minProc() {
     oldHour = hour();
   } ;
   oldMin = minute();
-  // flush fault files once per minute
+  // flush fault files
   fd.flush();
   fe.flush();
 }

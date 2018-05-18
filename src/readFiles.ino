@@ -1,7 +1,7 @@
 //  open files to restore progress after restart
 
 byte readLogs() {
-  // power data, start with previous day
+/*  // power data, start with previous day
   strcpy(fileName,"/PR");
   strcat(fileName,p2d(year(now()-SECS_PER_DAY)%100));
   strcat(fileName,p2d(month(now()-SECS_PER_DAY)));
@@ -22,7 +22,7 @@ byte readLogs() {
   if (fl) {
     readPower();
     fl.close();
-  }
+  } */
   // energy data
   strcpy(fileName,"/EN");
   strcat(fileName,p2d(oldYear/100));
@@ -34,11 +34,11 @@ byte readLogs() {
     readEnergy();
     fl.close();
   }
-  // read old error messages
+  /* read old error messages
   if ( !openFile("/errmess.txt","r") ) return 0;
   readErrMess();
   fl.close();
-  return 1;
+  return 1;   */
 }
 
 byte readPower() {
@@ -55,12 +55,13 @@ byte readPower() {
 }
 
 byte readEnergy() {
-  byte dd,hh;
+  byte dd,hh,mm;
   float eNew = 0.0;
   Serial.println();
   while (fl.available()) {
     dd = fl.parseInt();
     hh = fl.parseInt();
+    mm = fl.parseInt();
     eNew = fl.parseFloat();
     if (eNew > T11Energy) T11Energy = eNew;   // expect monotonic increase
     eNew = fl.parseFloat();

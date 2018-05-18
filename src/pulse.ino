@@ -71,7 +71,7 @@ void setup() {
   fd.println(outBuf);       // restart messages
   fe.println(outBuf);
 
-  readLogs();
+  readLogs();  // read energy this month
 
   attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
 
@@ -79,9 +79,9 @@ void setup() {
 		Serial.println ( "MDNS responder started" );
 	}
 
-  server.on ( "/", handleRoot );
-  server.on ( "/day", handleDay );
-  server.on ( "/avg", handleAvg );
+  server.on ( "/", handleMetric );
+  server.on ( "/diags", listDiags );
+  server.on ( "/dir", listFiles );
   server.on ( "/metrics", handleMetric );
   server.onNotFound ( handleNotFound );
 	server.begin();
@@ -100,6 +100,8 @@ void loop() {
     server.handleClient();
     yield();
     watchDog=0;
+    // check for OTA
+    ArduinoOTA.handle();
   }
   // new events in queue
   handleQueue();

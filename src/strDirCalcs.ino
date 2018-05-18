@@ -29,7 +29,9 @@ void helpPage() {
   addCstring("<P>");
   addCstring("avg");
   addCstring("<P>");
-  addCstring("day");
+  addCstring("deldiags");
+  addCstring("<P>");
+  addCstring("delerrs");
   addCstring("<P>");
   addCstring("dir");
   addCstring("<HR>");

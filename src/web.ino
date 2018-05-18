@@ -67,15 +67,6 @@ void handleDay() {
   //Serial.println(htmlStr);
 }
 
-void handleAvg() {
-  htmlStr[0]='\0';
-  addCstring("<!DOCTYPE html><html><body><P>");
-  addAvgData();
-  addCstring( htmlStr4 );
-  server.send ( 200, "text/html", htmlStr );
-  //Serial.println(htmlStr);
-}
-
 void handleMetric() {
   htmlStr[0]='\0';
 //  addCstring("<!DOCTYPE html><html><body>");
@@ -118,14 +109,18 @@ void handleNotFound() {
     server.send ( 200, "text/html", outBuf );
     ESP.restart();
   }
-  else if (strncmp(userText,"/diags",6)==0) {
-    listDiags();
-  }
-  else if (strncmp(userText,"/remdiags",9)==0) {
+  else if (strncmp(userText,"/deldiags",9)==0) {
     SPIFFS.remove("/diags.txt");
     fd = SPIFFS.open("/diags.txt", "a+");
     fd.println(dateStamp());
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Diags deleted<HR></head></html>");
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
+    server.send ( 200, "text/html", outBuf );
+  }
+  else if (strncmp(userText,"/delerrs",9)==0) {
+    SPIFFS.remove("/errmess.txt");
+    fd = SPIFFS.open("/errmess.txt", "a+");
+    fd.println(dateStamp());
+    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
   }
   else if (strncmp(userText,"/filesave",9)==0) {
@@ -152,16 +147,11 @@ void handleNotFound() {
     addCstring("length of file: ");
     addCstring(p8d((float)htmlLen));
     server.send ( 200, "text/plain", htmlStr );
-
-
   }
 
   else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
   else if (strncmp(userText,"/apple",6)==0) {
-  }
-  else if (strncmp(userText,"/dir",4)==0) {
-    listFiles();
   }
   else {
     strcpy(outBuf,userText);

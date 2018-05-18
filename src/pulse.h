@@ -49,7 +49,7 @@ IPAddress fileServerIP;
 const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
 char titleData[60];
-const int HTML_SIZE = 6500;     // allows 140 char headroom at 181 cols
+const int HTML_SIZE = 10000;
 char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
 const int BUFFER_SIZE = 128;
@@ -67,7 +67,7 @@ struct minStruct {
   float lo;
   float av;
   float hi;
-} minData[1440];
+} minData[120];
 
 byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;

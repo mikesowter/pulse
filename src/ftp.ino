@@ -20,12 +20,6 @@ byte uploadFile() {
   FTP_busy = true;
   watchDog=0;
   yield();
-  for (int trial=0;trial<3;trial++) {
-    if (openFTPsession(fileServerIP)!=0) break;
-      errMessage("FTP open session failed");
-      if (trial==2) return 0;
-      delay(5000);
-    }
 
   fl = SPIFFS.open(fileName, "r");
   if (!fl) {
@@ -61,7 +55,8 @@ byte uploadFile() {
 byte openFTPsession(IPAddress& address) {
   if (client.connect(address, 21)) {
     diagMess("FTP server connected");
-  } else {
+  }
+  else {
     fl.close();
     errMessage("FTP connection failed");
     return 0;
