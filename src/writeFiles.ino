@@ -3,7 +3,7 @@
 byte storeData() {
   // power data
   fl = SPIFFS.open(todayName, "a");
-  fl.print(p2d(oldHour));
+  fl.print(p2d(hour()));
   fl.print(":");
   fl.print(p2d(oldMin));
   fl.print(",");
@@ -21,9 +21,9 @@ byte storeData() {
   strcat(fileName,p2d(oldMonth));
   strcat(fileName,".csv");
   fl = SPIFFS.open(fileName, "a");
-  fl.print(p2d(oldDay));
+  fl.print(p2d(day()));
   fl.print(",");
-  fl.print(p2d(oldHour));
+  fl.print(p2d(hour()));
   fl.print(",");
   fl.print(p2d(oldMin));
   fl.print(",");
