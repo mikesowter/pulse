@@ -1,25 +1,33 @@
 /*-------- display code ----------*/
 
+void addCstring(char* s) {
+  // reinventing cstring cat function
+  int p;
+  for (p=0;p<HTML_SIZE;p++) {
+    if ( p>HTML_SIZE-32) {
+      fd.print(timeStamp());
+      fd.print(p);
+      fd.print("- HTML overflow: ");
+      fd.println(s);
+      break;
+    }
+    if (htmlStr[p]=='\0') {
+      break;
+    }
+  }
+  int q=0;
+  for (;p<HTML_SIZE;p++) {
+    htmlStr[p]=s[q];
+    if (s[q++]=='\0') break;
+  }
+  htmlLen = p;
+}
+
 void errMessage(char* mess) {
-  strcpy(errMess[4],errMess[3]);
-  strcpy(errMess[3],errMess[2]);
-  strcpy(errMess[2],errMess[1]);
-  strcpy(errMess[1],errMess[0]);
-  strcpy(errMess[0],p2d(year()%100));
-  strcat(errMess[0],p2d(month()));
-  strcat(errMess[0],p2d(day()));
-  strcat(errMess[0]," ");
-  strcat(errMess[0],p2d(hour()));
-  strcat(errMess[0],":");
-  strcat(errMess[0],p2d(minute()));
-  strcat(errMess[0],":");
-  strcat(errMess[0],p2d(second()));
-  strcat(errMess[0]," ");
-  strcat(errMess[0],mess);
   Serial.print(timeStamp());
-  Serial.println(errMess[0]);
+  Serial.println(mess);
   fe.print(timeStamp());
-  fe.println(errMess[0]);
+  fe.println(mess);
 }
 
 void diagMess(char* mess) {
@@ -30,7 +38,7 @@ void diagMess(char* mess) {
 }
 
 char* dateStamp() {
-  // digital display of the time
+  // string with the date
   strcpy(dateStr,p2d(year()%100));
   strcat(dateStr,p2d(month()));
   strcat(dateStr,p2d(day()));
@@ -38,7 +46,7 @@ char* dateStamp() {
 }
 
 char* timeStamp() {
-  // digital display of the time
+  // string with the time
   strcpy(timeStr,p2d(hour()));
   strcat(timeStr,":");
   strcat(timeStr,p2d(minute()));

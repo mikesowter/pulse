@@ -1,72 +1,5 @@
 #include <Arduino.h>
 
-char htmlStr0[] =
-"<!DOCTYPE html>"
-"<html>"
-  "<head>"
-    "<!--Load the AJAX API-->"
-    "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>"
-  	"<script type='text/javascript'> google.charts.load('current', {'packages':['corechart']}); google.charts.setOnLoadCallback(drawChart);"
-    " function drawChart() {"
-        "var data = new google.visualization.DataTable();"
-        "data.addColumn(";
-char htmlStr1[] =
-        ", 'Time');"
-        "data.addColumn('number', 'High');"
-        "data.addColumn('number', 'Average');"
-        "data.addColumn('number', 'Low');"
-        "data.addRows([";
-char htmlStr2[] =
-        "]);"
-        "var options = {'title':'";
-char htmlStr3[] =
-        "             ','width':1000,"
-        "              'height':700,"
-        "                colors: ['red', 'orange', 'green']};"
-        "var chart = new google.visualization.LineChart(document.getElementById('chart_div'));"
-        "chart.draw(data, options);"
-        "}"
-      "</script>"
-    "</head>"
-  "<body>"
-    "<div id='chart_div'></div>"
-    "<HR>"
-    "Recent messages:";
-char htmlStr4[] =
-    "<HR>"
-  "</body>"
-"</html>";
-
-void handleRoot() {
-  htmlStr[0]='\0';
-  addCstring( htmlStr0 );
-  addCstring( "'timeofday'" );
-  addCstring( htmlStr1 );
-  add3PowerData();
-  addCstring( htmlStr2 );
-  add3TitleData();
-  addCstring( htmlStr3 );
-  addErrMess();
-  addCstring( htmlStr4 );
-  server.send ( 200, "text/html", htmlStr );
-  //Serial.println(htmlStr);
-}
-
-void handleDay() {
-  htmlStr[0]='\0';
-  addCstring( htmlStr0 );
-  addCstring( "'timeofday'" );
-  addCstring( htmlStr1 );
-  add24PowerData();
-  addCstring( htmlStr2 );
-  add24TitleData();
-  addCstring( htmlStr3 );
-  addErrMess();
-  addCstring( htmlStr4 );
-  server.send ( 200, "text/html", htmlStr );
-  //Serial.println(htmlStr);
-}
-
 void handleMetric() {
   htmlStr[0]='\0';
 //  addCstring("<!DOCTYPE html><html><body>");
@@ -76,13 +9,13 @@ void handleMetric() {
   addCstring(p8d(power));
   addCstring("\n# TYPE minPower guage" );
   addCstring("\nminPower ");
-  addCstring(p8d(minData[minPtr].lo));
+  addCstring(p8d(powerData.lo));
   addCstring("\n# TYPE avgPower guage" );
   addCstring("\navgPower ");
-  addCstring(p8d(minData[minPtr].av));
+  addCstring(p8d(powerData.av));
   addCstring("\n# TYPE maxPower guage" );
   addCstring("\nmaxPower ");
-  addCstring(p8d(minData[minPtr].hi));
+  addCstring(p8d(powerData.hi));
   addCstring("\n# TYPE T11Energy guage" );
   addCstring("\nT11Energy ");
   addCstring(p8d(T11Energy));
@@ -92,9 +25,14 @@ void handleMetric() {
   addCstring("\n# TYPE WifiSignal guage" );
   addCstring("\nWifiSignal ");
   addCstring(p8d(-WiFi.RSSI()));
+  addCstring("\n# TYPE Memory guage" );
+  addCstring("\nMemory ");
+  addCstring(p8d((float)system_get_free_heap_size()/1000.0));
+  addCstring("\n# TYPE Flash guage" );
+  addCstring("\nFlash ");
+  addCstring(p8d((float)fs_info.usedBytes/1000.0));
   addCstring( "\n" );
   server.send ( 200, "text/plain", htmlStr );
-  //Serial.println(htmlStr);
 }
 
 void handleNotFound() {
@@ -123,13 +61,6 @@ void handleNotFound() {
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
     server.send ( 200, "text/html", outBuf );
   }
-  else if (strncmp(userText,"/filesave",9)==0) {
-    diagMess("User requested file save");
-    uploadDay();
-    uploadMonth();
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Safe to Shutdown<HR></head></html>");
-    server.send ( 200, "text/html", outBuf );
-  }
   else if (SPIFFS.exists(userText)) {
     strcpy(htmlStr,"Sending File: ");
     addCstring(userText);
@@ -148,7 +79,6 @@ void handleNotFound() {
     addCstring(p8d((float)htmlLen));
     server.send ( 200, "text/plain", htmlStr );
   }
-
   else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
   else if (strncmp(userText,"/apple",6)==0) {
@@ -159,6 +89,7 @@ void handleNotFound() {
     diagMess(outBuf);
     helpPage();
   }
+  return;
 }
 
 uint8_t listDiags() {
@@ -170,8 +101,50 @@ uint8_t listDiags() {
     addCstring(line);
     yield();
   }
-  fd.print("length of diags.txt:");
-  fd.println(htmlLen);
   server.send ( 200, "text/plain", htmlStr );
   return 1;
+}
+
+void listFiles() {
+  char fileSize[]="999999";
+  htmlStr[0]='\0';
+  addCstring("<!DOCTYPE html><html><body><HR>");
+  Dir dir = SPIFFS.openDir("/");
+  while (dir.next()) {
+    dir.fileName().toCharArray(fileName, 14);
+    addCstring("<P>");
+    addCstring(fileName);
+    addCstring("&emsp;");
+    itoa(dir.fileSize(),fileSize,7);
+    addCstring(fileSize);
+  }
+  addCstring( "<HR></body></html>" );
+  server.send ( 200, "text/html", htmlStr );
+  //Serial.println(htmlStr);
+}
+
+void helpPage() {
+  htmlStr[0]='\0';
+  addCstring("<!DOCTYPE html><html><body><HR>");
+  addCstring("Valid options include:");
+  addCstring("<P>");
+  addCstring("8.3 filename");
+  addCstring("<P>");
+  addCstring("avg");
+  addCstring("<P>");
+  addCstring("deldiags");
+  addCstring("<P>");
+  addCstring("delerrs");
+  addCstring("<P>");
+  addCstring("dir");
+  addCstring("<HR>");
+  addCstring("metrics");
+  addCstring("<P>");
+  addCstring("reset");
+  addCstring("<P>");
+  addCstring("shutdown");
+  addCstring("<P>");
+  addCstring( "<HR></body></html>" );
+  server.send ( 200, "text/html", htmlStr );
+  //Serial.println(htmlStr);
 }

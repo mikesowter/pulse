@@ -1,21 +1,21 @@
 #include <Arduino.h>
 
 void intServer() {
-  if (overFlow) return;
-  noInterrupts();
-  ledState=digitalRead(LDR);
-  delayMicroseconds(5000);      // debounce period
-  ledState=digitalRead(LDR);
-  digitalWrite(GRN,1-ledState); // indicate activity ON=ON
-  intBuff[intPtr] = millis();
-  if (intPtr >= ISR_CAP-1) {
-    errMessage("ISR overflow");
-    overFlow = 1;
-    intPtr = ISR_CAP-1;
-    return;
+  if (!overFlow) {
+    noInterrupts();
+    ledState=digitalRead(LDR);
+    delayMicroseconds(1000);      // 1ms debounce period
+    if (ledState==digitalRead(LDR)) {   // valid change
+      digitalWrite(GRN,1-ledState);     // meter led on
+      intBuff[intPtr] = millis();
+      if (intPtr >= ISR_CAP-2) {
+        setWhite();
+        overFlow = 1;
+      }
+      intBuff[++intPtr] = 0;
+    }
+    interrupts();
   }
-  intBuff[++intPtr] = 0;
-  interrupts();
 }
 
 void ISRwatchDog () {
@@ -29,6 +29,7 @@ void ISRwatchDog () {
     errMessage("watchDog 60s timeout");
     fd.close();
     fe.close();
+    WiFi.disconnect();
     ESP.restart();
   }
   interrupts();

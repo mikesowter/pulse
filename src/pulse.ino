@@ -5,11 +5,11 @@
 /*
   Pulse:  reads 1Wh pulses from the energy meter, determines an average power from rise and fall times
   and counts pulses to give remote metering of imported electrical energy
-  A web service provides a 3 hour window of activity or a rolling 24 hours at 192.168.1.150/day
-  Hourly power activity is stored by the day in flash
-  Hourly energy data is accumulated monthly.
 
-  Mike Sowter  March 2016
+  5 minute power activity is stored by the day in flash
+  5 minute energy data is accumulated monthly.
+
+  Mike Sowter  May 2018
 
 */
 #include "pulse.h"
@@ -19,16 +19,18 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.2  2018-05-16");
+  Serial.println("\nPulse Reader Version 3.2  2018-05-20");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, pass);
+  delay(10000);
 
   while (WiFi.status() != WL_CONNECTED)
   {
-    delay(500);
+    WiFi.begin(ssid, pass);
     Serial.print(".");
+    delay(5000);
   }
   Serial.println("");
   setBlue();    // indicate wifi access
@@ -68,8 +70,7 @@ void setup() {
   delOldFiles();
   fd=openFile("/diags.txt","a+");
   fe=openFile("/errmess.txt","a+");
-  fd.println(outBuf);       // restart messages
-  fe.println(outBuf);
+  diagMess("restart");       // restart messages
 
   readLogs();  // read energy this month
 
