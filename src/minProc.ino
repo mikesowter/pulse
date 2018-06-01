@@ -1,29 +1,14 @@
 #include <Arduino.h>
 
-// five minute processing
+// reporting interval processing
 
 void minProc() {
-  if ( oldMin%5 ) {
+  if ( oldMin%REP_INT ) {
     oldMin = minute();
     return;
   }
-  minPtr = 12*(int)oldHour+(int)(oldMin/5);
-  if ( oldT11Energy == T11Energy ) { // energy hasn't changed since start of  period
-    Serial.print(p2d(oldHour));
-    Serial.print(":");
-    Serial.println(p2d(oldMin));
-    powerData.lo = 0.0;
-    powerData.av = 0.0;
-    powerData.hi = 0.0;
-  }
-  else {
-    avgPower=(T11Energy-oldT11Energy)*12;
-    if ( minPower > avgPower) minPower = avgPower;
-    powerData.lo = minPower;
-    powerData.av = avgPower;
-    powerData.hi = maxPower;
-  }
-  if (minPtr<84||minPtr>264) T33time = true; // 10pm to 7am}
+
+  if (hour()<7||hour()>=22) T33time = true;
   else T33time = false;
 
   // reset for new period

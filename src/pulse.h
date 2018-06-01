@@ -3,7 +3,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <WiFiUdp.h>
 #include <fs.h>
 #include <ESP8266mDNS.h>
 #include <Ticker.h>
@@ -42,12 +41,12 @@ char d8Str[] = "12345.78";
 
 unsigned long t0, t1, minMillis, startMillis, startSeconds, midNight;
 unsigned long importWh = 0;
-unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
 
 IPAddress localIP,timeServerIP;
 IPAddress fileServerIP;
 const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
+const int REP_INT = 5;              // reporting interval in minutes
 const int HTML_SIZE = 10000;
 char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
@@ -56,6 +55,12 @@ const int ISR_CAP = 128;
 byte buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMessage
 const int timeZone = 10;
+/* for witty board:
+//LED and LDR
+const int red = 15;
+const int green = 12;
+const int blue = 13;
+const int LDRPin = A0;  */
 const int LDR = 14;
 const int BLU = 12;
 const int GRN = 5;

@@ -43,7 +43,7 @@ void setWhite() {
 }
 
 /* for witty board
-void witleds(String colour){
+void setled(String colour){
   analogWrite(red, 0);
   analogWrite(green, 0);
   analogWrite(blue, 0);

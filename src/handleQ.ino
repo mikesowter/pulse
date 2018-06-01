@@ -5,8 +5,6 @@ void handleQueue() {
   if (overFlow) diagMess(" ISR Overflow");
   for (int in=0;in<ISR_CAP;in++) {
     if (intBuff[in]==0) break;
-
-
     t1=intBuff[in]-t0;
     t0=intBuff[in];
     if (t1>90) {

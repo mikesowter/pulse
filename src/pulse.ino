@@ -44,7 +44,6 @@ void setup() {
   watchDog=0;
   init_OTA();
 
-  udp.begin(localPort);
   // Resolve servers
   WiFi.hostByName(ntpServerName, timeServerIP);
   WiFi.hostByName(ftpServerName, fileServerIP);
