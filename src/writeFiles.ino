@@ -7,11 +7,9 @@ byte storeData() {
   fl.print(":");
   fl.print(p2d(oldMin));
   fl.print(",");
-  fl.print(powerData.hi);
+  fl.print(logData.hi);
   fl.print(",");
-  fl.print(powerData.av);
-  fl.print(",");
-  fl.println(powerData.lo);
+  fl.println(logData.lo);
   yield();
   fl.close();
   // energy data

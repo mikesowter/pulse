@@ -48,7 +48,7 @@ IPAddress localIP,timeServerIP;
 IPAddress fileServerIP;
 const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
-const int REP_INT = 5;              // reporting interval
+const int LOG_INT = 5;              // reporting interval
 const int HTML_SIZE = 10000;
 char htmlStr[HTML_SIZE];        // use C strings for storage efficiency
 const int NTP_PACKET_SIZE = 48;
@@ -70,15 +70,14 @@ const int RED = 4;
 
 struct minStruct {
   float lo;
-  float av;
   float hi;
-} powerData;
+} logData;
 
 byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;
 byte ledState;
 bool T33time;
-float power,minPower,maxPower,avgPower,oldT11Energy,T11Energy,T33Energy;
+float power,minPower,maxPower,T11Energy,T33Energy;
 
 volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;

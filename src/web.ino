@@ -9,13 +9,10 @@ void handleMetric() {
   addCstring(p8d(power));
   addCstring("\n# TYPE minPower guage" );
   addCstring("\nminPower ");
-  addCstring(p8d(powerData.lo));
-  addCstring("\n# TYPE avgPower guage" );
-  addCstring("\navgPower ");
-  addCstring(p8d(powerData.av));
+  addCstring(p8d(minPower));
   addCstring("\n# TYPE maxPower guage" );
   addCstring("\nmaxPower ");
-  addCstring(p8d(powerData.hi));
+  addCstring(p8d(maxPower));
   addCstring("\n# TYPE T11Energy guage" );
   addCstring("\nT11Energy ");
   addCstring(p8d(T11Energy));
