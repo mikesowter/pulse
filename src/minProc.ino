@@ -7,6 +7,11 @@ void minProc() {
     oldMin = minute();
     return;
   }
+  avgPower=(T11Energy-oldT11Energy)*60/REP_INT;
+  if ( minPower > avgPower) minPower = avgPower;
+  powerData.lo = minPower;
+  powerData.av = avgPower;
+  powerData.hi = maxPower;
 
   if (hour()<7||hour()>=22) T33time = true;
   else T33time = false;

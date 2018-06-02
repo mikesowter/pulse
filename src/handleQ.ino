@@ -20,6 +20,5 @@ void handleQueue() {
   }
   intPtr = 0;
   overFlow = 0;
-  allOff();
   interrupts();
 }

@@ -4,7 +4,7 @@ void intServer() {
   if (!overFlow) {
     noInterrupts();
     ledState=digitalRead(LDR);
-/*    delayMicroseconds(1000);      // 1ms debounce period
+    delayMicroseconds(1000);      // 1ms debounce period
     if (ledState==digitalRead(LDR)) {   // valid change */
       digitalWrite(GRN,1-ledState);     // meter led on
       intBuff[intPtr] = millis();
@@ -15,7 +15,7 @@ void intServer() {
       intBuff[++intPtr] = 0;
     }
     interrupts();
-//  }
+  }
 }
 
 void ISRwatchDog () {

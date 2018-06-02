@@ -19,12 +19,10 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.2  2018-05-20");
+  Serial.println("\nPulse Reader Version 3.2  2018-06-02");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  WiFi.begin(ssid, pass);
-  delay(10000);
 
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -44,6 +42,7 @@ void setup() {
   watchDog=0;
   init_OTA();
 
+  udp.begin(localPort);
   // Resolve servers
   WiFi.hostByName(ntpServerName, timeServerIP);
   WiFi.hostByName(ftpServerName, fileServerIP);
