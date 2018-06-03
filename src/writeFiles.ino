@@ -5,7 +5,7 @@ byte storeData() {
   fl = SPIFFS.open(todayName, "a");
   fl.print(p2d(hour()));
   fl.print(":");
-  fl.print(p2d(oldMin));
+  fl.print(p2d(minute()));
   fl.print(",");
   fl.print(logData.hi);
   fl.print(",");
@@ -23,7 +23,7 @@ byte storeData() {
   fl.print(",");
   fl.print(p2d(hour()));
   fl.print(",");
-  fl.print(p2d(oldMin));
+  fl.print(p2d(minute()));
   fl.print(",");
   fl.print(p8d(T11Energy));
   fl.print(",");

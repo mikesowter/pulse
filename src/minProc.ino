@@ -7,6 +7,7 @@ void minProc() {
     oldMin = minute();
     return;
   }
+  minMillis = millis();
   logData.lo = minPower;
   logData.hi = maxPower;
 
@@ -55,4 +56,5 @@ void minProc() {
   // flush fault files
   fd.flush();
   fe.flush();
+  minMillis = millis()-minMillis;
 }

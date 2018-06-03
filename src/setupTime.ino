@@ -6,10 +6,8 @@ void setupTime() {
   t0 = millis();
   oldMin = minute();
   oldHour = hour();
-/*  strcpy(outBuf,dateStamp());
-  strcat(outBuf," ");
-  strcat(outBuf,timeStamp());
-  Serial.println(outBuf);      */
+  if (hour()<7||hour()>=22) T33time = true;
+  else T33time = false;
   strcpy(todayName,"/PR");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");

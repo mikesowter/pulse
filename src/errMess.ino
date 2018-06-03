@@ -26,6 +26,7 @@ void addCstring(char* s) {
 void errMessage(char* mess) {
   Serial.print(timeStamp());
   Serial.println(mess);
+  fe.print(dateStamp());
   fe.print(timeStamp());
   fe.println(mess);
 }
@@ -33,6 +34,7 @@ void errMessage(char* mess) {
 void diagMess(char* mess) {
   Serial.print(timeStamp());
   Serial.println(mess);
+  fd.print(dateStamp());
   fd.print(timeStamp());
   fd.println(mess);
 }
@@ -42,6 +44,7 @@ char* dateStamp() {
   strcpy(dateStr,p2d(year()%100));
   strcat(dateStr,p2d(month()));
   strcat(dateStr,p2d(day()));
+  strcat(timeStr," ");
   return dateStr;
 }
 

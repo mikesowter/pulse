@@ -22,9 +22,9 @@ void handleMetric() {
   addCstring("\n# TYPE WifiSignal guage" );
   addCstring("\nWifiSignal ");
   addCstring(p8d(-WiFi.RSSI()));
-  addCstring("\n# TYPE Memory guage" );
-  addCstring("\nMemory ");
-  addCstring(p8d((float)system_get_free_heap_size()/1000.0));
+  addCstring("\n# TYPE MinProc_ms guage" );
+  addCstring("\nMinProc_ms ");
+  addCstring(p8d((float)minMillis));
   addCstring("\n# TYPE Flash guage" );
   addCstring("\nFlash ");
   addCstring(p8d((float)fs_info.usedBytes/1000.0));
