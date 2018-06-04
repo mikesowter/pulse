@@ -90,7 +90,7 @@ void setup() {
 }
 
 void loop() {
-  while (intPtr == 0) {
+/*  while (intPtr == 0) {
     if ( minute()!=oldMin ) {
       setWhite();
       minProc();
@@ -105,7 +105,17 @@ void loop() {
   // new events in queue
   handleQueue();
   yield();
+  server.handleClient();
   watchDog=0;
   // check for OTA
+  ArduinoOTA.handle();  */
+
+  if (intPtr) handleQueue();
+  if ( minute()!=oldMin ) minProc();
+  yield();
+  server.handleClient();
+  yield();
   ArduinoOTA.handle();
+  yield();
+  watchDog=0;
 }

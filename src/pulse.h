@@ -20,6 +20,7 @@ FSInfo fs_info;
 File fl,fd,fe,fh;          // logs, diagnostics and errors
 Ticker secondTick;
 volatile int watchDog = 0;
+volatile int scanFail = 0;
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
@@ -77,7 +78,7 @@ byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;
 byte ledState;
 bool T33time;
-float power,minPower,maxPower,T11Energy,T33Energy;
+float power,minPower,maxPower,oldT11Energy,T11Energy,T33Energy;
 
 volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;

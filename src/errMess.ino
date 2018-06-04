@@ -27,6 +27,7 @@ void errMessage(char* mess) {
   Serial.print(timeStamp());
   Serial.println(mess);
   fe.print(dateStamp());
+  fe.print(" ");
   fe.print(timeStamp());
   fe.println(mess);
 }
@@ -35,6 +36,7 @@ void diagMess(char* mess) {
   Serial.print(timeStamp());
   Serial.println(mess);
   fd.print(dateStamp());
+  fd.print(" ");
   fd.print(timeStamp());
   fd.println(mess);
 }
@@ -44,7 +46,6 @@ char* dateStamp() {
   strcpy(dateStr,p2d(year()%100));
   strcat(dateStr,p2d(month()));
   strcat(dateStr,p2d(day()));
-  strcat(timeStr," ");
   return dateStr;
 }
 

@@ -4,9 +4,15 @@
 
 void minProc() {
   if ( minute()%LOG_INT ) {
+    if (oldT11Energy==T11Energy) {
+      power=0;
+      minPower=0;
+    }
+    oldT11Energy=T11Energy;
     oldMin = minute();
     return;
-  }
+  }  // end 1 minute processing
+
   minMillis = millis();
   logData.lo = minPower;
   logData.hi = maxPower;

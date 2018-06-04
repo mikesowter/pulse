@@ -25,6 +25,10 @@ void handleMetric() {
   addCstring("\n# TYPE MinProc_ms guage" );
   addCstring("\nMinProc_ms ");
   addCstring(p8d((float)minMillis));
+  addCstring("\n# TYPE ScanInterval guage" );
+  addCstring("\nScanInterval ");
+  addCstring(p2d(scanFail));
+  scanFail=0;
   addCstring("\n# TYPE Flash guage" );
   addCstring("\nFlash ");
   addCstring(p8d((float)fs_info.usedBytes/1000.0));
