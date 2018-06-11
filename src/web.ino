@@ -16,9 +16,9 @@ void handleMetric() {
   addCstring("\n# TYPE T11Energy guage" );
   addCstring("\nT11Energy ");
   addCstring(p8d(T11Energy));
-  addCstring("\n# TYPE T33Energy guage" );
-  addCstring("\nT33Energy ");
-  addCstring(p8d(T33Energy));
+  addCstring("\n# TYPE T31Energy guage" );
+  addCstring("\nT31Energy ");
+  addCstring(p8d(T31Energy));
   addCstring("\n# TYPE WifiSignal guage" );
   addCstring("\nWifiSignal ");
   addCstring(p8d(-WiFi.RSSI()));

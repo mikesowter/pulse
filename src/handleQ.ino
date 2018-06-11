@@ -9,9 +9,9 @@ void handleQueue() {
     t0=intBuff[in];
     if (t1>90) {
       power = 1800.0/(float)t1;
-      if (T33time && power > 3.5) {
+      if (T31time && power > 3.5) {
         T11Energy += 0.0005*(1-3.5/power);
-        T33Energy += 0.0005*(3.5/power); // unit is kWh
+        T31Energy += 0.0005*(3.5/power); // unit is kWh
       }
       else T11Energy += 0.0005;
       if (power>maxPower) maxPower=power;
