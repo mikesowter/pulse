@@ -19,13 +19,14 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.2  2018-06-02");
+  Serial.println("\nPulse Reader Version 3.3  2018-06-27");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
   while (WiFi.status() != WL_CONNECTED)
   {
+    WiFi.config(ip, gateway, subnet, dns);
     WiFi.begin(ssid, pass);
     Serial.print(".");
     delay(5000);
@@ -73,6 +74,7 @@ void setup() {
   readLogs();  // read energy this month
 
   attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
+  interrupts();
 
   if ( MDNS.begin ( "pulse" ) ) {
 		Serial.println ( "MDNS responder started" );

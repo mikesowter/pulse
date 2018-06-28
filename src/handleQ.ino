@@ -9,13 +9,13 @@ void handleQueue() {
     t0=intBuff[in];
     if (t1>90) {
       power = 1800.0/(float)t1;
-      if (T31time && power > 3.5) {
-        T11Energy += 0.0005*(1-3.5/power);
-        T31Energy += 0.0005*(3.5/power); // unit is kWh
+      if (T31time && power > HOT_WATER) {
+        emT11Energy += 0.0005*(1-HOT_WATER/power);
+        emT31Energy += 0.0005*(HOT_WATER/power); // unit is kWh
       }
-      else T11Energy += 0.0005;
-      if (power>maxPower) maxPower=power;
-      if (power<minPower) minPower=power;
+      else emT11Energy += 0.0005;
+      if (power>emMaxPower) emMaxPower=power;
+      if (power<emMinPower) emMinPower=power;
     }
   }
   intPtr = 0;

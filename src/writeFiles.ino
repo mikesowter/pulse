@@ -10,9 +10,9 @@ byte storeData() {
   fl.print(",");
   fl.print(p2d(minute()));
   fl.print(",");
-  fl.print(p8d(T11Energy));
+  fl.print(p8d(emT11Energy));
   fl.print(",");
-  fl.println(p8d(T31Energy));
+  fl.println(p8d(emT31Energy));
   fl.close();
   return 1;
 }

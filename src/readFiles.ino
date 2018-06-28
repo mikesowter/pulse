@@ -17,10 +17,10 @@ byte readEnergy() {
   dd = fl.parseInt();
   hh = fl.parseInt();
   mm = fl.parseInt();
-  T11Energy = fl.parseFloat();
-  diagMess(p8d(T11Energy));
-  T31Energy = fl.parseFloat();
-  diagMess(p8d(T31Energy));
+  emT11Energy = fl.parseFloat();
+  diagMess(p8d(emT11Energy));
+  emT31Energy = fl.parseFloat();
+  diagMess(p8d(emT31Energy));
 
   return 1;
 }

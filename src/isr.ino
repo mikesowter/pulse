@@ -5,11 +5,11 @@ void intServer() {
     noInterrupts();
     ledState=digitalRead(LDR);
     delayMicroseconds(1000);      // 1ms debounce period
-    if (ledState==digitalRead(LDR)) {   // valid change */
+    if (ledState==digitalRead(LDR)) {   // valid change
       digitalWrite(GRN,1-ledState);     // meter led on
       intBuff[intPtr] = millis();
       if (intPtr >= ISR_CAP-2) {
-        setWhite();
+        setRed();
         overFlow = 1;
       }
       intBuff[++intPtr] = 0;
@@ -33,6 +33,6 @@ void ISRwatchDog () {
     ESP.restart();
   }
   scanFail++;
-  if (scanFail == 32) errMessage("30s scan failure");
+  if (scanFail == 62) errMessage("60s scan failure");
   interrupts();
 }

@@ -47,6 +47,10 @@ unsigned int localPort = 2390;   //  a random local port to listen for UDP packe
 
 IPAddress localIP,timeServerIP;
 IPAddress fileServerIP;
+IPAddress ip(192, 168, 1, 50);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(192, 168, 1, 1);
 const char* ntpServerName = "au.pool.ntp.org";
 const char* ftpServerName = "ftp.sowter.com";
 const int HTML_SIZE = 10000;
@@ -56,17 +60,12 @@ const int BUFFER_SIZE = 128;
 const int ISR_CAP = 128;
 byte buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMessage
-const int timeZone = 10;
-/* for witty board:
-//LED and LDR
-const int red = 15;
-const int green = 12;
-const int blue = 13;
-const int LDRPin = A0;  */
-const int LDR = 14;
+const int TIMEZONE = 10;
+const float HOT_WATER=3.4;
+const int LDR = 4;
 const int BLU = 12;
-const int GRN = 5;
-const int RED = 4;
+const int GRN = 13;
+const int RED = 14;
 
 struct minStruct {
   float lo;
@@ -77,8 +76,8 @@ byte oldMin,oldHour,oldDay,oldMonth;
 int oldYear,minPtr,htmlLen;
 byte ledState;
 bool T31time;
-float power,minPower,maxPower;
-double oldT11Energy,T11Energy,T31Energy;
+float power,emMinPower,emMaxPower;
+double oldT11Energy,emT11Energy,emT31Energy;
 
 volatile unsigned long intBuff[ISR_CAP];
 volatile byte intPtr = 0;

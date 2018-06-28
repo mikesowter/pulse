@@ -44,6 +44,6 @@ unsigned long getNTPreply(){
   unsigned long secsSince1900 = highWord << 16 | lowWord;   // seconds since Jan 1 1900
   // now convert NTP time into Unix time:
   unsigned long GMT = secsSince1900 - 2208988800UL;         // seconds since Jan 1 1970
-  //add timezone offset and return
-  return GMT + timeZone*3600;
+  //add TIMEZONE offset and return
+  return GMT + TIMEZONE*3600;
 }

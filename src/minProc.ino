@@ -3,8 +3,8 @@
 // one minute processing
 
 void minProc() {
-  if (oldT11Energy==T11Energy) power=0.0;
-  oldT11Energy=T11Energy;
+  if (oldT11Energy==emT11Energy) power=0.0;
+  oldT11Energy=emT11Energy;
 
   minMillis = millis();
 
@@ -12,8 +12,8 @@ void minProc() {
   else T31time = false;
 
   // reset for new period
-  minPower = power;
-  maxPower = power;
+  emMinPower = power;
+  emMaxPower = power;
 
   if ( hour()!=oldHour ) {
     storeData();
