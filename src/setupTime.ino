@@ -8,7 +8,7 @@ void setupTime() {
   oldHour = hour();
   if (hour()<7||hour()>=22) T31time = true;
   else T31time = false;
-  strcpy(todayName,"/PR");
+  strcpy(todayName,"/em");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");
 }
