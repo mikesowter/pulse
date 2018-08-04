@@ -6,10 +6,11 @@
   Pulse:  reads 1Wh pulses from the energy meter, determines an average power from rise and fall times
   and counts pulses to give remote metering of imported electrical energy
 
-  5 minute power activity is stored by the day in flash
-  5 minute energy data is accumulated monthly.
+  T31 (hotwater) energy separated from T11 by time and value > HOT_WATER threshold
 
-  Mike Sowter  May 2018
+  Server scraped by prometheus and data stored in crateDB
+
+  Mike Sowter  Aug 2018
 
 */
 #include "pulse.h"
@@ -19,20 +20,22 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.3  2018-06-27");
+  Serial.println("\nPulse Reader Version 3.4  2018-08-04");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
+  WiFi.config(ip, gateway, subnet, dns);
+  WiFi.begin(ssid, pass);
 
   while (WiFi.status() != WL_CONNECTED)
   {
-    WiFi.config(ip, gateway, subnet, dns);
-    WiFi.begin(ssid, pass);
+    delay(500);
+    setBlue();
     Serial.print(".");
-    delay(5000);
+    delay(500);
+    allOff();
   }
   Serial.println("");
-  setBlue();    // indicate wifi access
   Serial.println("local IP address: ");
   localIP=WiFi.localIP();
   Serial.print(localIP);
@@ -92,27 +95,8 @@ void setup() {
 }
 
 void loop() {
-/*  while (intPtr == 0) {
-    if ( minute()!=oldMin ) {
-      setWhite();
-      minProc();
-      allOff();
-    }
-    server.handleClient();
-    yield();
-    watchDog=0;
-    // check for OTA
-    ArduinoOTA.handle();
-  }
-  // new events in queue
-  handleQueue();
-  yield();
-  server.handleClient();
-  watchDog=0;
-  // check for OTA
-  ArduinoOTA.handle();  */
-
   if (intPtr) handleQueue();
+  yield();
   if ( minute()!=oldMin ) minProc();
   yield();
   server.handleClient();

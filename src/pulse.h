@@ -1,7 +1,7 @@
 #include <arduino.h>
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
+//#include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <WiFiUdp.h>
 #include <fs.h>
@@ -61,7 +61,7 @@ const int ISR_CAP = 128;
 byte buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMessage
 const int TIMEZONE = 10;
-const float HOT_WATER=3.4;
+const float HOT_WATER = 3.5;
 const int LDR = 4;
 const int BLU = 12;
 const int GRN = 13;
