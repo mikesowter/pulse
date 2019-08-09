@@ -3,21 +3,21 @@
 void addCstring(char* s) {
   // reinventing cstring cat function
   int p;
-  for (p=0;p<HTML_SIZE;p++) {
-    if ( p>HTML_SIZE-32) {
+  for (p=0;p<longStrSize;p++) {
+    if ( p>longStrSize-32) {
       fd.print(timeStamp());
       fd.print(p);
       fd.print("- HTML overflow: ");
       fd.println(s);
       break;
     }
-    if (htmlStr[p]=='\0') {
+    if (longStr[p]=='\0') {
       break;
     }
   }
   int q=0;
-  for (;p<HTML_SIZE;p++) {
-    htmlStr[p]=s[q];
+  for (;p<longStrSize;p++) {
+    longStr[p]=s[q];
     if (s[q++]=='\0') break;
   }
   htmlLen = p;

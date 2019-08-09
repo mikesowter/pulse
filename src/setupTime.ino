@@ -6,8 +6,10 @@ void setupTime() {
   t0 = millis();
   oldMin = minute();
   oldHour = hour();
-  if (hour()<7||hour()>=22) T31time = true;
-  else T31time = false;
+  oldMonth = month();
+  oldYear = year();
+  oldDay = day();
+
   strcpy(todayName,"/PR");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");

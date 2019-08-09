@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 void handleMetric() {
-  htmlStr[0]='\0';
+  longStr[0]='\0';
   addCstring("# TYPE emCurrentPower guage" );
   addCstring("\nemCurrentPower ");
   addCstring(p8d(power));
@@ -21,7 +21,10 @@ void handleMetric() {
   addCstring("\nemWifiSignal ");
   addCstring(p8d(-WiFi.RSSI()));
   addCstring( "\n" );
-  server.send ( 200, "text/plain", htmlStr );
+  server.send ( 200, "text/plain", longStr );
+  // reset min/max for new period
+  emMinPower = power;
+  emMaxPower = power;
 }
 
 void handleNotFound() {
@@ -51,7 +54,7 @@ void handleNotFound() {
     server.send ( 200, "text/html", outBuf );
   }
   else if (SPIFFS.exists(userText)) {
-    strcpy(htmlStr,"Sending File: ");
+    strcpy(longStr,"Sending File: ");
     addCstring(userText);
     addCstring("\r\r");
     fh = openFile(userText, "r");
@@ -66,7 +69,7 @@ void handleNotFound() {
     addCstring("\r\r");
     addCstring("length of file: ");
     addCstring(p8d((float)htmlLen));
-    server.send ( 200, "text/plain", htmlStr );
+    server.send ( 200, "text/plain", longStr );
   }
   else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
@@ -82,7 +85,7 @@ void handleNotFound() {
 }
 
 uint8_t listDiags() {
-  htmlStr[0]='\0';
+  longStr[0]='\0';
   fd.seek(0UL,SeekSet);
   while (fd.available()) {
     int k=fd.readBytesUntil('\r',line,80);
@@ -90,30 +93,33 @@ uint8_t listDiags() {
     addCstring(line);
     yield();
   }
-  server.send ( 200, "text/plain", htmlStr );
+  server.send ( 200, "text/plain", longStr );
   return 1;
 }
 
-void listFiles() {
-  char fileSize[]="999999";
-  htmlStr[0]='\0';
-  addCstring("<!DOCTYPE html><html><body><HR>");
+void handleDir() {
+  char fileSizeStr[]="999999";
+  longStr[0]='\0';
+  ltoa(fs_info.usedBytes,fileSizeStr,10);
+  addCstring(ltoa(fs_info.usedBytes,fileSizeStr,10));
+	addCstring(" bytes used:\n");
   Dir dir = SPIFFS.openDir("/");
   while (dir.next()) {
     dir.fileName().toCharArray(fileName, 14);
-    addCstring("<P>");
+    addCstring("\n");
     addCstring(fileName);
-    addCstring("&emsp;");
-    itoa(dir.fileSize(),fileSize,7);
-    addCstring(fileSize);
+    addCstring("\t");
+    itoa(dir.fileSize(),fileSizeStr,10);
+    addCstring(fileSizeStr);
   }
-  addCstring( "<HR></body></html>" );
-  server.send ( 200, "text/html", htmlStr );
-  //Serial.println(htmlStr);
+  server.send ( 200, "text/plain", longStr );
+  //Serial.println(longStr);
 }
 
+
+
 void helpPage() {
-  htmlStr[0]='\0';
+  longStr[0]='\0';
   addCstring("<!DOCTYPE html><html><body><HR>");
   addCstring("Valid options include:");
   addCstring("<P>");
@@ -134,6 +140,6 @@ void helpPage() {
   addCstring("shutdown");
   addCstring("<P>");
   addCstring( "<HR></body></html>" );
-  server.send ( 200, "text/html", htmlStr );
-  //Serial.println(htmlStr);
+  server.send ( 200, "text/html", longStr );
+  //Serial.println(longStr);
 }

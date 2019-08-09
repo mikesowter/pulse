@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-void intServer() {
+ICACHE_RAM_ATTR void intServer() {
   if (!overFlow) {
     noInterrupts();
     ledState=digitalRead(LDR);

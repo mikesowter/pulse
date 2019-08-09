@@ -6,21 +6,21 @@
   Pulse:  reads 1Wh pulses from the energy meter, determines an average power from rise and fall times
   and counts pulses to give remote metering of imported electrical energy
 
-  T31 (hotwater) energy separated from T11 by time and value > HOT_WATER threshold
+  T31 (hotwater) energy separated from T11 by polling RMS slave
 
   Server scraped by prometheus and data stored in crateDB
 
   Mike Sowter  Aug 2018
 
 */
-#include "pulse.h"
+#include "main.h"
 
 void setup() {
   flashLEDs();
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 3.4  2018-08-04");
+  Serial.println("\nPulse Reader Version 4.0  2019-08-09");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -43,23 +43,19 @@ void setup() {
   Serial.print("    signal strength ");
   Serial.print(rssi);
   Serial.println(" dBm");
-  watchDog=0;
+  watchDog = 0;
   init_OTA();
 
   udp.begin(localPort);
-  // Resolve servers
+  // Resolve server
   WiFi.hostByName(ntpServerName, timeServerIP);
-  WiFi.hostByName(ftpServerName, fileServerIP);
   // Set epoch and timers
   setupTime();
-  oldMonth = month();
-  oldYear = year();
-  oldDay = day();
-  // indicate NTP access
+  // indicate NTP success
   setGreen();
 
-  //if(!SPIFFS.format()||!SPIFFS.begin())     //use to format SPIFFS drive
-  if(!SPIFFS.begin())
+  // if(!SPIFFS.format()) Serial.println("SPIFFS.format failed");
+  if( !SPIFFS.begin() )
   {
     Serial.println("SPIFFS.begin failed");
     setRed();   // indicate SPIFFS issue
@@ -72,7 +68,11 @@ void setup() {
   delOldFiles();
   fd=openFile("/diags.txt","a+");
   fe=openFile("/errmess.txt","a+");
-  diagMess("restart");       // restart messages
+  // lookup reason for restart
+	resetReason.toCharArray(charBuf,resetReason.length()+1);
+	diagMess(charBuf);       // restart message
+	resetDetail.toCharArray(charBuf,resetDetail.length()+1);
+	if ( charBuf[16] != '0' )	diagMess(charBuf);  // exception detail
 
   readLogs();  // read energy this month
 
@@ -85,23 +85,31 @@ void setup() {
 
   server.on ( "/", handleMetric );
   server.on ( "/diags", listDiags );
-  server.on ( "/dir", listFiles );
+  server.on ( "/dir", handleDir );
   server.on ( "/metrics", handleMetric );
   server.onNotFound ( handleNotFound );
 	server.begin();
 	Serial.println ( "HTTP server started" );
   server.handleClient();
+  // setup FTP server
+	ftpSrv.begin("mike","iron");
+
   allOff();   //indicate all's well
 }
 
 void loop() {
-  if (intPtr) handleQueue();
-  yield();
-  if ( minute()!=oldMin ) minProc();
-  yield();
+  // check if hot water's on
+  hotWater();
+  // calculate power from pulses
+  if ( intPtr ) handleQueue();
+  // check for scheduled activity
+  if ( minute() != oldMin ) minProc();
+  // check for web request
   server.handleClient();
-  yield();
+  // check for OTA
   ArduinoOTA.handle();
-  yield();
-  watchDog=0;
+  // check for FTP request
+  ftpSrv.handleFTP();
+  // reset watch dog timer
+   watchDog = 0;
 }
