@@ -47,7 +47,12 @@ void minProc();
 uint8_t openFile(File fileName, const char* s);
 uint8_t init_OTA();
 void readLogs();
-
+void setupTime();
+void handleMetric();
+void handleNotFound();
+void handleDir();
+uint8_t listDiags();
+void addCstring(const char* s);
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
@@ -56,7 +61,6 @@ char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char charBuf[128];
-char line[81];
 unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();
@@ -74,7 +78,6 @@ IPAddress dns(192, 168, 1, 1);
 
 char longStr[longStrSize];        // use C strings for storage efficiency
 uint8_t buffer[BUFFER_SIZE];
-char outBuf[128];               // for ftpRcv and errMess
 
 struct minStruct {
   float lo;

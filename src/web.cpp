@@ -1,7 +1,29 @@
 #include <Arduino.h>
+#include <fs.h>
+#include <ESP8266WebServer.h>
+#include <constants.h>
+
+extern File fd,fe;
+extern FSInfo fs_info;
+extern float power, emMinPower, emMaxPower;
+extern double emT11Energy, emT31Energy;
+extern char longStr[], fileSizeStr[], fileName[], userText[], charBuf[];
+extern ESP8266WebServer server;
+extern uint32_t fileSize, lastScan;
+extern File fh, fd, fe;
+extern uint16_t longStrLen;
 
 char* f2s2(float f);
+char line[80];
 void addCstring(const char* s);
+uint8_t listDiags();
+void handleDir();
+void helpPage();
+void addCstring(const char* s);
+void errMess(const char* mess);
+void diagMess(const char* mess);
+char* dateStamp();
+char* timeStamp();
 
 void handleMetric() {
   longStr[0]='\0';
@@ -38,23 +60,23 @@ void handleNotFound() {
     errMess("User requested restart");
     fd.close();
     fe.close();
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
-    server.send ( 200, "text/html", outBuf );
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
+    server.send ( 200, "text/html", charBuf );
     ESP.restart();
   }
   else if (strncmp(userText,"/deldiags",9)==0) {
     SPIFFS.remove("/diags.txt");
     fd = SPIFFS.open("/diags.txt", "a+");
     fd.println(dateStamp());
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
-    server.send ( 200, "text/html", outBuf );
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
+    server.send ( 200, "text/html", charBuf );
   }
   else if (strncmp(userText,"/delerrs",9)==0) {
     SPIFFS.remove("/errmess.txt");
     fd = SPIFFS.open("/errmess.txt", "a+");
     fd.println(dateStamp());
-    strcpy(outBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
-    server.send ( 200, "text/html", outBuf );
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
+    server.send ( 200, "text/html", charBuf );
   }
   else if (SPIFFS.exists(userText)) {
     strcpy(longStr,"Sending File: ");
@@ -69,9 +91,6 @@ void handleNotFound() {
       yield();
     }
     fh.close();
-    addCstring("\r\r");
-    addCstring("length of file: ");
-    addCstring(f2s2((float)htmlLen));
     server.send ( 200, "text/plain", longStr );
   }
   else if (strncmp(userText,"/favicon.ico",12)==0) {
@@ -79,9 +98,9 @@ void handleNotFound() {
   else if (strncmp(userText,"/apple",6)==0) {
   }
   else {
-    strcpy(outBuf,userText);
-    strcat(outBuf," is not a valid option");
-    diagMess(outBuf);
+    strcpy(charBuf,userText);
+    strcat(charBuf," is not a valid option");
+    diagMess(charBuf);
     helpPage();
   }
   return;

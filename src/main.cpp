@@ -98,7 +98,6 @@ void setup() {
 }
 
 void loop() {
-  uint32_t loopTime = millis();  
   // calculate power from pulses
   if ( intPtr ) handleQueue();
   // check for scheduled activity
