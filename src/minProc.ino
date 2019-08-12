@@ -20,7 +20,7 @@ void minProc() {
       setupTime();
       if ( month() != oldMonth ) {
         if ( year() != oldYear ) {
-          errMessage("Happy New Year!!!!!");
+          errMess("Happy New Year!!!!!");
           oldYear = year();
         }
         oldMonth = month();

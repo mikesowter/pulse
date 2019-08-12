@@ -5,16 +5,16 @@ char date30Back[] = "/XXyymmdd.csv";
 extern char fileName[];
 extern char charBuf[];
 
-char* p2d(byte b);
-void errMessage(char* mess);
+char* i2sd(byte b);
+void errMess(const char* mess);
 
 void delOldFiles() {
   // delete all files more than 30 days old
   long SECS_30_DAYS = 30*24*60*60;
   strcpy(date30Back,"/PR");
-  strcat(date30Back,p2d(year(now()-SECS_30_DAYS)%100));
-  strcat(date30Back,p2d(month(now()-SECS_30_DAYS)));
-  strcat(date30Back,p2d(day(now()-SECS_30_DAYS)));
+  strcat(date30Back,i2sd(year(now()-SECS_30_DAYS)%100));
+  strcat(date30Back,i2sd(month(now()-SECS_30_DAYS)));
+  strcat(date30Back,i2sd(day(now()-SECS_30_DAYS)));
   strcat(date30Back,".csv");
 
   Dir dir = SPIFFS.openDir("/");
@@ -28,7 +28,7 @@ void delOldFiles() {
       if (SPIFFS.remove(fileName)) {
         strcpy(charBuf,fileName);
         strcat(charBuf," deleted");
-        errMessage(charBuf);
+        errMess(charBuf);
       }
     }
     else {

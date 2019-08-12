@@ -22,17 +22,17 @@ void ISRwatchDog () {
   noInterrupts();
   watchDog++;
 	if (watchDog == 30) {
-    errMessage("watchDog 30s alert");
+    errMess("watchDog 30s alert");
     setRed();
   }
   else if (watchDog >= 60) {
-    errMessage("watchDog 60s timeout");
+    errMess("watchDog 60s timeout");
     fd.close();
     fe.close();
     WiFi.disconnect();
     ESP.restart();
   }
   scanFail++;
-  if (scanFail == 62) errMessage("60s scan failure");
+  if (scanFail == 62) errMess("60s scan failure");
   interrupts();
 }

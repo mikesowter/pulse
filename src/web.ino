@@ -1,25 +1,28 @@
 #include <Arduino.h>
 
+char* f2s2(float f);
+void addCstring(const char* s);
+
 void handleMetric() {
   longStr[0]='\0';
   addCstring("# TYPE emCurrentPower guage" );
   addCstring("\nemCurrentPower ");
-  addCstring(p8d(power));
+  addCstring(f2s2(power));
   addCstring("\n# TYPE emMinPower guage" );
   addCstring("\nemMinPower ");
-  addCstring(p8d(emMinPower));
+  addCstring(f2s2(emMinPower));
   addCstring("\n# TYPE emMaxPower guage" );
   addCstring("\nemMaxPower ");
-  addCstring(p8d(emMaxPower));
+  addCstring(f2s2(emMaxPower));
   addCstring("\n# TYPE emT11Energy guage" );
   addCstring("\nemT11Energy ");
-  addCstring(p8d(emT11Energy));
+  addCstring(f2s2(emT11Energy));
   addCstring("\n# TYPE emT31Energy guage" );
   addCstring("\nemT31Energy ");
-  addCstring(p8d(emT31Energy));
+  addCstring(f2s2(emT31Energy));
   addCstring("\n# TYPE emWifiSignal guage" );
   addCstring("\nemWifiSignal ");
-  addCstring(p8d(-WiFi.RSSI()));
+  addCstring(f2s2(-WiFi.RSSI()));
   addCstring( "\n" );
   server.send ( 200, "text/plain", longStr );
   // reset min/max for new period
@@ -32,7 +35,7 @@ void handleNotFound() {
   Serial.print(timeStamp());
   Serial.println(userText);
   if (strncmp(userText,"/reset",6)==0) {
-    errMessage("User requested restart");
+    errMess("User requested restart");
     fd.close();
     fe.close();
     strcpy(outBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
@@ -68,7 +71,7 @@ void handleNotFound() {
     fh.close();
     addCstring("\r\r");
     addCstring("length of file: ");
-    addCstring(p8d((float)htmlLen));
+    addCstring(f2s2((float)htmlLen));
     server.send ( 200, "text/plain", longStr );
   }
   else if (strncmp(userText,"/favicon.ico",12)==0) {
@@ -142,4 +145,23 @@ void helpPage() {
   addCstring( "<HR></body></html>" );
   server.send ( 200, "text/html", longStr );
   //Serial.println(longStr);
+}
+
+void addCstring(const char* s) {
+  // find end of longStr
+  uint16_t p,longStrLen = longStrSize;
+  for (p=0;p<longStrLen;p++) {
+    if ( p>longStrLen-32) {
+      diagMess("longStrLen exceeded");
+      break;
+    }
+    if (longStr[p]=='\0') {
+      break;    // p now points to end of old string
+    }
+  }
+  uint16_t q=0;
+  for (;p<longStrLen;p++) {
+    longStr[p]=s[q];
+    if (s[q++]=='\0') break;
+  }
 }

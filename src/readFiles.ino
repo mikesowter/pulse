@@ -1,5 +1,7 @@
 //  open files to restore progress after restart
 
+char* f2s2(float f);
+
 byte readLogs() {
   // energy data
   strcpy(fileName,"/Energy.csv");
@@ -18,9 +20,9 @@ byte readEnergy() {
   hh = fl.parseInt();
   mm = fl.parseInt();
   emT11Energy = fl.parseFloat();
-  diagMess(p8d(emT11Energy));
+  diagMess(f2s2(emT11Energy));
   emT31Energy = fl.parseFloat();
-  diagMess(p8d(emT31Energy));
+  diagMess(f2s2(emT31Energy));
 
   return 1;
 }

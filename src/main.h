@@ -29,6 +29,10 @@ String resetDetail = ESP.getResetInfo();
 
 void hotWater();
 void delOldFiles();
+void diagMess(const char* mess);
+void errMess(const char* mess);
+char* dateStamp();
+char* timeStamp();
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
@@ -41,9 +45,6 @@ char line[81];
 unsigned long getTime();
 unsigned long sendNTPrequest(IPAddress& address);
 unsigned long getNTPreply();
-
-char d2Str[] = "12";
-char d8Str[] = "12345.78";
 
 unsigned long t0, t1, minMillis, startMillis, startSeconds, midNight;
 unsigned long importWh = 0;
@@ -62,7 +63,7 @@ const int NTP_PACKET_SIZE = 48;
 const int BUFFER_SIZE = 128;
 const int ISR_CAP = 128;
 byte buffer[BUFFER_SIZE];
-char outBuf[128];               // for ftpRcv and errMessage
+char outBuf[128];               // for ftpRcv and errMess
 const int TIMEZONE = 10;
 const float HOT_WATER = 3.44;
 const int LDR = 4;
