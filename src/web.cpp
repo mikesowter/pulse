@@ -22,6 +22,7 @@ void helpPage();
 void addCstring(const char* s);
 void errMess(const char* mess);
 void diagMess(const char* mess);
+uint8_t storeData();
 char* dateStamp();
 char* timeStamp();
 
@@ -58,6 +59,7 @@ void handleNotFound() {
   Serial.println(userText);
   if (strncmp(userText,"/reset",6)==0) {
     errMess("User requested restart");
+    storeData();
     fd.close();
     fe.close();
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");

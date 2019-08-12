@@ -4,7 +4,7 @@
 
 void diagMess(const char* mess);
 
-extern volatile unsigned long intBuff[];
+extern volatile uint32_t intBuff[];
 extern volatile int watchDog;
 extern volatile byte intPtr;
 extern volatile bool overFlow;
@@ -13,6 +13,7 @@ extern volatile int scanFail;
 extern uint8_t ledState;
 
 void errMess(const char* mess);
+uint8_t storeData();
 void setRed();
 
 
@@ -43,6 +44,7 @@ void ISRwatchDog () {
   }
   else if (watchDog >= 60) {
     errMess("watchDog 60s timeout");
+    storeData();
     fd.close();
     fe.close();
     ESP.restart();

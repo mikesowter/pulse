@@ -19,7 +19,7 @@ void setupTime() {
   oldDay = day();
   oldMonth = month();
 
-  strcpy(todayName,"/pt");
+  strcpy(todayName,"/em");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");
 }

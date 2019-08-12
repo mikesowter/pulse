@@ -61,12 +61,12 @@ char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char charBuf[128];
-unsigned long getTime();
-unsigned long sendNTPrequest(IPAddress& address);
-unsigned long getNTPreply();
+uint32_t getTime();
+uint32_t sendNTPrequest(IPAddress& address);
+uint32_t getNTPreply();
 
-unsigned long t0, t1, minMillis, startMillis, startSeconds, midNight;
-unsigned long importWh = 0;
+uint32_t t0, t1, minMillis, startMillis, startSeconds, midNight;
+uint32_t importWh = 0;
 unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
 
 IPAddress localIP,timeServerIP;
@@ -91,6 +91,6 @@ bool T31time, waterOn;
 float power, emMinPower, emMaxPower;
 double oldT11Energy, emT11Energy, emT31Energy;
 
-volatile unsigned long intBuff[128];
+volatile uint32_t intBuff[128];
 volatile uint8_t intPtr = 0;
 volatile bool overFlow = 0;
