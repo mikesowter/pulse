@@ -66,8 +66,8 @@ void setup() {
   Serial.print(fs_info.usedBytes);
   Serial.println(" bytes used:");
   delOldFiles();
-  fd=openFile("/diags.txt","a+");
-  fe=openFile("/errmess.txt","a+");
+  fd = SPIFFS.open("/diags.txt","a+");
+  fe = SPIFFS.open("/errmess.txt","a+");
   // lookup reason for restart
 	resetReason.toCharArray(charBuf,resetReason.length()+1);
 	diagMess(charBuf);       // restart message

@@ -60,7 +60,7 @@ void handleNotFound() {
     strcpy(longStr,"Sending File: ");
     addCstring(userText);
     addCstring("\r\r");
-    fh = openFile(userText, "r");
+    fh = SPIFFS.open(userText, "r");
 
     while (fh.available()) {
       int k=fh.readBytesUntil('\r',line,80);

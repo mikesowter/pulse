@@ -1,3 +1,6 @@
+#include <arduino.h>
+#include <ArduinoOTA.h>
+
 uint8_t init_OTA() {
   // Hostname defaults to esp8266-[ChipID]
   // ArduinoOTA.setHostname("myesp8266");

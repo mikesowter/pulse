@@ -1,11 +1,18 @@
+#include <arduino.h>
+#include <fs.h>
+
 //  open files to restore progress after restart
 
 char* f2s2(float f);
+extern File fl;
+extern double emT11Energy, emT31Energy;
 
-byte readLogs() {
+void readEnergy();
+void diagMess(const char* mess);
+
+void readLogs() {
   // energy data
-  strcpy(fileName,"/Energy.csv");
-  fl=openFile(fileName,"r");
+  fl = SPIFFS.open("/Energy.csv","r");
   if (fl) {
     readEnergy();
     fl.close();
@@ -13,16 +20,15 @@ byte readLogs() {
   else diagMess("failed to open Energy.csv");
 }
 
-byte readEnergy() {
+void readEnergy() {
   byte dd,hh,mm;
 
   dd = fl.parseInt();
   hh = fl.parseInt();
   mm = fl.parseInt();
   emT11Energy = fl.parseFloat();
-  diagMess(f2s2(emT11Energy));
+//  diagMess(f2s2(emT11Energy));
   emT31Energy = fl.parseFloat();
-  diagMess(f2s2(emT31Energy));
-
-  return 1;
+//  diagMess(f2s2(emT31Energy));
+  return;
 }
