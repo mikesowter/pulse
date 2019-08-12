@@ -1,10 +1,26 @@
 #include <Arduino.h>
+#include <constants.h>
+#include <fs.h>
+
+void diagMess(const char* mess);
+
+extern volatile unsigned long intBuff[];
+extern volatile int watchDog;
+extern volatile byte intPtr;
+extern volatile bool overFlow;
+extern File fd,fe;
+extern volatile int scanFail;
+extern uint8_t ledState;
+
+void errMess(const char* mess);
+void setRed();
+
 
 ICACHE_RAM_ATTR void intServer() {
   if (!overFlow) {
     noInterrupts();
     ledState=digitalRead(LDR);
-    delayMicroseconds(1000);      // 1ms debounce period
+    delayMicroseconds(1000);            // 1ms debounce period
     if (ledState==digitalRead(LDR)) {   // valid change
       digitalWrite(GRN,1-ledState);     // meter led on
       intBuff[intPtr] = millis();
@@ -29,10 +45,8 @@ void ISRwatchDog () {
     errMess("watchDog 60s timeout");
     fd.close();
     fe.close();
-    WiFi.disconnect();
     ESP.restart();
   }
-  scanFail++;
-  if (scanFail == 62) errMess("60s scan failure");
+  if ( ++scanFail == 90 ) errMess("60s scan failure");
   interrupts();
 }

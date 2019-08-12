@@ -1,6 +1,17 @@
 #include <Arduino.h>
+#include <constants.h>
+
+extern volatile unsigned long intBuff[];
+extern volatile byte intPtr;
+extern volatile bool overFlow;
+extern double emT11Energy, emT31Energy;
+extern float power, emMinPower, emMaxPower;
+extern bool waterOn;
+
+void diagMess(const char* mess);
 
 void handleQueue() {
+  volatile uint32_t t0,t1;
   noInterrupts();
   if (overFlow) diagMess(" ISR Overflow");
   for (int in=0;in<ISR_CAP;in++) {

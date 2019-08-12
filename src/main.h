@@ -1,5 +1,6 @@
 #include <arduino.h>
 #include <secrets.h>
+#include <constants.h>
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -33,6 +34,9 @@ void diagMess(const char* mess);
 void errMess(const char* mess);
 char* dateStamp();
 char* timeStamp();
+void handleQueue();
+void ISRwatchDog ();
+ICACHE_RAM_ATTR void intServer();
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
@@ -56,33 +60,23 @@ IPAddress ip(192, 168, 1, 50);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
 IPAddress dns(192, 168, 1, 1);
-const char* ntpServerName = "au.pool.ntp.org";
-const int longStrSize = 10000;
+
 char longStr[longStrSize];        // use C strings for storage efficiency
-const int NTP_PACKET_SIZE = 48;
-const int BUFFER_SIZE = 128;
-const int ISR_CAP = 128;
-byte buffer[BUFFER_SIZE];
+uint8_t buffer[BUFFER_SIZE];
 char outBuf[128];               // for ftpRcv and errMess
-const int TIMEZONE = 10;
-const float HOT_WATER = 3.44;
-const int LDR = 4;
-const int BLU = 12;
-const int GRN = 13;
-const int RED = 14;
 
 struct minStruct {
   float lo;
   float hi;
 } logData;
 
-byte oldMin, oldHour, oldDay, oldMonth;
+uint8_t oldMin, oldHour, oldDay, oldMonth;
 int oldYear, minPtr, htmlLen;
-byte ledState;
+uint8_t ledState;
 bool T31time, waterOn;
 float power, emMinPower, emMaxPower;
 double oldT11Energy, emT11Energy, emT31Energy;
 
-volatile unsigned long intBuff[ISR_CAP];
-volatile byte intPtr = 0;
+volatile unsigned long intBuff[128];
+volatile uint8_t intPtr = 0;
 volatile bool overFlow = 0;

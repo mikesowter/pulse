@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 
 char host[] = "192.168.1.56";   // RMS slave
+extern bool waterOn;
 
 void hotWater()
 {
