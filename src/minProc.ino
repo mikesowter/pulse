@@ -4,6 +4,10 @@
 
 void minProc() {
   yield();
+  // check if hot water's on
+  hotWater();
+  yield();
+  Serial.println("minproc");
   if (oldT11Energy == emT11Energy) power = 0.0;
   oldT11Energy = emT11Energy;
 
@@ -12,7 +16,7 @@ void minProc() {
   if ( hour() != oldHour ) {
     storeData();
     if ( day() != oldDay ) {
-      delay(5000);        // don't overload NTP & FTP servers at midnight
+      if ( minute() == 0 ) return;        // don't overload NTP server at midnight
       setupTime();
       if ( month() != oldMonth ) {
         if ( year() != oldYear ) {

@@ -28,10 +28,11 @@ String resetReason = "restart: " + ESP.getResetReason();
 String resetDetail = ESP.getResetInfo();
 
 void hotWater();
+void delOldFiles();
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
-char date5Back[] = "/XXyymmdd.csv";
+
 char userText[] = "/XXyymmdd.csv";
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
@@ -50,7 +51,7 @@ unsigned int localPort = 2390;   //  a random local port to listen for UDP packe
 
 IPAddress localIP,timeServerIP;
 IPAddress fileServerIP;
-IPAddress ip(192, 168, 1, 62);
+IPAddress ip(192, 168, 1, 50);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
 IPAddress dns(192, 168, 1, 1);

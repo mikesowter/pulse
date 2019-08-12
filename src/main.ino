@@ -98,8 +98,7 @@ void setup() {
 }
 
 void loop() {
-  // check if hot water's on
-  hotWater();
+  uint32_t loopTime = millis();  
   // calculate power from pulses
   if ( intPtr ) handleQueue();
   // check for scheduled activity
@@ -111,5 +110,5 @@ void loop() {
   // check for FTP request
   ftpSrv.handleFTP();
   // reset watch dog timer
-   watchDog = 0;
+  watchDog = 0;
 }

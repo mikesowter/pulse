@@ -1,6 +1,6 @@
 /*-------- display code ----------*/
 
-void addCstring(char* s) {
+void addCstring(const char* s) {
   // reinventing cstring cat function
   int p;
   for (p=0;p<longStrSize;p++) {
