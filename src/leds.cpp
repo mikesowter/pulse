@@ -1,3 +1,11 @@
+#include <arduino.h>
+#include <constants.h>
+
+void setBlue();
+void setGreen();
+void setRed();
+void allOff();
+
 void flashLEDs() {
   pinMode(BLU, OUTPUT);
   pinMode(GRN, OUTPUT);
@@ -41,42 +49,3 @@ void setWhite() {
   digitalWrite(GRN,0);      //turn on Green
   digitalWrite(RED,0);      //turn on Red
 }
-
-/* for witty board
-void setled(String colour){
-  analogWrite(red, 0);
-  analogWrite(green, 0);
-  analogWrite(blue, 0);
-  if(colour == "red"){
-   analogWrite(red, 255);
-  }
-
-  if(colour == "green"){
-   analogWrite(green, 255);
-  }
-
-  if(colour == "blue"){
-   analogWrite(blue, 255);
-  }
-
-  if(colour == "yellow"){
-   analogWrite(red, 255);
-   analogWrite(green, 255);
-  }
-
-  if(colour == "cyan"){
-   analogWrite(green, 255);
-   analogWrite(blue, 255);
-  }
-
-  if(colour == "magenta"){
-   analogWrite(red, 255);
-   analogWrite(blue, 255);
-  }
-
-  if(colour == "white"){
-   analogWrite(red, 255);
-   analogWrite(green, 255);
-   analogWrite(blue, 255);
-  }
-} */

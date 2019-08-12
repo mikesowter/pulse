@@ -37,6 +37,13 @@ char* timeStamp();
 void handleQueue();
 void ISRwatchDog ();
 ICACHE_RAM_ATTR void intServer();
+void flashLEDs();
+void setBlue();
+void setGreen();
+void setRed();
+void setWhite();
+void allOff();
+void minProc();
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";

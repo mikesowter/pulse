@@ -1,4 +1,18 @@
 #include <Arduino.h>
+#include <TimeLib.h>
+#include <fs.h>
+
+void hotWater();
+void setupTime();
+byte storeData();
+void errMess(const char* mess);
+
+extern File fd,fe; 
+extern uint8_t oldMin, oldHour, oldDay, oldMonth;
+extern int oldYear, minPtr, htmlLen;
+extern float power, emMinPower, emMaxPower;
+extern double oldT11Energy, emT11Energy, emT31Energy;
+extern unsigned long t0, t1, minMillis;
 
 // one minute processing
 
