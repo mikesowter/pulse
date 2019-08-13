@@ -14,6 +14,7 @@ extern uint8_t ledState;
 
 void errMess(const char* mess);
 uint8_t storeData();
+uint8_t storeEnergy();
 void setRed();
 
 
@@ -45,6 +46,7 @@ void ISRwatchDog () {
   else if (watchDog >= 60) {
     errMess("watchDog 60s timeout");
     storeData();
+    storeEnergy(); 
     fd.close();
     fe.close();
     ESP.restart();

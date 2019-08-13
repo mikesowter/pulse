@@ -22,7 +22,9 @@ void helpPage();
 void addCstring(const char* s);
 void errMess(const char* mess);
 void diagMess(const char* mess);
+void readLogs();
 uint8_t storeData();
+uint8_t storeEnergy();
 char* dateStamp();
 char* timeStamp();
 
@@ -60,6 +62,7 @@ void handleNotFound() {
   if (strncmp(userText,"/reset",6)==0) {
     errMess("User requested restart");
     storeData();
+    storeEnergy(); 
     fd.close();
     fe.close();
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
@@ -81,7 +84,7 @@ void handleNotFound() {
     server.send ( 200, "text/html", charBuf );
   }
   else if (SPIFFS.exists(userText)) {
-    strcpy(longStr,"Sending File: ");
+    strcpy(longStr,"File: ");
     addCstring(userText);
     addCstring("\r\r");
     fh = SPIFFS.open(userText, "r");
@@ -98,6 +101,11 @@ void handleNotFound() {
   else if (strncmp(userText,"/favicon.ico",12)==0) {
   }
   else if (strncmp(userText,"/apple",6)==0) {
+  }
+  else if (strncmp(userText,"/update",6)==0) {
+    readLogs();
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>new Energy.txt read in<HR></head></html>");
+    server.send ( 200, "text/html", charBuf );
   }
   else {
     strcpy(charBuf,userText);
@@ -162,6 +170,8 @@ void helpPage() {
   addCstring("reset");
   addCstring("<P>");
   addCstring("shutdown");
+  addCstring("<P>");
+  addCstring("update");
   addCstring("<P>");
   addCstring( "<HR></body></html>" );
   server.send ( 200, "text/html", longStr );
