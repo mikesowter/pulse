@@ -56,7 +56,7 @@ void handleMetric() {
 }
 
 void handleNotFound() {
-  server.uri().toCharArray(userText, 14);
+  server.uri().toCharArray(userText, 30);
   Serial.print(timeStamp());
   Serial.println(userText);
   if (strncmp(userText,"/reset",6)==0) {
@@ -103,8 +103,16 @@ void handleNotFound() {
   else if (strncmp(userText,"/apple",6)==0) {
   }
   else if (strncmp(userText,"/update",6)==0) {
-    readLogs();
-    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>new Energy.txt read in<HR></head></html>");
+    char* tok;
+    tok = strtok(userText,",");
+    tok = strtok(NULL,",");
+    emT11Energy = atof(tok);
+    tok = strtok(NULL,",");
+    emT31Energy = atof(tok);
+    sprintf(charBuf,"T11: %f, T31: %f\n",emT11Energy,emT31Energy);
+    diagMess(charBuf);  
+    storeEnergy();  
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>new Energy.txt written<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
   else {

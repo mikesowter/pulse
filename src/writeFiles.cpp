@@ -4,6 +4,7 @@
 void diagMess(const char* mess);
 char* i2sd(uint8_t b);
 char* f2s2(float f);
+char* dateStamp();
 char* timeStamp();
 
 extern File fh,fl;
@@ -20,6 +21,8 @@ uint8_t storeData() {
 uint8_t storeEnergy() {
   // latest energy data
   fl = SPIFFS.open("/Energy.csv", "w");
+  fl.print(dateStamp());
+  fl.print(",");
   fl.print(timeStamp());
   fl.print(",");
   fl.print(f2s2(emT11Energy));

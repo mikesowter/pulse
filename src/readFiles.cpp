@@ -24,6 +24,7 @@ void readEnergy() {
   fl.parseInt();
   fl.parseInt();
   fl.parseInt();
+  fl.parseInt();
   emT11Energy = fl.parseFloat();
 //  diagMess(f2s2(emT11Energy));
   emT31Energy = fl.parseFloat();

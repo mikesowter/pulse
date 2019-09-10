@@ -57,7 +57,7 @@ void addCstring(const char* s);
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
 
-char userText[] = "/XXyymmdd.csv";
+char userText[30];
 char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char charBuf[128];
