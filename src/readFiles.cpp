@@ -3,7 +3,7 @@
 
 //  open files to restore progress after restart
 
-char* f2s2(float f);
+char* f2s3(float f);
 extern File fl;
 extern double emT11Energy, emT31Energy;
 
@@ -26,8 +26,8 @@ void readEnergy() {
   fl.parseInt();
   fl.parseInt();
   emT11Energy = fl.parseFloat();
-//  diagMess(f2s2(emT11Energy));
+//  diagMess(f2s3(emT11Energy));
   emT31Energy = fl.parseFloat();
-//  diagMess(f2s2(emT31Energy));
+//  diagMess(f2s3(emT31Energy));
   return;
 }

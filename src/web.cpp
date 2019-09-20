@@ -12,8 +12,9 @@ extern ESP8266WebServer server;
 extern uint32_t fileSize, lastScan;
 extern File fh, fd, fe;
 extern uint16_t longStrLen;
+extern volatile int scanFail;
 
-char* f2s2(float f);
+char* f2s3(float f);
 char line[80];
 void addCstring(const char* s);
 uint8_t listDiags();
@@ -32,27 +33,28 @@ void handleMetric() {
   longStr[0]='\0';
   addCstring("# TYPE emCurrentPower guage" );
   addCstring("\nemCurrentPower ");
-  addCstring(f2s2(power));
+  addCstring(f2s3(power));
   addCstring("\n# TYPE emMinPower guage" );
   addCstring("\nemMinPower ");
-  addCstring(f2s2(emMinPower));
+  addCstring(f2s3(emMinPower));
   addCstring("\n# TYPE emMaxPower guage" );
   addCstring("\nemMaxPower ");
-  addCstring(f2s2(emMaxPower));
+  addCstring(f2s3(emMaxPower));
   addCstring("\n# TYPE emT11Energy guage" );
   addCstring("\nemT11Energy ");
-  addCstring(f2s2(emT11Energy));
+  addCstring(f2s3(emT11Energy));
   addCstring("\n# TYPE emT31Energy guage" );
   addCstring("\nemT31Energy ");
-  addCstring(f2s2(emT31Energy));
+  addCstring(f2s3(emT31Energy));
   addCstring("\n# TYPE emWifiSignal guage" );
   addCstring("\nemWifiSignal ");
-  addCstring(f2s2(-WiFi.RSSI()));
+  addCstring(f2s3(-WiFi.RSSI()));
   addCstring( "\n" );
   server.send ( 200, "text/plain", longStr );
-  // reset min/max for new period
+  // reset for new period
   emMinPower = power;
   emMaxPower = power;
+  scanFail = 0;
 }
 
 void handleNotFound() {

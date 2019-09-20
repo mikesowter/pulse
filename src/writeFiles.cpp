@@ -3,7 +3,7 @@
 
 void diagMess(const char* mess);
 char* i2sd(uint8_t b);
-char* f2s2(float f);
+char* f2s3(float f);
 char* dateStamp();
 char* timeStamp();
 
@@ -25,9 +25,9 @@ uint8_t storeEnergy() {
   fl.print(",");
   fl.print(timeStamp());
   fl.print(",");
-  fl.print(f2s2(emT11Energy));
+  fl.print(f2s3(emT11Energy));
   fl.print(",");
-  fl.println(f2s2(emT31Energy));
+  fl.println(f2s3(emT31Energy));
   fl.close();
   return 1;
 }

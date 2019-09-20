@@ -11,6 +11,7 @@ extern volatile bool overFlow;
 extern File fd,fe;
 extern volatile int scanFail;
 extern uint8_t ledState;
+extern char charBuf[];
 
 void errMess(const char* mess);
 uint8_t storeData();
@@ -37,20 +38,21 @@ ICACHE_RAM_ATTR void intServer() {
 }
 
 void ISRwatchDog () {
-  noInterrupts();
   watchDog++;
-	if (watchDog == 30) {
-    errMess("watchDog 30s alert");
+	if (watchDog == 15) {
+    errMess("watchDog 15s alert");
     setRed();
   }
-  else if (watchDog >= 60) {
-    errMess("watchDog 60s timeout");
+  else if (watchDog >= 30) {
+    errMess("watchDog 30s timeout");
     storeData();
     storeEnergy(); 
     fd.close();
     fe.close();
     ESP.restart();
   }
-  if ( ++scanFail == 90 ) errMess("60s scan failure");
-  interrupts();
+  if ( ++scanFail%65 == 0 ) {
+    sprintf(charBuf,"%is scan failure",scanFail);
+    errMess(charBuf);
+  }
 }

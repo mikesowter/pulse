@@ -6,7 +6,7 @@ char* timeStamp();
 void printHex(uint8_t X);
 char* i2sh(uint8_t b);
 char* i2sd(uint8_t b);
-char* f2s2(float f);
+char* f2s3(float f);
 char fltStr[12];
 
 extern File fd,fe;
@@ -76,8 +76,9 @@ char* i2sd(uint8_t b) {
   return d2Str;
 }
 
-// convert float into char string ddddd.dd
-char* f2s2(float f) {
-  dtostrf((double)f, 0, 2, fltStr);
+
+// convert float into char string ddddd.ddd
+char* f2s3(float f) {
+  dtostrf((double)f, 0, 3, fltStr);
   return fltStr;
 }
