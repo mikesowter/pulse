@@ -15,13 +15,13 @@ void diagMess(const char* mess);
 void handleQueue() {
   if (overFlow) diagMess(" ISR Overflow");
   for (int in = 0; in < ISR_CAP; in++) {
-    noInterrupts();
+    noInterrupts();         // prevent preemption of NULL flag
     if (intBuff[in] != 0) {
       interrupts();
       t1 = intBuff[in] - t0;
       t0 = intBuff[in];
-      power = 1800.0/(float)t1;
-      if ( power < 20000.0 ) {
+      power = 1800.0/(float)t1;                       // power in kW
+      if ( power < 20.0 ) {
         if ( waterOn ) {
           float capOne = min(1.0,HOT_WATER/power);    // energy inflow > 0
           emT11Energy += 0.0005*(1.0 - capOne); 
@@ -33,6 +33,7 @@ void handleQueue() {
       }
       else {
         sprintf(charBuf," excessive power %fkW ",power);
+        power = emMaxPower;   // limit to previous max
         diagMess(charBuf);
       }
     }

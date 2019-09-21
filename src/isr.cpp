@@ -23,7 +23,7 @@ ICACHE_RAM_ATTR void intServer() {
   if (!overFlow) {
     noInterrupts();
     ledState=digitalRead(LDR);
-    delayMicroseconds(1000);            // 1ms debounce period
+    delayMicroseconds(5000);            // 5ms debounce period
     if (ledState==digitalRead(LDR)) {   // valid change
       digitalWrite(GRN,1-ledState);     // meter led on
       intBuff[intPtr] = millis();
