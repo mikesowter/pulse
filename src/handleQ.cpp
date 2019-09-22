@@ -6,20 +6,21 @@ extern volatile byte intPtr;
 extern volatile bool overFlow;
 extern double emT11Energy, emT31Energy;
 extern float power, emMinPower, emMaxPower;
-extern bool waterOn;
+extern bool waterOn, bounce;
 extern uint32_t t0,t1;
 extern char charBuf[];
+uint8_t buffPtr;
 
 void diagMess(const char* mess);
 
 void handleQueue() {
   if (overFlow) diagMess(" ISR Overflow");
-  for (int in = 0; in < ISR_CAP; in++) {
+  for (buffPtr = 0; buffPtr < ISR_CAP; buffPtr++) {
     noInterrupts();         // prevent preemption of NULL flag
-    if (intBuff[in] != 0) {
+    if (intBuff[buffPtr] != 0) {
       interrupts();
-      t1 = intBuff[in] - t0;
-      t0 = intBuff[in];
+      t1 = intBuff[buffPtr] - t0;
+      t0 = intBuff[buffPtr];
       power = 1800.0/(float)t1;                       // power in kW
       if ( power < 20.0 ) {
         if ( waterOn ) {
@@ -32,13 +33,15 @@ void handleQueue() {
         if ( power < emMinPower ) emMinPower=power;
       }
       else {
-        sprintf(charBuf," excessive power %fkW ",power);
+        sprintf(charBuf," %0.1fkW b:%d %lu %lu %lu %lu %lu %lu",power,bounce,
+                intBuff[0],intBuff[1],intBuff[2],intBuff[3],intBuff[4],intBuff[5]);
         power = emMaxPower;   // limit to previous max
         diagMess(charBuf);
       }
     }
     else break;
   }
+  noInterrupts();
   intPtr = 0;
   overFlow = 0;
   interrupts();

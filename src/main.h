@@ -94,3 +94,4 @@ double oldT11Energy, emT11Energy, emT31Energy;
 volatile uint32_t intBuff[128];
 volatile uint8_t intPtr = 0;
 volatile bool overFlow = 0;
+volatile bool bounce;

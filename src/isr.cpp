@@ -12,6 +12,7 @@ extern File fd,fe;
 extern volatile int scanFail;
 extern uint8_t ledState;
 extern char charBuf[];
+extern volatile bool bounce;
 
 void errMess(const char* mess);
 uint8_t storeData();
@@ -22,10 +23,14 @@ void setRed();
 ICACHE_RAM_ATTR void intServer() {
   if (!overFlow) {
     noInterrupts();
-    ledState=digitalRead(LDR);
-    delayMicroseconds(5000);            // 5ms debounce period
-    if (ledState==digitalRead(LDR)) {   // valid change
-      digitalWrite(GRN,1-ledState);     // meter led on
+    uint32_t us = micros();
+    bounce = false;
+    ledState = digitalRead(LDR);
+    while ( micros() - us < 5000 ) {   // 5ms debounce period
+      if ( ledState != digitalRead(LDR) ) bounce = true;
+    }        
+    if ( !bounce ) {                         // valid change
+      digitalWrite(GRN,1-ledState);    
       intBuff[intPtr] = millis();
       if (intPtr >= ISR_CAP-2) {
         setRed();
