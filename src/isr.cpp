@@ -21,12 +21,19 @@ void setRed();
 
 
 ICACHE_RAM_ATTR void intServer() {
+/*  if ( !overFlow ) {
+    intBuff[intPtr] = millis();
+    intBuff[++intPtr] = 0;
+    if ( intPtr >= ISR_CAP ) overFlow = true;
+  }
+} */
+ 
   if (!overFlow) {
     noInterrupts();
     uint32_t us = micros();
     bounce = false;
     ledState = digitalRead(LDR);
-    while ( micros() - us < 5000 ) {   // 5ms debounce period
+    while ( micros() - us < 5000 ) {         // 5ms debounce period
       if ( ledState != digitalRead(LDR) ) bounce = true;
     }        
     if ( !bounce ) {                         // valid change
@@ -40,7 +47,7 @@ ICACHE_RAM_ATTR void intServer() {
     }
     interrupts();
   }
-}
+}   
 
 void ISRwatchDog () {
   watchDog++;

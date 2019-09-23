@@ -19,7 +19,7 @@ void handleQueue() {
     noInterrupts();         // prevent preemption of NULL flag
     if (intBuff[buffPtr] != 0) {
       interrupts();
-      t1 = intBuff[buffPtr] - t0;
+      t1 = max( 1UL, intBuff[buffPtr] - t0 );
       t0 = intBuff[buffPtr];
       power = 1800.0/(float)t1;                       // power in kW
       if ( power < 20.0 ) {

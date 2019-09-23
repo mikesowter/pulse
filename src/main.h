@@ -37,7 +37,7 @@ char* timeStamp();
 void handleQueue();
 void ISRwatchDog ();
 ICACHE_RAM_ATTR void intServer();
-void flashLEDs();
+void initLEDS();
 void setBlue();
 void setGreen();
 void setRed();

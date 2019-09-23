@@ -16,7 +16,7 @@
 #include "main.h"
 
 void setup() {
-  flashLEDs();
+  initLEDS();
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
@@ -110,10 +110,4 @@ void loop() {
   ftpSrv.handleFTP();
   // reset watch dog timer
   watchDog = 0;
-  // check for contact bounce
-  if ( bounce ) {
-    sprintf(charBuf,"\nbounce then:%d now:%d",ledState,digitalRead(LDR));
-    bounce = false;
-    diagMess(charBuf);
-  }
 }

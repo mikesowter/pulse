@@ -6,7 +6,7 @@ void hotWater();
 void setupTime();
 uint8_t storeData();
 uint8_t storeEnergy();
-void errMess(const char* mess);\
+void errMess(const char* mess);
 void diagMess(const char* mess);
 
 extern File fd,fe; 

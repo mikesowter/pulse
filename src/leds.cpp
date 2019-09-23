@@ -6,7 +6,7 @@ void setGreen();
 void setRed();
 void allOff();
 
-void flashLEDs() {
+void initLEDS() {
   pinMode(BLU, OUTPUT);
   pinMode(GRN, OUTPUT);
   pinMode(RED, OUTPUT);
