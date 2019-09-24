@@ -67,7 +67,7 @@ uint32_t getNTPreply();
 
 uint32_t t0, t1, startMillis, startSeconds, midNight;
 uint32_t importWh = 0;
-unsigned int localPort = 2390;   //  a random local port to listen for UDP packets
+unsigned int localPort = 5234;   //  a random local port to listen for UDP packets
 
 IPAddress localIP,timeServerIP;
 IPAddress fileServerIP;

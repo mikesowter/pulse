@@ -55,8 +55,8 @@ void ISRwatchDog () {
     errMess("watchDog 15s alert");
     setRed();
   }
-  else if (watchDog >= 30) {
-    errMess("watchDog 30s timeout");
+  else if (watchDog >= 60) {
+    errMess("watchDog 60s timeout");
     storeData();
     storeEnergy(); 
     fd.close();

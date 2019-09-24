@@ -1,45 +1,41 @@
+// send a query to the distribution board to see if the hot water is on
+
 #include <arduino.h>
 #include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
 
-char host[] = "192.168.1.56";   // RMS slave
+extern WiFiUDP udp;
+unsigned int otherUdpPort = 4210;  // distant port to talk to
+IPAddress otherIP(192,168,1,56);
+char incomingPacket[64];  
+extern char charBuf[];
+char sendPacket[] = "How's the water?";  // a string to send 
 extern bool waterOn;
 void diagMess(const char* mess);
 
 void hotWater()
 {
-  WiFiClient client;
-  char buff[90];
-  const char getStr[] = "GET /hotwater HTTP/1.1\r\nHost: 192.168.1.56\r\nConnection: close\r\n\r\n";
-  uint8_t i = 0;
-  uint32_t timer = millis();
-
-  if (client.connect(host, 80))
-  {
-    client.write(getStr,73);
-    while (client.connected() || client.available())
-    {
-      if (client.available())
-      {
-        buff[i++] = client.read();
-        if ( i > 86 ) {
-          diagMess("hot water message > 86 bytes");
-          break;
-        }
-      }
-      yield();
+  uint32_t t0,t1,t2;
+  t0 = micros();
+  // send a request to RMS slave to see if hot water is on
+  udp.beginPacket(otherIP, otherUdpPort);
+  udp.write(sendPacket);
+  udp.endPacket();
+  t1 = micros();
+  // wait for 2ms for reply
+  delay(2);
+  int packetSize = udp.parsePacket();
+  if ( packetSize ) {
+    // receive incoming udp packets
+    int len = udp.read(incomingPacket, 64);
+    if (len > 0) incomingPacket[len] = 0;
+    t2 = micros();
+    Serial.println(incomingPacket);
+    if ( t2-t1 > 3000 ) {
+      sprintf(charBuf," Tx delay: %u Rx delay: %u\n",t1-t0,t2-t1);
+      diagMess(charBuf);
     }
-    client.stop();
-    if ( buff[83] != 'O' ) diagMess(" H/W not On or Off");
-    if ( buff[84] == 'n' ) waterOn = true;
-    else waterOn = false;
+    waterOn = ( incomingPacket[5] == 'o' && incomingPacket[6] == 'n' );
   }
-  else
-  {
-    diagMess("hot water connection failed!]");
-    client.stop();
-  }
-  if (millis() - timer > 200) {
-    sprintf(buff,"hot water took %lums",millis() - timer);
-    diagMess(buff);
-  }
+  else diagMess("no response to hotwater query");
 }
