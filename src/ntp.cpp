@@ -1,6 +1,6 @@
 #include <arduino.h>
 #include <constants.h>
-#include <WiFiUdp.h>
+#include <WiFiudp.h>
 #include <ESP8266WiFi.h>
 
 void sendNTPrequest(IPAddress& address);
@@ -57,5 +57,5 @@ unsigned long getNTPreply(){
   // now convert NTP time into Unix time:
   unsigned long GMT = secsSince1900 - 2208988800UL;         // seconds since Jan 1 1970
   //add TIME_ZONE offset and return
-  return GMT + TIMEZONE*3600;
+  return GMT + TIMEZONE*3600 + 5;                           // make pulse 5 seconds fast
 }

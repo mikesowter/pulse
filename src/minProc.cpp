@@ -38,7 +38,6 @@ void minProc() {
   if ( hour() != oldHour ) {
     storeData();
     if ( day() != oldDay ) {
-      if ( minute() == 0 ) return;        // don't overload NTP server at midnight
       setupTime();
       if ( month() != oldMonth ) {
         if ( year() != oldYear ) {

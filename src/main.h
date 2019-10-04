@@ -6,7 +6,7 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266FTPServer.h>
-#include <WiFiUdp.h>
+#include <WiFiudp.h>
 #include <fs.h>
 #include <ESP8266mDNS.h>
 #include <Ticker.h>
@@ -65,7 +65,7 @@ uint32_t getTime();
 uint32_t sendNTPrequest(IPAddress& address);
 uint32_t getNTPreply();
 
-uint32_t t0, t1, startMillis, startSeconds, midNight;
+uint32_t t0, t1, startMillis, startSeconds, UDPreplyUs;
 uint32_t importWh = 0;
 unsigned int localPort = 5234;   //  a random local port to listen for UDP packets
 

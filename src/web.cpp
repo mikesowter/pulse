@@ -9,7 +9,7 @@ extern float power, emMinPower, emMaxPower;
 extern double emT11Energy, emT31Energy;
 extern char longStr[], fileSizeStr[], fileName[], userText[], charBuf[];
 extern ESP8266WebServer server;
-extern uint32_t fileSize, lastScan;
+extern uint32_t fileSize, lastScan, UDPreplyUs;
 extern File fh, fd, fe;
 extern uint16_t longStrLen;
 extern volatile int scanFail;
@@ -46,6 +46,9 @@ void handleMetric() {
   addCstring("\n# TYPE emT31Energy guage" );
   addCstring("\nemT31Energy ");
   addCstring(f2s3(emT31Energy));
+  addCstring("\n# TYPE emUDPdelay guage" );
+  addCstring("\nemUDPdelay ");
+  addCstring(f2s3((float)UDPreplyUs/1000.0));
   addCstring("\n# TYPE emWifiSignal guage" );
   addCstring("\nemWifiSignal ");
   addCstring(f2s3(-WiFi.RSSI()));
