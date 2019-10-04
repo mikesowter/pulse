@@ -25,7 +25,6 @@ void errMess(const char* mess);
 void diagMess(const char* mess);
 void readLogs();
 uint8_t storeData();
-uint8_t storeEnergy();
 char* dateStamp();
 char* timeStamp();
 
@@ -67,7 +66,6 @@ void handleNotFound() {
   if (strncmp(userText,"/reset",6)==0) {
     errMess("User requested restart");
     storeData();
-    storeEnergy(); 
     fd.close();
     fe.close();
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
@@ -116,8 +114,7 @@ void handleNotFound() {
     emT31Energy = atof(tok);
     sprintf(charBuf,"T11: %f, T31: %f\n",emT11Energy,emT31Energy);
     diagMess(charBuf);  
-    storeEnergy();  
-    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>new Energy.txt written<HR></head></html>");
+    strcpy(charBuf,"<!DOCTYPE html><html><head><HR>T11 and T31 updated<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
   else {

@@ -18,17 +18,3 @@ uint8_t storeData() {
   return 1;
 }
 
-uint8_t storeEnergy() {
-  // latest energy data
-  fl = SPIFFS.open("/Energy.csv", "w");
-  fl.print(dateStamp());
-  fl.print(",");
-  fl.print(timeStamp());
-  fl.print(",");
-  fl.print(f2s3(emT11Energy));
-  fl.print(",");
-  fl.println(f2s3(emT31Energy));
-  fl.close();
-  return 1;
-}
-

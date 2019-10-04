@@ -5,7 +5,6 @@
 void hotWater();
 void setupTime();
 uint8_t storeData();
-uint8_t storeEnergy();
 void errMess(const char* mess);
 void diagMess(const char* mess);
 
@@ -27,13 +26,6 @@ void minProc() {
   Serial.println("minproc");
   if (oldT11Energy == emT11Energy) power = 0.0;
   oldT11Energy = emT11Energy;
-
-  uint32_t t2 = millis();
-  if ( minute()%5 == 0 ) {
-    storeEnergy();                        // at 5kW gives max .4kWh error
-//    sprintf(charBuf,"store took %li ms",millis() - t2);
-//    diagMess(charBuf);
-  }
 
   if ( hour() != oldHour ) {
     storeData();

@@ -74,7 +74,7 @@ void setup() {
 	resetDetail.toCharArray(charBuf,resetDetail.length()+1);
 	if ( charBuf[16] != '0' )	diagMess(charBuf);  // exception detail
 
-  readLogs();  // read energy this month
+  getLastScan();  // read most recent prometheus scan (up to 5 minutes ago)
 
   attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
   interrupts();

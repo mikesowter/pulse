@@ -32,8 +32,8 @@ void handleQueue() {
         if ( power > emMaxPower ) emMaxPower=power;
         if ( power < emMinPower ) emMinPower=power;
       }
-      else {
-        sprintf(charBuf," %0.1fkW b:%d %lu %lu %lu %lu %lu %lu",power,bounce,
+      else if ( power < 50.0 ) {
+        sprintf(charBuf," %0.1fkW 0:%lu 1:%lu 2:%lu 3:%lu 4:%lu 5:%lu",power,
                 intBuff[0],intBuff[1],intBuff[2],intBuff[3],intBuff[4],intBuff[5]);
         power = emMaxPower;   // limit to previous max
         diagMess(charBuf);

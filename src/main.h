@@ -46,7 +46,7 @@ void allOff();
 void minProc();
 uint8_t openFile(File fileName, const char* s);
 uint8_t init_OTA();
-void readLogs();
+void getLastScan();
 void setupTime();
 void handleMetric();
 void handleNotFound();
