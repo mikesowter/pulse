@@ -20,9 +20,6 @@ extern char charBuf[];
 
 void minProc() {
   yield();
-  // check if hot water's on
-  hotWater();
-  yield();
   Serial.println("minproc");
   if (oldT11Energy == emT11Energy) power = 0.0;
   oldT11Energy = emT11Energy;

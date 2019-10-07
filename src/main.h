@@ -87,6 +87,7 @@ struct minStruct {
 uint8_t oldMin, oldHour, oldDay, oldMonth;
 int oldYear, minPtr, htmlLen;
 uint8_t ledState;
+uint8_t scanSecs;
 bool T31time, waterOn;
 float power, emMinPower, emMaxPower;
 double oldT11Energy, emT11Energy, emT31Energy;

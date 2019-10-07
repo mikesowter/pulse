@@ -102,6 +102,8 @@ void loop() {
   if ( intPtr ) handleQueue();
   // check for scheduled activity
   if ( minute() != oldMin ) minProc();
+  // check if hot water's on before scan
+  if ( second() == scanSecs-2 ) hotWater();
   // check for web request
   server.handleClient();
   // check for OTA

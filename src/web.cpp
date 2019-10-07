@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <fs.h>
 #include <ESP8266WebServer.h>
+#include <TimeLib.h>
 #include <constants.h>
 
 extern File fd,fe;
@@ -13,8 +14,10 @@ extern uint32_t fileSize, lastScan, UDPreplyUs;
 extern File fh, fd, fe;
 extern uint16_t longStrLen;
 extern volatile int scanFail;
+extern uint8_t scanSecs;
 
 char* f2s3(float f);
+char* i2sd(uint8_t b);
 char line[80];
 void addCstring(const char* s);
 uint8_t listDiags();
@@ -29,6 +32,7 @@ char* dateStamp();
 char* timeStamp();
 
 void handleMetric() {
+  scanSecs = second();
   longStr[0]='\0';
   addCstring("# TYPE emCurrentPower guage" );
   addCstring("\nemCurrentPower ");
@@ -48,6 +52,9 @@ void handleMetric() {
   addCstring("\n# TYPE emUDPdelay guage" );
   addCstring("\nemUDPdelay ");
   addCstring(f2s3((float)UDPreplyUs/1000.0));
+  addCstring("\n# TYPE emScanSecs guage" );
+  addCstring("\nemScanSecs ");
+  addCstring(i2sd(scanSecs));
   addCstring("\n# TYPE emWifiSignal guage" );
   addCstring("\nemWifiSignal ");
   addCstring(f2s3(-WiFi.RSSI()));
@@ -75,14 +82,14 @@ void handleNotFound() {
   else if (strncmp(userText,"/deldiags",9)==0) {
     SPIFFS.remove("/diags.txt");
     fd = SPIFFS.open("/diags.txt", "a+");
-    fd.println(dateStamp());
+    errMess("diags deleted");
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
   else if (strncmp(userText,"/delerrs",9)==0) {
     SPIFFS.remove("/errmess.txt");
     fd = SPIFFS.open("/errmess.txt", "a+");
-    fd.println(dateStamp());
+    errMess("errors deleted");
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
