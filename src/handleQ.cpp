@@ -35,9 +35,10 @@ void handleQueue() {
       else if ( power < 50.0 ) {
         sprintf(charBuf," %0.1fkW 0:%lu 1:%lu 2:%lu 3:%lu 4:%lu 5:%lu",power,
                 intBuff[0],intBuff[1],intBuff[2],intBuff[3],intBuff[4],intBuff[5]);
-        power = emMaxPower;   // limit to previous max
+        power = emMaxPower;       // limit to previous max
         diagMess(charBuf);
       }
+      else power = emMaxPower;    // limit to previous max
     }
     else break;
   }

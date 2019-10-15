@@ -21,6 +21,7 @@ uint8_t init_OTA() {
       type = "filesystem";  */
 
     // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+
     Serial.println("OTA updating ");
   });
   ArduinoOTA.onEnd([]() {
@@ -28,6 +29,7 @@ uint8_t init_OTA() {
   });
   ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
     watchDog = 0;
+    yield();
     Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
   });
   ArduinoOTA.onError([](ota_error_t error) {

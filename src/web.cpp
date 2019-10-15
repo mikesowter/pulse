@@ -72,11 +72,11 @@ void handleNotFound() {
   Serial.println(userText);
   if (strncmp(userText,"/reset",6)==0) {
     errMess("User requested restart");
-    storeData();
     fd.close();
     fe.close();
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>User requested restart<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
+    delay(1000);
     ESP.restart();
   }
   else if (strncmp(userText,"/deldiags",9)==0) {
@@ -149,6 +149,7 @@ uint8_t listDiags() {
 void handleDir() {
   char fileSizeStr[]="999999";
   longStr[0]='\0';
+  SPIFFS.info(fs_info);
   ltoa(fs_info.usedBytes,fileSizeStr,10);
   addCstring(ltoa(fs_info.usedBytes,fileSizeStr,10));
 	addCstring(" bytes used:\n");

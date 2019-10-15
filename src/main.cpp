@@ -20,7 +20,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 4.0  2019-08-09");
+  Serial.println("\nPulse Reader Version 4.1  2019-10-11");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -54,7 +54,7 @@ void setup() {
   // indicate NTP success
   setGreen();
 
-  // if(!SPIFFS.format()) Serial.println("SPIFFS.format failed");
+  //if(!SPIFFS.format()) Serial.println("SPIFFS.format failed");
   if( !SPIFFS.begin() )
   {
     Serial.println("SPIFFS.begin failed");
@@ -102,8 +102,8 @@ void loop() {
   if ( intPtr ) handleQueue();
   // check for scheduled activity
   if ( minute() != oldMin ) minProc();
-  // check if hot water's on before scan
-  if ( second() == scanSecs-2 ) hotWater();
+  // check if hot water's on
+  hotWater();
   // check for web request
   server.handleClient();
   // check for OTA

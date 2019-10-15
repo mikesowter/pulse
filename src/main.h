@@ -84,7 +84,7 @@ struct minStruct {
   float hi;
 } logData;
 
-uint8_t oldMin, oldHour, oldDay, oldMonth;
+uint8_t oldSec, oldMin, oldHour, oldDay, oldMonth;
 int oldYear, minPtr, htmlLen;
 uint8_t ledState;
 uint8_t scanSecs;
