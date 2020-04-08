@@ -27,7 +27,6 @@ void addCstring(const char* s);
 void errMess(const char* mess);
 void diagMess(const char* mess);
 void readLogs();
-uint8_t storeData();
 char* dateStamp();
 char* timeStamp();
 

@@ -4,7 +4,7 @@
 #define BUFFER_SIZE 128
 #define ISR_CAP 127
 #define TIMEZONE 10
-#define HOT_WATER 3.44
+#define HOT_WATER 3.3
 #define LDR 4
 #define BLU 12
 #define GRN 13

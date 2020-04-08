@@ -15,7 +15,6 @@ extern char charBuf[];
 extern volatile bool bounce;
 
 void errMess(const char* mess);
-uint8_t storeData();
 void setRed();
 
 
@@ -56,13 +55,17 @@ void ISRwatchDog () {
   }
   else if (watchDog >= 60) {
     errMess("watchDog 60s timeout");
-    storeData();
     fd.close();
     fe.close();
     ESP.restart();
   }
-  if ( ++scanFail%65 == 0 ) {
+  if ( ++scanFail%90 == 0 ) {
     sprintf(charBuf,"%is scan failure",scanFail);
     errMess(charBuf);
+    if (scanFail > 300) {
+      fd.close();
+      fe.close();
+      ESP.restart();
+    }
   }
 }

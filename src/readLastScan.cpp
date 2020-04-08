@@ -10,7 +10,7 @@ void getLastScan() {
   WiFiClient client;
   char buff[1024];
   uint16_t buffPtr, tariff, numPtr;
-  uint32_t t = now()-36000;   // back to zulu time for prometheus
+  uint32_t t = now()-36000;   // zulu timestamps in prometheus data
   
   char Str1[] = "GET /api/v1/query_range?query=emT";
   char Str2[] = "_1Energy&start=";   
@@ -22,7 +22,7 @@ void getLastScan() {
   for (tariff=1; tariff<4; tariff=tariff+2) {
     strcpy(buff,Str1);
     strcat(buff,Str2);
-    dtostrf((double)(t-300), 0, 0, Str3);
+    dtostrf((double)(t-400), 0, 0, Str3);
     strcat(buff,Str3);
     strcat(buff,Str4);
     dtostrf((double)t, 0, 0, Str5);
