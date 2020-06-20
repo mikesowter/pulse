@@ -7,6 +7,7 @@
 extern File fd,fe;
 extern FSInfo fs_info;
 extern float power, emMinPower, emMaxPower;
+extern float T11_day, T31_day;
 extern double emT11Energy, emT31Energy;
 extern char longStr[], fileSizeStr[], fileName[], userText[], charBuf[];
 extern ESP8266WebServer server;
@@ -48,6 +49,12 @@ void handleMetric() {
   addCstring("\n# TYPE emT31Energy guage" );
   addCstring("\nemT31Energy ");
   addCstring(f2s3(emT31Energy));
+  addCstring("\n# TYPE emT11_day guage" );
+  addCstring("\nemT11_day ");
+  addCstring(f2s3(T11_day));
+  addCstring("\n# TYPE emT31_day guage" );
+  addCstring("\nemT31_day ");
+  addCstring(f2s3(T31_day));
   addCstring("\n# TYPE emUDPdelay guage" );
   addCstring("\nemUDPdelay ");
   addCstring(f2s3((float)UDPreplyUs/1000.0));

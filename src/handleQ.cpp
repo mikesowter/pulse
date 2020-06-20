@@ -5,6 +5,7 @@ extern volatile unsigned long intBuff[];
 extern volatile byte intPtr;
 extern volatile bool overFlow;
 extern double emT11Energy, emT31Energy;
+extern float T11_day, T31_day;
 extern float power, emMinPower, emMaxPower;
 extern bool waterOn, bounce;
 extern uint32_t t0,t1;
@@ -27,8 +28,13 @@ void handleQueue() {
           float capOne = min(1.0,HOT_WATER/power);    // energy inflow > 0
           emT11Energy += 0.0005*(1.0 - capOne); 
           emT31Energy += 0.0005*capOne;               // unit is kWh
+          T11_day += 0.5*(1.0 - capOne);              // unit is Wh
+          T31_day += 0.5*capOne;                      // unit is Wh
         }
-        else emT11Energy += 0.0005;
+        else {
+          emT11Energy += 0.0005;
+          T11_day += 0.5;
+        }
         if ( power > emMaxPower ) emMaxPower=power;
         if ( power < emMinPower ) emMinPower=power;
       }
