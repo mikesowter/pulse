@@ -20,7 +20,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 4.1  2019-10-11");
+  Serial.println("\nPulse Reader Version 4.2  2021-01-11");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -54,20 +54,20 @@ void setup() {
   // indicate NTP success
   setGreen();
 
-  //if(!SPIFFS.format()) Serial.println("SPIFFS.format failed");
-  if( !SPIFFS.begin() )
+  //if (!LittleFS.format()) Serial.println("LittleFS.format failed");
+  if( !LittleFS.begin() )
   {
-    Serial.println("SPIFFS.begin failed");
-    setRed();   // indicate SPIFFS issue
+    Serial.println("LittleFS.begin failed");
+    setRed();   // indicate LittleFS issue
   }
-  SPIFFS.info(fs_info);
+  LittleFS.info(fs_info);
   Serial.print(fs_info.totalBytes);
   Serial.println(" bytes available");
   Serial.print(fs_info.usedBytes);
   Serial.println(" bytes used:");
   delOldFiles();
-  fd = SPIFFS.open("/diags.txt","a+");
-  fe = SPIFFS.open("/errmess.txt","a+");
+  fd = LittleFS.open("/diags.txt","a+");
+  fe = LittleFS.open("/errmess.txt","a+");
   // lookup reason for restart
 	resetReason.toCharArray(charBuf,resetReason.length()+1);
 	diagMess(charBuf);       // restart message

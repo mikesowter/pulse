@@ -1,6 +1,6 @@
 #include <arduino.h>
 #include <TimeLib.h>
-#include <fs.h>
+#include <LittleFS.h>
 
 char date30Back[] = "/XXyymmdd.csv";
 extern char fileName[];
@@ -18,7 +18,7 @@ void delOldFiles() {
   strcat(date30Back,i2sd(day(now()-SECS_30_DAYS)));
   strcat(date30Back,".csv");
 
-  Dir dir = SPIFFS.openDir("/");
+  Dir dir = LittleFS.openDir("/");
   while (dir.next()) {
     dir.fileName().toCharArray(fileName, 14);
     Serial.print(fileName);
@@ -26,7 +26,7 @@ void delOldFiles() {
   //    checkFileSent();
     if (strcmp(fileName,date30Back)<0 && fileName[1]=='P') {
       Serial.print("Remove old files:\n");
-      if (SPIFFS.remove(fileName)) {
+      if (LittleFS.remove(fileName)) {
         strcpy(charBuf,fileName);
         strcat(charBuf," deleted");
         errMess(charBuf);

@@ -22,6 +22,8 @@ void setupTime() {
   strcpy(todayName,"/em");
   strcat(todayName,dateStamp());
   strcat(todayName,".csv");
+
+  Serial.printf("%s %s\n",dateStamp(),timeStamp());
 }
 
 void dayCheck() {

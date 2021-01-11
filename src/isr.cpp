@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <constants.h>
-#include <fs.h>
+#include <LittleFS.h>
 
 void diagMess(const char* mess);
 

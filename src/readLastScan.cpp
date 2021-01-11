@@ -43,7 +43,7 @@ void getLastScan() {
         }
       }
       buff[buffPtr] = '\0';
-      Serial.printf("\n%d bytes: \n%s\n",buffPtr,buff);
+      // Serial.printf("\n%d bytes: \n%s\n",buffPtr,buff);
       for (numPtr = buffPtr-8; numPtr>buffPtr-18; numPtr-- ) {
         if (buff[numPtr] == '\"') {
           if (tariff == 1) emT11Energy = atof(buff+numPtr+1);

@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <TimeLib.h>
-#include <fs.h>
+#include <LittleFS.h>
 
 void hotWater();
 void setupTime();

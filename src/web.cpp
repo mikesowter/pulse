@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <fs.h>
+#include <LittleFS.h>
 #include <ESP8266WebServer.h>
 #include <TimeLib.h>
 #include <constants.h>
@@ -86,24 +86,24 @@ void handleNotFound() {
     ESP.restart();
   }
   else if (strncmp(userText,"/deldiags",9)==0) {
-    SPIFFS.remove("/diags.txt");
-    fd = SPIFFS.open("/diags.txt", "a+");
+    LittleFS.remove("/diags.txt");
+    fd = LittleFS.open("/diags.txt", "a+");
     errMess("diags deleted");
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
   else if (strncmp(userText,"/delerrs",9)==0) {
-    SPIFFS.remove("/errmess.txt");
-    fd = SPIFFS.open("/errmess.txt", "a+");
+    LittleFS.remove("/errmess.txt");
+    fd = LittleFS.open("/errmess.txt", "a+");
     errMess("errors deleted");
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Error Messages deleted<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
-  else if (SPIFFS.exists(userText)) {
+  else if (LittleFS.exists(userText)) {
     strcpy(longStr,"File: ");
     addCstring(userText);
     addCstring("\r\r");
-    fh = SPIFFS.open(userText, "r");
+    fh = LittleFS.open(userText, "r");
 
     while (fh.available()) {
       int k=fh.readBytesUntil('\r',line,80);
@@ -155,11 +155,11 @@ uint8_t listDiags() {
 void handleDir() {
   char fileSizeStr[]="999999";
   longStr[0]='\0';
-  SPIFFS.info(fs_info);
+  LittleFS.info(fs_info);
   ltoa(fs_info.usedBytes,fileSizeStr,10);
   addCstring(ltoa(fs_info.usedBytes,fileSizeStr,10));
 	addCstring(" bytes used:\n");
-  Dir dir = SPIFFS.openDir("/");
+  Dir dir = LittleFS.openDir("/");
   while (dir.next()) {
     dir.fileName().toCharArray(fileName, 14);
     addCstring("\n");
