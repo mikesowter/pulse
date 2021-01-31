@@ -8,7 +8,7 @@ void diagMess(const char* mess);
  
 void getLastScan() {
   WiFiClient client;
-  char buff[1024];
+  char buff[1000];
   uint16_t buffPtr, tariff, numPtr;
   uint32_t t = now()-36000;   // zulu timestamps in prometheus data
   
@@ -22,7 +22,7 @@ void getLastScan() {
   for (tariff=1; tariff<4; tariff=tariff+2) {
     strcpy(buff,Str1);
     strcat(buff,Str2);
-    dtostrf((double)(t-400), 0, 0, Str3);
+    dtostrf((double)(t-900), 0, 0, Str3);
     strcat(buff,Str3);
     strcat(buff,Str4);
     dtostrf((double)t, 0, 0, Str5);
@@ -43,7 +43,7 @@ void getLastScan() {
         }
       }
       buff[buffPtr] = '\0';
-      // Serial.printf("\n%d bytes: \n%s\n",buffPtr,buff);
+      Serial.printf("\n%d bytes: \n%s\n",buffPtr,buff);
       for (numPtr = buffPtr-8; numPtr>buffPtr-18; numPtr-- ) {
         if (buff[numPtr] == '\"') {
           if (tariff == 1) emT11Energy = atof(buff+numPtr+1);

@@ -8,7 +8,7 @@
 
   T31 (hotwater) energy separated from T11 by polling RMS slave
 
-  Server scraped by prometheus and data stored in crateDB
+  Server scraped by prometheus and data stored in influxDB
 
   Mike Sowter  Aug 2018
 
@@ -20,7 +20,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 4.2  2021-01-11");
+  Serial.println("\nPulse Reader Version 4.2  2021-01-31");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);

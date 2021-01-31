@@ -88,7 +88,7 @@ void handleNotFound() {
   else if (strncmp(userText,"/deldiags",9)==0) {
     LittleFS.remove("/diags.txt");
     fd = LittleFS.open("/diags.txt", "a+");
-    errMess("diags deleted");
+    diagMess("diags deleted");
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>Diagnostics deleted<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
