@@ -90,8 +90,7 @@ uint8_t ledState;
 uint8_t scanSecs;
 bool T31time, waterOn;
 float power, emMinPower, emMaxPower;
-float T11_day = 0.0, T31_day = 0.0;
-double oldT11Energy, emT11Energy, emT31Energy;
+double oldT11Energy, emT11Energy, emT31Energy, T11_midnight, T31_midnight;
 
 volatile uint32_t intBuff[128];
 volatile uint8_t intPtr = 0;

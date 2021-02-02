@@ -28,12 +28,9 @@ void handleQueue() {
           float capOne = min(1.0,HOT_WATER/power);    // energy inflow > 0
           emT11Energy += 0.0005*(1.0 - capOne); 
           emT31Energy += 0.0005*capOne;               // unit is kWh
-          T11_day += 0.5*(1.0 - capOne);              // unit is Wh
-          T31_day += 0.5*capOne;                      // unit is Wh
         }
         else {
           emT11Energy += 0.0005;
-          T11_day += 0.5;
         }
         if ( power > emMaxPower ) emMaxPower=power;
         if ( power < emMinPower ) emMinPower=power;
