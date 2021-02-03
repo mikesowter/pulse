@@ -28,21 +28,23 @@ ICACHE_RAM_ATTR void intServer() {
  
   if (!overFlow) {
     noInterrupts();
-    uint32_t us = micros();
+
+/*    uint32_t us = micros();
     bounce = false;
     ledState = digitalRead(LDR);
     while ( micros() - us < 5000 ) {         // 5ms debounce period
       if ( ledState != digitalRead(LDR) ) bounce = true;
     }        
-    if ( !bounce ) {                         // valid change
-      digitalWrite(GRN,1-ledState);    
-      intBuff[intPtr] = millis();
-      if (intPtr >= ISR_CAP-2) {
-        setRed();
-        overFlow = 1;
-      }
-      intBuff[++intPtr] = 0;
+    if ( !bounce ) {                         // valid change  */
+
+    digitalWrite(GRN,1-ledState);    
+    intBuff[intPtr] = millis();
+    if (intPtr >= ISR_CAP-2) {
+      setRed();
+      overFlow = 1;
     }
+    intBuff[++intPtr] = 0;
+//    }
     interrupts();
   }
 }   
