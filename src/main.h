@@ -5,7 +5,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266FTPServer.h>
+#include <ESPFTPServer.h>
 #include <WiFiudp.h>
 #include <LittleFS.h>
 #include <ESP8266mDNS.h>
@@ -14,6 +14,8 @@
 extern "C" {
 #include "user_interface.h"
 }
+
+#define FS_ID LittleFS
 
 ESP8266WebServer server ( 80 );
 FtpServer ftpSrv;
