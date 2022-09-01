@@ -61,13 +61,8 @@ void ISRwatchDog () {
     fe.close();
     ESP.restart();
   }
-  if ( ++scanFail%90 == 0 ) {
+  if ( ++scanFail%300 == 0 ) {
     sprintf(charBuf,"%is scan failure",scanFail);
     errMess(charBuf);
-    if (scanFail > 600) {
-      fd.close();
-      fe.close();
-      ESP.restart();
-    }
   }
 }
