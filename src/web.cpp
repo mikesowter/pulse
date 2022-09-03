@@ -13,8 +13,8 @@ extern ESP8266WebServer server;
 extern uint32_t fileSize, lastScan, UDPreplyUs;
 extern File fh, fd, fe;
 extern uint16_t longStrLen;
-extern volatile int scanFail;
 extern uint8_t scanSecs;
+extern bool scanFail;
 
 char* f2s3(float f);
 char* i2sd(uint8_t b);
@@ -68,7 +68,7 @@ void handleMetric() {
   // reset for new period
   emMinPower = power;
   emMaxPower = power;
-  scanFail = 0;
+  lastScan = millis();
 }
 
 void handleNotFound() {

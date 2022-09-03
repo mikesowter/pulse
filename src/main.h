@@ -26,7 +26,6 @@ FSInfo fs_info;
 File fl,fd,fe,fh;          // logs, diagnostics and errors
 Ticker secondTick;
 volatile int watchDog = 0;
-volatile int scanFail = 0;
 String resetReason = "restart: " + ESP.getResetReason();
 String resetDetail = ESP.getResetInfo();
 
@@ -55,6 +54,7 @@ void handleNotFound();
 void handleDir();
 uint8_t listDiags();
 void addCstring(const char* s);
+void checkScan();
 
 char fileName[] = "/XXyymmdd.csv";
 char todayName[] = "/XXyymmdd.csv";
@@ -68,7 +68,7 @@ uint32_t sendNTPrequest(IPAddress& address);
 uint32_t getNTPreply();
 
 uint32_t t0, t1, startMillis, startSeconds, UDPreplyUs;
-uint32_t importWh = 0;
+uint32_t lastScan, importWh = 0;
 unsigned int localPort = 5234;   //  a random local port to listen for UDP packets
 
 IPAddress localIP,timeServerIP;
@@ -90,7 +90,7 @@ uint8_t oldSec, oldMin, oldHour, oldDay, oldMonth;
 int oldYear, minPtr, htmlLen;
 uint8_t ledState;
 uint8_t scanSecs;
-bool T31time, waterOn;
+bool T31time, waterOn, scanFail;
 float power, emMinPower, emMaxPower;
 double oldT11Energy, emT11Energy, emT31Energy, T11_midnight, T31_midnight;
 

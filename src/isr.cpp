@@ -9,7 +9,6 @@ extern volatile int watchDog;
 extern volatile byte intPtr;
 extern volatile bool overFlow;
 extern File fd,fe;
-extern volatile int scanFail;
 extern uint8_t ledState;
 extern char charBuf[];
 extern volatile bool bounce;
@@ -60,9 +59,5 @@ void ISRwatchDog () {
     fd.close();
     fe.close();
     ESP.restart();
-  }
-  if ( ++scanFail%300 == 0 ) {
-    sprintf(charBuf,"%is scan failure",scanFail);
-    errMess(charBuf);
   }
 }

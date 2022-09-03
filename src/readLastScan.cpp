@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <time.h>
  
-char host[] = "192.168.1.20";   // RPi-1 prometheus and influx server
+char host[] = "192.168.1.24";   // RPi-2 prometheus and influx server
 extern double emT11Energy, emT31Energy;
 void diagMess(const char* mess);
  

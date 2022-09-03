@@ -110,6 +110,23 @@ void loop() {
   ArduinoOTA.handle();
   // check for FTP request
   ftpSrv.handleFTP(FS_ID);
+  // check the network
+  checkScan();
   // reset watch dog timer
   watchDog = 0;
+}
+
+void checkScan() {
+  if ( millis() - lastScan > 30000UL ) {
+    if (!scanFail) {
+      diagMess("no scan for 30s");
+      scanFail = true;
+    }
+  }
+  else {
+    if (scanFail) {
+      scanFail = false;
+      diagMess("scan restored");
+    }
+  }
 }
