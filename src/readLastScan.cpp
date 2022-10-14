@@ -17,7 +17,7 @@ void getLastScan() {
   char Str3[] = "1569541500";
   char Str4[] = "&end=";
   char Str5[] = "1569541619";
-  char Str6[] = "&step=60&timeout=10s HTTP/1.1\r\nHost: 192.168.1.20\r\nConnection: close\r\n\r\n";
+  char Str6[] = "&step=60&timeout=10s HTTP/1.1\r\nHost: 192.168.1.24\r\nConnection: close\r\n\r\n";
 
   for (tariff=1; tariff<4; tariff=tariff+2) {
     strcpy(buff,Str1);

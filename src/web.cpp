@@ -129,6 +129,21 @@ void handleNotFound() {
     strcpy(charBuf,"<!DOCTYPE html><html><head><HR>T11 and T31 updated<HR></head></html>");
     server.send ( 200, "text/html", charBuf );
   }
+  else if (strncmp(userText,"/format",7)==0) {
+    fd.close();
+    fe.close();
+    if (!LittleFS.format()) Serial.println("LittleFS.format failed");
+    LittleFS.info(fs_info);
+    Serial.print(fs_info.totalBytes);
+    Serial.println(" bytes available");
+    Serial.print(fs_info.usedBytes);
+    Serial.println(" bytes used:");
+    fd = LittleFS.open("/diags.txt","a+");
+    fe = LittleFS.open("/errmess.txt","a+");
+    sprintf(charBuf,"reformatted,%d bytes available",fs_info.totalBytes);
+    diagMess(charBuf);  
+    fd.flush();
+  }
   else {
     strcpy(charBuf,userText);
     strcat(charBuf," is not a valid option");
@@ -187,6 +202,8 @@ void helpPage() {
   addCstring("delerrs");
   addCstring("<P>");
   addCstring("dir");
+  addCstring("<HR>");
+  addCstring("format");
   addCstring("<HR>");
   addCstring("metrics");
   addCstring("<P>");
