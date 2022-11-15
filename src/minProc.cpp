@@ -20,7 +20,6 @@ extern char charBuf[];
 
 void minProc() {
   yield();
-  Serial.println("minproc");
   if (oldT11Energy == emT11Energy) power = 0.0;
   oldT11Energy = emT11Energy;
 
@@ -32,7 +31,7 @@ void minProc() {
       T31_midnight = emT31Energy;
       if ( month() != oldMonth ) {
         if ( year() != oldYear ) {
-          errMess("Happy New Year!!!!!");
+          diagMess("Happy New Year!!!!!");
           oldYear = year();
         }
         oldMonth = month();
@@ -45,5 +44,4 @@ void minProc() {
   // flush fault files
   fd.flush();
   fe.flush();
-  yield();
 }
