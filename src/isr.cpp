@@ -17,7 +17,7 @@ void errMess(const char* mess);
 void setRed();
 
 
-ICACHE_RAM_ATTR void intServer() {
+IRAM_ATTR void intServer() {
 /*  if ( !overFlow ) {
     intBuff[intPtr] = millis();
     intBuff[++intPtr] = 0;

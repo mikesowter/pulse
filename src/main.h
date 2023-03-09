@@ -37,7 +37,7 @@ char* dateStamp();
 char* timeStamp();
 void handleQueue();
 void ISRwatchDog ();
-ICACHE_RAM_ATTR void intServer();
+IRAM_ATTR void intServer();
 void initLEDS();
 void setBlue();
 void setGreen();

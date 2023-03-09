@@ -20,7 +20,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 4.3  20221014");
+  Serial.println("\nPulse Reader Version 4.3  20230310");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -117,9 +117,9 @@ void loop() {
 }
 
 void checkScan() {
-  if ( millis() - lastScan > 30000UL ) {
+  if ( millis() - lastScan > 60000UL ) {
     if (!scanFail) {
-      diagMess("no scan for 30s");
+      diagMess("no scan for 60s");
       scanFail = true;
     }
   }
