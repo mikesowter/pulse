@@ -12,6 +12,8 @@
 
   Mike Sowter  Aug 2018
 
+  New meter fixed pulse requires RISING int handler
+
 */
 #include "main.h"
 
@@ -20,7 +22,7 @@ void setup() {
   secondTick.attach(1,ISRwatchDog);
 
   Serial.begin(115200);
-  Serial.println("\nPulse Reader Version 4.3  20230310");
+  Serial.println("\nPulse Reader Version 4.4  20240612");
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -76,7 +78,7 @@ void setup() {
 
   getLastScan();  // read most recent prometheus scan (up to 5 minutes ago)
 
-  attachInterrupt(digitalPinToInterrupt(LDR), intServer, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(LDR), intServer, RISING);
   interrupts();
 
   if ( MDNS.begin ( "pulse" ) ) {

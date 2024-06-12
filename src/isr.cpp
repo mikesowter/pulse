@@ -36,6 +36,7 @@ IRAM_ATTR void intServer() {
     }        
     if ( !bounce ) {                         // valid change  */
 
+    ledState = digitalRead(LDR);
     digitalWrite(GRN,1-ledState);    
     intBuff[intPtr] = millis();
     if (intPtr >= ISR_CAP-2) {

@@ -66,8 +66,8 @@ void handleMetric() {
   addCstring( "\n" );
   server.send ( 200, "text/plain", longStr );
   // reset for new period
-  emMinPower = power;
-  emMaxPower = power;
+  emMinPower = 9.99F;
+  emMaxPower = 0.0F;
   lastScan = millis();
 }
 

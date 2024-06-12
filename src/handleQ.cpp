@@ -22,15 +22,15 @@ void handleQueue() {
       interrupts();
       t1 = max( 1UL, intBuff[buffPtr] - t0 );
       t0 = intBuff[buffPtr];
-      power = 1800.0/(float)t1;                       // power in kW
+      power = 3600.0/(float)t1;                       // power in kW
       if ( power < 20.0 ) {
         if ( waterOn ) {
           float capOne = min(1.0,HOT_WATER/power);    // energy inflow > 0
-          emT11Energy += 0.0005*(1.0 - capOne); 
-          emT31Energy += 0.0005*capOne;               // unit is kWh
+          emT11Energy += 0.001*(1.0 - capOne); 
+          emT31Energy += 0.001*capOne;               // unit is kWh
         }
         else {
-          emT11Energy += 0.0005;
+          emT11Energy += 0.001;
         }
         if ( power > emMaxPower ) emMaxPower=power;
         if ( power < emMinPower ) emMinPower=power;
