@@ -13,7 +13,7 @@ extern double emT11Energy, emT31Energy;
 
 uint8_t storeData() {
   fh = LittleFS.open(todayName,"a+");
-  fh.printf("%s,,%.1f,%.1f\n",timeStamp(),emT11Energy,emT31Energy);
+  fh.printf("%s,,%.3f,%.3f\n",timeStamp(),emT11Energy,emT31Energy);
   fh.close();
   return 1;
 }

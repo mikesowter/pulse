@@ -12,15 +12,14 @@ char incomingPacket[64];
 extern char charBuf[];
 char sendPacket[] = "How's the water?";  // a string to send 
 extern bool waterOn;
-extern uint8_t scanSecs, oldSec;
+extern uint8_t scanSecs, old10Sec;
 extern uint32_t UDPreplyUs;
 void diagMess(const char* mess);
 
 void hotWater()
 {
-  if ( second() % 10 != 0 ) return;   // every 10 seconds
-  if ( second() == oldSec) return;    // and only once
-  oldSec = second();
+  if ( second()/10 == old10Sec) return;    
+  old10Sec = second()/10;
   // send a request to RMS slave to see if hot water is on
   udp.beginPacket(otherIP, otherudpPort);
   udp.write(sendPacket);
@@ -32,6 +31,11 @@ void hotWater()
     int len = udp.read(incomingPacket, 64);
     if (len > 0) incomingPacket[len] = 0;
     // Serial.println(incomingPacket);
+    bool waterWasOn = waterOn;
     waterOn = ( incomingPacket[5] == 'o' && incomingPacket[6] == 'n' );
+    if ( waterWasOn != waterOn ) {
+      diagMess( incomingPacket );
+    }
   }
+  else diagMess("no hotWater reply");
 }

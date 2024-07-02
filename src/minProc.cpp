@@ -9,9 +9,9 @@ void errMess(const char* mess);
 void diagMess(const char* mess);
 
 extern File fd,fe; 
-extern uint8_t oldMin, oldHour, oldDay, oldMonth;
+extern uint8_t oldMin, old5Min, oldHour, oldDay, oldMonth;
 extern int oldYear, minPtr, htmlLen;
-extern float power, emMinPower, emMaxPower;
+extern float power, emMinPower, emMaxPower, emAvgPower;
 extern double oldT11Energy, emT11Energy, emT31Energy, T11_midnight, T31_midnight;
 extern unsigned long t0, t1;
 extern char charBuf[];
@@ -20,10 +20,16 @@ extern char charBuf[];
 
 void minProc() {
   yield();
-  if (oldT11Energy == emT11Energy) power = 0.0;
+  if (oldT11Energy == emT11Energy) power = 0.0F;
+  else {
+    emAvgPower = (emT11Energy - oldT11Energy)*60.0F;
+    if ( emAvgPower > 20.0F ) {
+      emAvgPower = 0.0F;
+      power = 0.0F;
+    }
+  }
   oldT11Energy = emT11Energy;
-
-  if ( hour() != oldHour ) {
+  if ( old5Min != minute()/5 )  {
     storeData();
     if ( day() != oldDay ) {
       setupTime();
@@ -38,7 +44,7 @@ void minProc() {
       }
       oldDay = day();
     }
-    oldHour = hour();
+    old5Min = minute()/5;
   }
   oldMin = minute();
   // flush fault files

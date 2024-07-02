@@ -4,6 +4,7 @@
  
 char host[] = "192.168.1.24";   // RPi-2 prometheus and influx server
 extern double emT11Energy, emT31Energy;
+extern char longStr[];
 void diagMess(const char* mess);
  
 void getLastScan() {
@@ -17,12 +18,12 @@ void getLastScan() {
   char Str3[] = "1569541500";
   char Str4[] = "&end=";
   char Str5[] = "1569541619";
-  char Str6[] = "&step=60&timeout=10s HTTP/1.1\r\nHost: 192.168.1.24\r\nConnection: close\r\n\r\n";
+  char Str6[] = "&step=10&timeout=10s HTTP/1.1\r\nHost: 192.168.1.24\r\nConnection: close\r\n\r\n";
 
   for (tariff=1; tariff<4; tariff=tariff+2) {
     strcpy(buff,Str1);
     strcat(buff,Str2);
-    dtostrf((double)(t-900), 0, 0, Str3);
+    dtostrf((double)(t-120), 0, 0, Str3);
     strcat(buff,Str3);
     strcat(buff,Str4);
     dtostrf((double)t, 0, 0, Str5);
@@ -43,7 +44,8 @@ void getLastScan() {
         }
       }
       buff[buffPtr] = '\0';
-      Serial.printf("\n%d bytes: \n%s\n",buffPtr,buff);
+      sprintf(longStr,"\n%d bytes: \n%s\n",buffPtr,buff);
+      diagMess(longStr);
       for (numPtr = buffPtr-8; numPtr>buffPtr-18; numPtr-- ) {
         if (buff[numPtr] == '\"') {
           if (tariff == 1) emT11Energy = atof(buff+numPtr+1);

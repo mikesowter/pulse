@@ -86,12 +86,12 @@ struct minStruct {
   float hi;
 } logData;
 
-uint8_t oldSec, oldMin, oldHour, oldDay, oldMonth;
+uint8_t old10Sec, oldMin, old5Min, oldHour, oldDay, oldMonth;
 int oldYear, minPtr, htmlLen;
 uint8_t ledState;
 uint8_t scanSecs;
 bool T31time, waterOn, scanFail;
-float power, emMinPower, emMaxPower;
+float power=0.0F, emMinPower=9.99F, emMaxPower=0.0F, emAvgPower=0.0F;
 double oldT11Energy, emT11Energy, emT31Energy, T11_midnight, T31_midnight;
 
 volatile uint32_t intBuff[128];
